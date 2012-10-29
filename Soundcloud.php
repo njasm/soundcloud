@@ -198,19 +198,19 @@ Class Soundcloud
         curl_close($this->_curl);
     }
 
-	/**
-	 *  Build a URL
+    /**
+     *  Build a URL
 	 * 
 	 * @return string URL string
 	 * @access private
 	 */
-	private function _buildUrl($resource, $params = array()) {
-		
+    private function _buildUrl($resource, $params = array()) {
+	
         // is our app already autorized by Soundcloud and
-		// do we have an accessToken aready?
-		if (!isset(self::$oauth_token)) {
-			$params['client_id'] = self::$clientId;
-		} else {
+        // do we have an accessToken aready?
+        if (!isset(self::$oauth_token)) {
+            $params['client_id'] = self::$clientId;
+        } else {
             $params['oauth_token'] = self::$oauth_token;
         }
         
