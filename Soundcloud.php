@@ -10,7 +10,7 @@ require_once 'Soundcloud_Exception.php';
  * @link        http://github.com/njasm/soundcloud
  * @category    Services
  * @package     Soundcloud Unfinished
- * @todo        Get this wrapper in alpha version!
+ * @todo        Get this wrapper to BETA version!
  */
 Class Soundcloud 
 {
@@ -151,13 +151,9 @@ Class Soundcloud
         $url = $this->_buildUrl($resource, $params);
         
         $this->setCurlOptions(array(CURLOPT_URL => $url));
-
+    
         $this->buildCurl();
-
-//        echo '<br>scResponse<br>';
-//        var_dump($this->scResponse);
-//        echo '<br>_curlOptions<br>';
-//        var_dump($this->_curlOptions);
+    
         return $this->scResponse;
     }
     
@@ -313,16 +309,6 @@ Class Soundcloud
     }
 
     /**
-     * Flush cURL Options to Defaults
-     * 
-     * @return Object
-     * @access public
-     */
-//    public function flushCurlOptions() {
-//        unset($this->_curlOptions);
-//        $this->_curlOptions = $this->_curlOptionsDefault;
-//    }
-    /**
      * Public method to set Response Type
      * 
      * Example:
@@ -347,8 +333,7 @@ Class Soundcloud
                 // for now we go default json response.
                 //echo 'Unavailable Response Type: ' . func_get_arg(0);
         }
-        
-        
+      
         return $this;
     }
     

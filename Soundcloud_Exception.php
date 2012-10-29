@@ -8,7 +8,7 @@
  * @link        http://github.com/njasm/soundcloud
  * @category    Services
  * @package     Soundcloud Unfinished
- * @todo        Get this class to 'alpha'usable' BETA version! ;)
+ * @todo        Get this class to 'usable' ALPHA version! ;)
  */
 class Soundcloud_Exception extends Exception
 {
