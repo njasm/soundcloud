@@ -16,7 +16,6 @@ Class Soundcloud
 {
     /**
      * Soundcloud api Client ID
-     * 
      * @var string
      * @access private
      * @static
@@ -25,7 +24,6 @@ Class Soundcloud
     
     /**
      * Soundcloud api Client Secret
-     * 
      * @var string
      * @access private
      * @static
@@ -34,7 +32,6 @@ Class Soundcloud
     
     /**
      * Soundcloud api End User Authorization
-     * 
      * @var string
      * @access private
      * @static
@@ -44,12 +41,12 @@ Class Soundcloud
     /**
      * Response code for authenticating Oauth2
      * @var string
+     * @static
      */
     private static $responseType;
     
     /**
      * Soundcloud api Oauth2 Token
-     * 
      * @var string
      * @access private
      * @static
@@ -57,18 +54,14 @@ Class Soundcloud
     private static $oauth_token;  
     
     /**
-     * Base URL endpoint for accessing Soundcloud.com API
-     * using SSL
-     * 
+     * Base URL endpoint for accessing Soundcloud.com
      * @var string Soundcloud api URL
      * @access private
      */
-    private $_baseURL = 'soundcloud.com';
-    
+    private $_baseURL = 'soundcloud.com';  
     
     /**
-     * Soundcloud Response Type.
-     * 
+     * Soundcloud Response Type - Defaults to json
      * @var string
      * @access private
      */
@@ -76,7 +69,6 @@ Class Soundcloud
      
     /**
      * Available Response Types.
-     *
      * @var array
      * @access private
      */
@@ -87,7 +79,6 @@ Class Soundcloud
     
     /**
      * cURL Options Default.
-     * 
      * @var array 
      * @access private
      */
@@ -95,9 +86,9 @@ Class Soundcloud
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_SSL_VERIFYPEER => false,
     );
+    
     /**
      * cURL Options.
-     * 
      * @var array 
      * @access private
      */
@@ -105,7 +96,6 @@ Class Soundcloud
     
     /**
      * cURL Resource handler
-     * 
      * @var Object
      * @access private
      */
@@ -113,7 +103,6 @@ Class Soundcloud
     
     /**
      * cURL response object
-     * 
      * @var Objec cUrl response object
      * @access public
      */
@@ -121,7 +110,7 @@ Class Soundcloud
     
     /**
      * __construct() method
-     * Setting Client ID only for now
+     * 
      */
     public function __construct() {
         
@@ -135,7 +124,6 @@ Class Soundcloud
             self::$redirectUri = func_get_arg(2);
             
         self::$responseType = 'code';
-        
         $this->_curlOptions = $this->_curlOptionsDefault;
     }
     
@@ -144,14 +132,10 @@ Class Soundcloud
      * 
      * @return object the response received from Soundcloud API
      * @access private
-     * 
      */
     public function getResource($resource, $params = array()) {
-
-        $url = $this->_buildUrl($resource, $params);
-        
-        $this->setCurlOptions(array(CURLOPT_URL => $url));
-    
+        $url = $this->_buildUrl($resource, $params);      
+        $this->setCurlOptions(array(CURLOPT_URL => $url));    
         $this->buildCurl();
     
         return $this->scResponse;
@@ -162,10 +146,8 @@ Class Soundcloud
      * soundcloud api server response.
      * 
      * @access private
-     * 
      */
     private function buildCurl() {
-
         // init curl
         $this->_curl = curl_init();
         
@@ -190,22 +172,21 @@ Class Soundcloud
         }
      
         // now check soundcloud api http code for errors
+        // needs better error handling
         if (curl_getinfo($this->_curl, CURLINFO_HTTP_CODE) === 401) {
             //curl_getinfo($this->_curl, CURLINFO_HTTP_CODE);
         }  
         
-        // close cURL resource
         curl_close($this->_curl);
     }
 
     /**
      *  Build a URL
-	 * 
-	 * @return string URL string
-	 * @access private
+     * 
+     * @return string URL string
+     * @access private
 	 */
-    private function _buildUrl($resource, $params = array()) {
-	
+    private function _buildUrl($resource, $params = array()) {	
         // is our app already autorized by Soundcloud and
         // do we have an accessToken aready?
         if (!isset(self::$oauth_token)) {
@@ -223,7 +204,7 @@ Class Soundcloud
         $url .= (count($params) > 0) ? '?' . http_build_query($params) : '';
 		
         return $url;        
-	}
+    }
     
     /**
      * Build Authorization URL 
@@ -241,6 +222,8 @@ Class Soundcloud
     /**
      * Get Access Token
      * 
+     * @return Object cURL Response
+     * @access Public
      */
     public function getAccessToken($code) {
         $postFields = array(
@@ -264,6 +247,8 @@ Class Soundcloud
     /**
      * Set Access Token
      * 
+     * @return Object 
+     * @access Public
      */
     public function setAccessToken($code) {
         self::$oauth_token = $code;
@@ -286,7 +271,6 @@ Class Soundcloud
      * 
      * @return object
      * @access public
-     * 
      */
     public function setCurlOptions() {
         $params = func_get_args();
@@ -328,10 +312,6 @@ Class Soundcloud
                 $this->_responseType = func_get_arg(0);
                 break;
             default:
-                // need better error handling.
-                // do nothing and use default json, or throw Excpetion?!
-                // for now we go default json response.
-                //echo 'Unavailable Response Type: ' . func_get_arg(0);
         }
       
         return $this;
