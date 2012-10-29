@@ -15,7 +15,7 @@ $soundcloud = new Soundcloud('CLIENT_ID', 'CLIENT_SECRET', 'REDIRECT_URI');
 
 $soundcloud->setResponseType('xml'); // default is json
 
-$arrayResponse = $soundcloud->getResource('/tracks', array(
+$response = $soundcloud->getResource('/tracks', array(
                         'q'     => 'House',
                         'order' => 'created_at',
                 ));
@@ -31,17 +31,19 @@ echo '<a href="' . $authURL . '">Login with Soundcloud</a><br>';
 
 ### Get Access Token
 ```php
+...
 
-if (!empty($_GET['code'])) {
-
-    $accessToken = $test->getAccessToken($_GET['code']);
+$accessToken = $test->getAccessToken($_GET['code']);
     
-    if (!empty($accessToken->access_token)) {
-        // let's set the token so we can request private resources with getResource() method;
-        $test->setAccessToken($accessToken->access_token);
+// let's set the token so we can request private resources with getResource() method;
+$test->setAccessToken($accessToken->access_token);
+
+// Get User private information
+$response = $soundcloud->getResource('/me');
         
-        // lets keep access token in $_SESSION too
-        $_SESSION['oauth_token'] = $accessToken->access_token;
+// lets keep access token in $_SESSION too, or maybe set it to a database table.. what
+// ever fits you best.
+$_SESSION['oauth_token'] = $accessToken->access_token;
     }
 }
 ```
