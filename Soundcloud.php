@@ -128,7 +128,7 @@ Class Soundcloud
     }
     
     /**
-     * Public Method - This is the method users shoud use to access Soundcloud api resources
+     * Public Method - This is the method users shoud use to access GET Soundcloud api resources
      * 
      * @return object the response received from Soundcloud API
      * @access private
@@ -136,6 +136,26 @@ Class Soundcloud
     public function getResource($resource, $params = array()) {
         $url = $this->_buildUrl($resource, $params);      
         $this->setCurlOptions(array(CURLOPT_URL => $url));    
+        $this->buildCurl();
+    
+        return $this->scResponse;
+    }
+    
+    /**
+     * Public Method - This is the method users shoud use to access POST Soundcloud api resources
+     * 
+     * @return object the response received from Soundcloud API
+     * @access private
+     */
+    public function postResource($resource, $params = array()) {
+        $url = $this->_buildUrl($resource); 
+
+        // set cURL to Post and add url
+        $this->setCurlOptions(array(
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $params,
+            CURLOPT_URL => $url));
+    
         $this->buildCurl();
     
         return $this->scResponse;
