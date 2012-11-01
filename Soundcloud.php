@@ -2,7 +2,7 @@
 require_once 'Soundcloud_Exception.php';
 
 /**
- * SoundCloud API wrapper (Unfinished!!!)
+ * SoundCloud API wrapper
  *
  * @author      Nelson J Morais <njmorais@gmail.com>
  * @copyright   2012 Nelson J Morais <njmorais@gmail.com>
@@ -10,7 +10,7 @@ require_once 'Soundcloud_Exception.php';
  * @link        http://github.com/njasm/soundcloud
  * @category    Services
  * @package     Soundcloud Unfinished
- * @todo        Get this wrapper to BETA version!
+ * @todo        Implementation of PUT and DELETE features
  */
 Class Soundcloud 
 {
@@ -129,7 +129,6 @@ Class Soundcloud
     
     /**
      * Public Method - This is the method users shoud use to access GET Soundcloud api resources
-     * 
      * @return object the response received from Soundcloud API
      * @access private
      */
@@ -143,7 +142,6 @@ Class Soundcloud
     
     /**
      * Public Method - This is the method users shoud use to access POST Soundcloud api resources
-     * 
      * @return object the response received from Soundcloud API
      * @access private
      */
@@ -160,11 +158,28 @@ Class Soundcloud
     
         return $this->scResponse;
     }
+    
+    /**
+     * Public Method to download track method.
+     * @access public
+     */
+    public function download ($resource) {
+        $url = $this->_buildUrl($resource);
+        
+        $this->setCurlOptions(array(
+            CURLOPT_URL => $url,
+        ));
+
+        $this->buildCurl();
+        
+        // redirect user to download link provided by soundcloud.
+        header('Location: ' . $this->scResponse->location);
+
+    }
        
     /**
      * Private Method to Build cURL and make the Request and get
      * soundcloud api server response.
-     * 
      * @access private
      */
     private function buildCurl() {
@@ -202,7 +217,6 @@ Class Soundcloud
 
     /**
      *  Build a URL
-     * 
      * @return string URL string
      * @access private
 	 */
@@ -222,13 +236,12 @@ Class Soundcloud
         $url .= $this->_baseURL . $resource;
         
         $url .= (count($params) > 0) ? '?' . http_build_query($params) : '';
-		
+		echo $url;
         return $url;        
     }
     
     /**
      * Build Authorization URL 
-     * 
      * @return string The URL
      * @access Public
      */
@@ -241,7 +254,6 @@ Class Soundcloud
     
     /**
      * Get Access Token
-     * 
      * @return Object cURL Response
      * @access Public
      */
@@ -266,7 +278,6 @@ Class Soundcloud
     
     /**
      * Set Access Token
-     * 
      * @return Object 
      * @access Public
      */
@@ -278,7 +289,6 @@ Class Soundcloud
     
     /**
      * Public method to set cURL Options
-     * 
      * The method accepts associative array data.
      * 
      * Example:
@@ -288,7 +298,6 @@ Class Soundcloud
      *      CURLOPT_SSL_VERIFYPEER => false
      * ));
      * </code>
-     * 
      * @return object
      * @access public
      */
@@ -304,7 +313,6 @@ Class Soundcloud
     
     /**
      * Public method to get cURL Options
-     *
      * @return array
      * @access public
      */    
@@ -314,12 +322,10 @@ Class Soundcloud
 
     /**
      * Public method to set Response Type
-     * 
      * Example:
      * <code>
      * $soundcloud->setResponseType('json');
      * </code>
-     * 
      * @return object
      * @access public
      */
@@ -339,7 +345,6 @@ Class Soundcloud
     
     /**
      * Public method to get Soundcloud api ResponseType
-     * 
      * @return string
      * @access public
      */
