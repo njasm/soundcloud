@@ -135,7 +135,7 @@ Class Soundcloud
     public function getResource($resource, $params = array()) {
         $url = $this->_buildUrl($resource, $params);      
         $this->setCurlOptions(array(CURLOPT_URL => $url));    
-        $this->buildCurl();
+        $this->_buildCurl();
     
         return $this->scResponse;
     }
@@ -154,7 +154,7 @@ Class Soundcloud
             CURLOPT_POSTFIELDS => $params,
             CURLOPT_URL => $url));
     
-        $this->buildCurl();
+        $this->_buildCurl();
     
         return $this->scResponse;
     }
@@ -170,7 +170,7 @@ Class Soundcloud
             CURLOPT_URL => $url,
         ));
 
-        $this->buildCurl();
+        $this->_buildCurl();
         
         // redirect user to download link provided by soundcloud.
         header('Location: ' . $this->scResponse->location);
@@ -182,7 +182,7 @@ Class Soundcloud
      * soundcloud api server response.
      * @access private
      */
-    private function buildCurl() {
+    private function _buildCurl() {
         // init curl
         $this->_curl = curl_init();
         
@@ -272,7 +272,7 @@ Class Soundcloud
 			CURLOPT_URL => $url,
         ));
         
-        $this->buildCurl();
+        $this->_buildCurl();
         return $this->scResponse;
     }
     
