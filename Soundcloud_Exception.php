@@ -1,6 +1,6 @@
 <?php
 /**
- * SoundCloud Exception (Unfinished!!!)
+ * SoundCloud Exception
  *
  * @author      Nelson J Morais <njmorais@gmail.com>
  * @copyright   2012 Nelson J Morais <njmorais@gmail.com>

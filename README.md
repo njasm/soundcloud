@@ -11,12 +11,12 @@ Needless to say that code optimization, patches, etc. Are welcome :)
 * Access to all public GET resources
 * Access to all private GET resources
 * Access to all POST resources (insert track comments and track upload)
+* Track Download feature
 
 ## TODO
 
 * Access to all PUT resources
 * Access to all DELETE resources
-* Track Download feature
 
 ## Requirements
 PHP >= 5.3 with cURL support.
@@ -37,6 +37,9 @@ $response = $soundcloud->getResource('/tracks', array(
 
 #### Get Authentication URL
 ```php
+
+// To access private resources you always have to send CLIENT_SECRET and REDIRECT_URI with your
+// CLIENT_ID for a successful authentication.
 $soundcloud = new Soundcloud('CLIENT_ID', 'CLIENT_SECRET', 'REDIRECT_URI');
 
 $authURL = $test->getAuthUrl();
@@ -67,14 +70,23 @@ $_SESSION['oauth_token'] = $accessToken->access_token;
 ```php
 ...
  
-// Let's set the token so we can access 'need-authentication' resources with postResource() method;
+// Let's set the token so we can access 'need-authentication' resources with postResource() method.
 $test->setAccessToken($accessToken->access_token);
 
 // 
-// Let's post a timed comment. XXXX is track id;
+// Let's post a timed comment. XXXX is track id.
 $response = $soundcloud->postResource('/tracks/XXXX/comments', array(
     'comment[body]' => 'Hey Good Track dude!',
     'comment[timestamp]' => 1231314, // NOTICE: timestamp is in milisseconds
 ));
+        
+```
+
+#### Download Track
+```php
+...
+ 
+// Download a track. XXXX is track id.
+$soundcloud->download('/tracks/XXXX/download');
         
 ```
