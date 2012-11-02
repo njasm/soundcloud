@@ -236,7 +236,7 @@ Class Soundcloud
         // are we asking for an accessToken or oembed?
         if (!preg_match('/connect/', $resource) and 
             !preg_match('/oembed/', $resource)) {
-            $url .= 'api.';
+            $url .= 'api.' . $this->_baseURL . $resource;
         } else {
             $url .= $this->_baseURL . $resource;
         }
