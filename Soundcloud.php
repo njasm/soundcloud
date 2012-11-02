@@ -192,7 +192,8 @@ Class Soundcloud
             ));
         
         curl_setopt_array($this->_curl, $this->getCurlOptions());
-                       
+        
+        
         // build response object from xml or json ?!
         if ($this->_responseType == 'json') {
             $this->scResponse = json_decode(curl_exec($this->_curl)); 
@@ -210,6 +211,7 @@ Class Soundcloud
         // needs better error handling
         if (curl_getinfo($this->_curl, CURLINFO_HTTP_CODE) === 401) {
             //curl_getinfo($this->_curl, CURLINFO_HTTP_CODE);
+            var_dump(curl_getinfo($this->_curl));
         }  
         
         curl_close($this->_curl);
@@ -231,12 +233,18 @@ Class Soundcloud
         
         $url = 'https://';
         
-        // are we getting an accessToken?
-        $url .= (preg_match('/connect/', $resource)) ? '' : 'api.';
-        $url .= $this->_baseURL . $resource;
+        // are we asking for an accessToken or oembed?
+        if (!preg_match('/connect/', $resource) and 
+            !preg_match('/oembed/', $resource)) {
+            $url .= 'api.';
+        } else {
+            $url .= $this->_baseURL . $resource;
+        }
+//        $url .= (preg_match('/connect/', $resource)) ? '' : 'api.';
+//        $url .= $this->_baseURL . $resource;
         
         $url .= (count($params) > 0) ? '?' . http_build_query($params) : '';
-		echo $url;
+
         return $url;        
     }
     
