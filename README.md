@@ -1,8 +1,7 @@
 # Soundcloud.com API Wrapper in PHP
 Soundcloud API wrapper written just for fun.
 
-This piece of code still misses some features.
-If you find issues on the implemented ones, new ideas, code optimization, patches, etc. 
+If you find issues or have new ideas, feature requests, code optimization, patches, etc. 
 Please open an Issue or send a pull request! :) 
 
 ## Implemented features 
@@ -19,10 +18,8 @@ Please open an Issue or send a pull request! :)
 ## TODO
 
 * Code Optimization
+* Better Error Handling
 * Implementation of future features requests based on users who use this wrapper.  
-* In one test i've made for some reason I couldn't update the user 'full_name', altough the server http code response 
-is a 200 OK. The Soundcloud documentation doesn't mention anything about not letting a user update is name. So new
-tests should be conducted.
 
 ## Requirements
 PHP >= 5.3 with cURL support.
