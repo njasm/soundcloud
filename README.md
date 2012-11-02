@@ -123,13 +123,12 @@ $soundcloud->setResponseType('xml'); // default is json
 
 $response = $soundcloud->getResource('/oembed', array(
                         'url'       => 'http://www.soundcloud.com/cutloosemusic',
-                        'format'    => 'json', //	(optional) Either xml, json NOTICE: we're already setting response in HTTP HEADER with setResponseType().
-                        'maxwidth'  => '100%', //	(optional) The maximum width in px.
-                        'maxheight' => '305',  //	(optional) The maximum height in px. The default is 81 for tracks and 305 for all other.
-                        'color'     => '',     //	(optional) The primary color of the widget as a hex triplet. (For example: ff0066).
-                        'auto_play' => false,  //   (optional) Whether the widget plays on load.
-                        'show_comments'=> true,//	(optional) Whether the player displays timed comments.
-                        'iframe'    =>  true   //   (optional) Whether the new HTML5 Iframe-based Widget or the old Adobe Flash Widget will be returned.
+                        'color'     => '',      //	(optional) The primary color of the widget as a hex 
+                                                //  triplet. (For example: ff0066).
+                        'auto_play' => false,   //  (optional) Whether the widget plays on load.
+                        'show_comments'=> true, //  (optional) Whether the player displays timed comments.
+                        'iframe'    =>  true    //  (optional) Whether the new HTML5 Iframe-based Widget or the old 
+                                                //  Adobe Flash Widget will be returned.
                 ));
 
 // echo the Soundcloud html5 player on your page with music from url
