@@ -2,8 +2,8 @@
 Soundcloud API wrapper written just for fun.
 
 This piece of code still misses some features.
-If you find issues on the implemented ones, new ideas, etc. Please open an Issue. 
-Needless to say that code optimization, patches, etc. Are welcome :) 
+If you find issues on the implemented ones, new ideas, code optimization, patches, etc. 
+Please open an Issue or send a pull request! :) 
 
 ## Implemented features 
 
@@ -12,6 +12,7 @@ Needless to say that code optimization, patches, etc. Are welcome :)
 * Access to all private GET resources
 * Access to all POST resources (insert track comments and track upload)
 * Track Download feature
+* oEmbed access
 
 ## TODO
 
@@ -82,6 +83,29 @@ $response = $soundcloud->postResource('/tracks/XXXX/comments', array(
         
 ```
 
+#### Upload Track
+```php
+...
+
+// Let's set the token so we can access 'need-authentication' resources with postResource() method.
+$test->setAccessToken($_SESSION['oauth_token']);
+
+/**
+ * The process to upload a track is: 
+ * 1) user access your web app (on your server) 
+ * 2) user upload audio and/or artwork file(s) to your server on your server and only then you can invoke this method
+ * 3) with files already uploaded to server, we grab they full local path and invoke postResource()
+ */
+
+// Let's upload a track to soundcloud. 
+$response = $soundcloud->postResource('/tracks', array(
+    'track[title]' => 'Track Name',
+    'track[sharing]' => 'public',                           // or 'private'
+    'track[asset_data]' => @/path/to/audio/file.wav,        // local path on your server
+    'track[artwork_data]' => @/path/to/my/track/image.png,  // local path on your server 
+));
+        
+```
 #### Download Track
 ```php
 ...
@@ -89,4 +113,25 @@ $response = $soundcloud->postResource('/tracks/XXXX/comments', array(
 // Download a track. XXXX is track id.
 $soundcloud->download('/tracks/XXXX/download');
         
+```
+
+#### Get Soundcloud html5 player with oembed
+```php
+$soundcloud = new Soundcloud('CLIENT_ID');
+
+$soundcloud->setResponseType('xml'); // default is json
+
+$response = $soundcloud->getResource('/oembed', array(
+                        'url'       => 'http://www.soundcloud.com/cutloosemusic',
+                        'format'    => 'json', //	(optional) Either xml, json NOTICE: we're already setting response in HTTP HEADER with setResponseType().
+                        'maxwidth'  => '100%', //	(optional) The maximum width in px.
+                        'maxheight' => '305',  //	(optional) The maximum height in px. The default is 81 for tracks and 305 for all other.
+                        'color'     => '',     //	(optional) The primary color of the widget as a hex triplet. (For example: ff0066).
+                        'auto_play' => false,  //   (optional) Whether the widget plays on load.
+                        'show_comments'=> true,//	(optional) Whether the player displays timed comments.
+                        'iframe'    =>  true   //   (optional) Whether the new HTML5 Iframe-based Widget or the old Adobe Flash Widget will be returned.
+                ));
+
+// echo the Soundcloud html5 player on your page with music from url
+echo $response->html;
 ```
