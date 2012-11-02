@@ -10,14 +10,19 @@ Please open an Issue or send a pull request! :)
 * Authentication with OAuth2
 * Access to all public GET resources
 * Access to all private GET resources
-* Access to all POST resources (insert track comments and track upload)
+* Access to all PUT resources
+* Access to all POST resources
+* Access to all DELETE resources
 * Track Download feature
-* oEmbed access
+* oEmbed Access to embed soundcloud player on your page
 
 ## TODO
 
-* Access to all PUT resources
-* Access to all DELETE resources
+* Code Optimization
+* Implementation of future features requests based on users who use this wrapper.  
+* In one test i've made for some reason I couldn't update the user 'full_name', altough the server http code response 
+is a 200 OK. The Soundcloud documentation doesn't mention anything about not letting a user update is name. So new
+tests should be conducted.
 
 ## Requirements
 PHP >= 5.3 with cURL support.
@@ -49,7 +54,7 @@ echo '<a href="' . $authURL . '">Login with Soundcloud</a><br>';
 
 #### Get Access Token
 ```php
-...
+
 // Grab pass $_GET['code'] from Soundcloud authorization url to OAuth2 url
 // and get a valid token 
 $accessToken = $test->getAccessToken($_GET['code']);
@@ -69,7 +74,6 @@ $_SESSION['oauth_token'] = $accessToken->access_token;
 
 #### Posting Comments
 ```php
-...
  
 // Let's set the token so we can access 'need-authentication' resources with postResource() method.
 $test->setAccessToken($accessToken->access_token);
@@ -79,13 +83,11 @@ $test->setAccessToken($accessToken->access_token);
 $response = $soundcloud->postResource('/tracks/XXXX/comments', array(
     'comment[body]' => 'Hey Good Track dude!',
     'comment[timestamp]' => 1231314, // NOTICE: timestamp is in milisseconds
-));
-        
+));        
 ```
 
 #### Upload Track
 ```php
-...
 
 // Let's set the token so we can access 'need-authentication' resources with postResource() method.
 $test->setAccessToken($_SESSION['oauth_token']);
@@ -103,23 +105,20 @@ $response = $soundcloud->postResource('/tracks', array(
     'track[sharing]' => 'public',                           // or 'private'
     'track[asset_data]' => @/path/to/audio/file.wav,        // local path on your server
     'track[artwork_data]' => @/path/to/my/track/image.png,  // local path on your server 
-));
-        
+));       
 ```
+
 #### Download Track
 ```php
 ...
  
 // Download a track. XXXX is track id.
-$soundcloud->download('/tracks/XXXX/download');
-        
+$soundcloud->download('/tracks/XXXX/download');     
 ```
 
 #### Get Soundcloud html5 player with oembed
 ```php
 $soundcloud = new Soundcloud('CLIENT_ID');
-
-$soundcloud->setResponseType('xml'); // default is json
 
 $response = $soundcloud->getResource('/oembed', array(
                         'url'       => 'http://www.soundcloud.com/cutloosemusic',
@@ -133,4 +132,26 @@ $response = $soundcloud->getResource('/oembed', array(
 
 // echo the Soundcloud html5 player on your page with music from url
 echo $response->html;
+```
+
+#### Follow user
+```php
+$soundcloud = new Soundcloud('CLIENT_ID', 'CLIENT_SECRET', 'REDIRECT_URI');
+
+// Let's set the token so we can access 'need-authentication' resources with postResource() method.
+$test->setAccessToken($_SESSION['oauth_token']);
+
+// XXXXXXXX is user id to follow.
+$response = $soundcloud->putResource('/me/followings/XXXXXXXX');
+```
+
+#### UnFollow user
+```php
+$soundcloud = new Soundcloud('CLIENT_ID', 'CLIENT_SECRET', 'REDIRECT_URI');
+
+// Let's set the token so we can access 'need-authentication' resources with postResource() method.
+$test->setAccessToken($_SESSION['oauth_token']);
+
+// XXXXXXXX is user id to follow.
+$response = $soundcloud->deleteResource('/me/followings/XXXXXXXX');
 ```
