@@ -125,7 +125,7 @@ Class Soundcloud {
         if (func_get_arg(2))
             self::$redirectUri = func_get_arg(2);
 
-        self::$responseType = 'code';
+        //self::$responseType = 'code';
         $this->_curlOptions = $this->_curlOptionsDefault;
     }
 
