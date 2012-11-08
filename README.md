@@ -19,7 +19,7 @@ Please open an Issue or send a pull request! :)
 
 * Code Optimization
 * Better Error Handling
-* Implementation of future features requests based on users who use this wrapper.  
+* Implementation of future feature requests based on users who use this wrapper.  
 
 ## Requirements
 PHP >= 5.3 with cURL support.
@@ -54,10 +54,10 @@ echo '<a href="' . $authURL . '">Login with Soundcloud</a><br>';
 
 // Grab pass $_GET['code'] from Soundcloud authorization url to OAuth2 url
 // and get a valid token 
-$accessToken = $test->getAccessToken($_GET['code']);
+$accessToken = $soundcloud->getAccessToken($_GET['code']);
     
 // Let's set the token so we can request private resources with getResource() method;
-$test->setAccessToken($accessToken->access_token);
+$soundcloud->setAccessToken($accessToken->access_token);
 
 // Get User private information
 $response = $soundcloud->getResource('/me');
@@ -73,7 +73,7 @@ $_SESSION['oauth_token'] = $accessToken->access_token;
 ```php
  
 // Let's set the token so we can access 'need-authentication' resources with postResource() method.
-$test->setAccessToken($accessToken->access_token);
+$soundcloud->setAccessToken($accessToken->access_token);
 
 // 
 // Let's post a timed comment. XXXX is track id.
@@ -87,7 +87,7 @@ $response = $soundcloud->postResource('/tracks/XXXX/comments', array(
 ```php
 
 // Let's set the token so we can access 'need-authentication' resources with postResource() method.
-$test->setAccessToken($_SESSION['oauth_token']);
+$soundcloud->setAccessToken($_SESSION['oauth_token']);
 
 /**
  * The process to upload a track is: 
@@ -136,7 +136,7 @@ echo $response->html;
 $soundcloud = new Soundcloud('CLIENT_ID', 'CLIENT_SECRET', 'REDIRECT_URI');
 
 // Let's set the token so we can access 'need-authentication' resources with postResource() method.
-$test->setAccessToken($_SESSION['oauth_token']);
+$soundcloud->setAccessToken($_SESSION['oauth_token']);
 
 // XXXXXXXX is user id to follow.
 $response = $soundcloud->putResource('/me/followings/XXXXXXXX');
@@ -147,7 +147,7 @@ $response = $soundcloud->putResource('/me/followings/XXXXXXXX');
 $soundcloud = new Soundcloud('CLIENT_ID', 'CLIENT_SECRET', 'REDIRECT_URI');
 
 // Let's set the token so we can access 'need-authentication' resources with postResource() method.
-$test->setAccessToken($_SESSION['oauth_token']);
+$soundcloud->setAccessToken($_SESSION['oauth_token']);
 
 // XXXXXXXX is user id to follow.
 $response = $soundcloud->deleteResource('/me/followings/XXXXXXXX');
