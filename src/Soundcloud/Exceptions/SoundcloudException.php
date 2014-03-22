@@ -1,4 +1,6 @@
-<?php
+<?php 
+
+namespace Njasm\Soundcloud\Exceptions;
 
 /**
  * SoundCloud Exception
@@ -11,6 +13,6 @@
  * @package     Soundcloud
  * @version     0.0.1
  */
-class Soundcloud_Exception extends Exception {
+class SoundcloudException extends \Exception {
     
 }
