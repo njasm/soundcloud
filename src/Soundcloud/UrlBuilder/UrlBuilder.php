@@ -29,7 +29,7 @@ class UrlBuilder implements UrlBuilderInterface
         return $this->query;
     }
     
-    protected function setQuery(array $params = array())
+    public function setQuery(array $params = array())
     {
         if (!empty($params)) {
             $this->query = http_build_query($params);
