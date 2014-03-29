@@ -54,8 +54,8 @@ class Resource implements ResourceInterface
             case 'patch':
             case 'options':          
             case 'delete':
-                $path = isset($arguments[0]) ?: null;
-                $params = isset($arguments[1]) ?: array();
+                $path = !empty($arguments[0]) ? $arguments[0] : null;
+                $params = isset($arguments[1]) ? $arguments[1] : array();
                 return new self($name, $path, $params);
             break;
             default:
