@@ -1,6 +1,7 @@
 <?php
 
 use Njasm\Soundcloud\Resources\Resource;
+use Njasm\Soundcloud\Exceptions\SoundcloudException;
 
 class ResourceTest extends \PHPUnit_Framework_TestCase 
 {
