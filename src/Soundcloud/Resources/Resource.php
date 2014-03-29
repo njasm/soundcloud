@@ -11,7 +11,7 @@ class Resource implements ResourceInterface
     private $params = array();
     private $verb;
     
-    private function __construct($verb, $path, array $params = array())
+    private function __construct($verb, $path = null, array $params = array())
     {
         $this->verb = $verb;
         $this->params = $params;        
@@ -49,22 +49,14 @@ class Resource implements ResourceInterface
     {
         switch ($name) {
             case 'get':
-                return new self($name, $arguments[0], $arguments[1]);
-            break;
             case 'post':
-                return new self($name, $arguments[0], $arguments[1]);
-            break;
             case 'put':
-                return new self($name, $arguments[0], $arguments[1]);
-            break;
             case 'patch':
-                return new self($name, $arguments[0], $arguments[1]);
-            break;
-            case 'options':
-                return new self($name, $arguments[0], $arguments[1]);
-            break;           
+            case 'options':          
             case 'delete':
-                return new self($name, $arguments[0], $arguments[1]);
+                $path = isset($arguments[0]) ?: null;
+                $params = isset($arguments[1]) ?: array();
+                return new self($name, $path, $params);
             break;
             default:
                 throw new SoundcloudException("Resource of type: $name, not available!");

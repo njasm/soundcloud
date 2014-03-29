@@ -13,24 +13,33 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
         Resource::get();
     }
     
+    public function testResourceOfTypeNotAvailableException()
+    {
+        $this->setExpectedException(
+            'Njasm\Soundcloud\Exceptions\SoundcloudException',
+            "Resource of type: head, not available!"
+        );
+        Resource::head();
+    }
+    
     public function testGetVerb()
     {
-        $resource = Resource::get();
+        $resource = Resource::get("/me");
         $this->assertEquals("get", $resource->getVerb());
 
-        $resource = Resource::post();
+        $resource = Resource::post("/me");
         $this->assertEquals("post", $resource->getVerb());
         
-        $resource = Resource::put();
+        $resource = Resource::put("/me");
         $this->assertEquals("put", $resource->getVerb());
         
-        $resource = Resource::patch();
+        $resource = Resource::patch("/me");
         $this->assertEquals("patch", $resource->getVerb());
         
-        $resource = Resource::delete();
+        $resource = Resource::delete("/me");
         $this->assertEquals("delete", $resource->getVerb());     
         
-        $resource = Resource::options();
+        $resource = Resource::options("/me");
         $this->assertEquals("options", $resource->getVerb());
     }
 }
