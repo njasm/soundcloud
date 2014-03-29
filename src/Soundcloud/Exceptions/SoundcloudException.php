@@ -13,6 +13,7 @@ namespace Njasm\Soundcloud\Exceptions;
  * @package     Soundcloud
  * @version     0.0.1
  */
-class SoundcloudException extends \Exception {
+class SoundcloudException extends \Exception 
+{
     
 }

@@ -3,7 +3,7 @@
 namespace Njasm\Soundcloud\Resources;
 
 use Njasm\Soundcloud\Resources;
-use Njasm\Soundcloud\Exceptions;
+use Njasm\Soundcloud\Exceptions\SoundcloudException;
 
 class Resource implements ResourceInterface 
 {
@@ -19,7 +19,7 @@ class Resource implements ResourceInterface
         if (is_string($path) && substr($pat, 0, 1) == "/") {
             $this->path = $path;
         } else {
-            throw new Exceptions\SoundcloudException("Path cannot be other then a string type and should start with a '/' (Slash).");
+            throw new SoundcloudException("Path cannot be other then a string type and should start with a '/' (Slash).");
         }
     }
     
