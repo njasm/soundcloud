@@ -4,13 +4,12 @@ use Njasm\Soundcloud\Resources\Resource;
 
 class ResourceTest extends \PHPUnit_Framework_TestCase 
 {
-    /**
-     * @expectedException SoundcloudException
-     * @expectedExceptionMessage Path cannot be other then a string type and should start with a '/' (Slash).
-     */
     public function testException()
     {
-        $this->setExpepectedException('Njasm\Soundcloud\Exceptions\SoundcloudException');
+        $this->setExpepectedException(
+            'Njasm\Soundcloud\Exceptions\SoundcloudException',
+            "Path cannot be other then a string type and should start with a '/' (Slash)."
+        );
         Resource::get();
     }
     
