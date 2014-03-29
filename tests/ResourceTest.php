@@ -6,7 +6,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 {
     public function testException()
     {
-        $this->setExpepectedException(
+        $this->setExpectedException(
             'Njasm\Soundcloud\Exceptions\SoundcloudException',
             "Path cannot be other then a string type and should start with a '/' (Slash)."
         );
