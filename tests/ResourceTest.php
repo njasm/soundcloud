@@ -42,4 +42,20 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
         $resource = Resource::options("/me");
         $this->assertEquals("options", $resource->getVerb());
     }
+     
+    public function testSetAndGetParams()
+    {
+        $resource = Resource::get("/tracks", array("q" => "Great Artist"));
+        $this->assertArrayHasKey("q", $resource->getParams());
+        $resource->setParams(array("license" => "mit"));
+        $this->assertArrayHasKey("q", $resource->getParams());
+        $this->assertArrayHasKey("license", $resource->getParams());        
+    }
+    
+    public function testGetPath()
+    {
+        $resource = Resource::get("/tracks");
+        $this->assertEquals("/tracks", $resource->getPath());
+        $this->assertNotEquals("/me", $resource->getPath());
+    }
 }
