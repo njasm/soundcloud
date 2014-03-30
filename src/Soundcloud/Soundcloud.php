@@ -136,14 +136,20 @@ Class Soundcloud {
     }   
     
     /**
-     * Sets resource params for all http verbs.
+     * Sets resource params.
      * 
      * @param array $params
      * @return \Njasm\Soundcloud\Soundcloud Soundcloud
+     * @throws SoundcloudException
      */
     public function setParams(array $params = array())
     {
-        $this->resource->setParams($params);
+        if ($this->resource instanceof Resources\ResourceInterface) {
+            $this->resource->setParams($params);
+        } else {
+            throw new SoundcloudException("No Resource found. you must call a http verb method before " . __METHOD__);
+        }
+        
         return $this;
     }
     
