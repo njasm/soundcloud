@@ -6,16 +6,20 @@ namespace Njasm\Soundcloud\UrlBuilder;
 class UrlBuilder implements UrlBuilderInterface
 {
     private $query;
-    private $scheme = "https://";
-    private $hostname = "soundcloud.com";
+    private $scheme;
+    private $hostname;
     private $subdomain;
     private $verb;
     private $path;
 
-    public function __construct($path = null, array $params = array(), $verb = "get", $subdomain = "api")
+    public function __construct(
+        $path = null, array $params = array(), $verb = "get", 
+        $subdomain = "api", $hostname = "soundcloud.com", $scheme = "https://")
     {
-        $this->path = $path;
+        $this->scheme = $scheme;
         $this->subdomain = $subdomain;
+        $this->hostname = $hostname;
+        $this->path = $path;
         $this->verb = $verb;
         $this->setQuery($params);
     }
@@ -41,7 +45,7 @@ class UrlBuilder implements UrlBuilderInterface
     public function getUrl()
     {
         $url = $this->scheme . $this->subdomain . "." . $this->hostname;
-        $url .= ($this->path) ?: '';
+        $url .= ($this->path) ?: "/";
         
         if (strtolower($this->verb) == "get") {            
             $url .= ($this->query) ? "?" . $this->query : '';
