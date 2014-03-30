@@ -9,14 +9,13 @@
             "email": "njmorais@gmail.com"
         }
     ],
-    "require": {
-        "php": ">=5.3.8"
+    "minimum-stability": "dev",
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
     },
-
     "autoload": {
         "psr-4": {
             "Njasm\\": "src/"
         }
     },    
-    "minimum-stability": "dev"
 }
