@@ -34,7 +34,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
             'q' => 'hybrid',
         );
         $builder->setQuery($query);
-        $this->assetEquals("q=hybrid", $builder->getQuery());
+        $this->assertEquals("q=hybrid", $builder->getQuery());
     }    
     
     public function testNullSetAndGetQuery()
