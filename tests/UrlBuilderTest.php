@@ -22,7 +22,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
     {    
         // should return https://www.soundcloud.com/resolve
         $builder = new UrlBuilder("/resolve", array('q' => 'john', 'license' => 'cc-by-sa'), "post", "www");
-        $this->assertEquals("https://www.soundcloud.com/tracks", $builder->getUrl());          
+        $this->assertEquals("https://www.soundcloud.com/resolve", $builder->getUrl());          
     }
     
     public function testSetAndGetQuery()
