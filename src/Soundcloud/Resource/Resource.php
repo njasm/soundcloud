@@ -1,9 +1,8 @@
 <?php
 
-namespace Njasm\Soundcloud\Resources;
+namespace Njasm\Soundcloud\Resource;
 
-use Njasm\Soundcloud\Resources;
-use Njasm\Soundcloud\Exceptions\SoundcloudException;
+use Njasm\Soundcloud\Exception\SoundcloudException;
 
 class Resource implements ResourceInterface 
 {

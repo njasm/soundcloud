@@ -1,13 +1,13 @@
 <?php
 
-use Njasm\Soundcloud\Resources\Resource;
+use Njasm\Soundcloud\Resource\Resource;
 
 class ResourceTest extends \PHPUnit_Framework_TestCase 
 {
     public function testException()
     {
         $this->setExpectedException(
-            'Njasm\Soundcloud\Exceptions\SoundcloudException',
+            'Njasm\Soundcloud\Exception\SoundcloudException',
             "Path cannot be other then a string type and should start with a '/' (Slash)."
         );
         Resource::get();
@@ -16,7 +16,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
     public function testResourceOfTypeNotAvailableException()
     {
         $this->setExpectedException(
-            'Njasm\Soundcloud\Exceptions\SoundcloudException',
+            'Njasm\Soundcloud\Exception\SoundcloudException',
             "Resource of type: head, not available!"
         );
         Resource::head();
