@@ -1,5 +1,5 @@
 <?php
-namespace Njasm\Soundcloud\Resources;
+namespace Njasm\Soundcloud\Resource;
 
 interface ResourceInterface 
 {

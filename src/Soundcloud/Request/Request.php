@@ -1,24 +1,29 @@
 <?php
 
-namespace Njasm\Soundcloud;
+namespace Njasm\Soundcloud\Request;
 
-use Njasm\Soundcloud\Resources;
+use Njasm\Soundcloud\Resource\ResourceInterface;
+use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
+use Njasm\Soundcloud\Auth\AuthInterface;
 
 class Request implements RequestInterface 
 {
+    private $resource;
+    private $auth;
+    private $urlBuilder;
+    private $response;
+        
     private $options = array(
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_SSL_VERIFYPEER => false,
     );
 
-    private $resource;
-    private $sc;
     private $responseFormat = 'application/json';
     
-    public function __construct(\ResourceInterface $resource, array $options = array(), Soundcloud $sc)
+    public function __construct(\ResourceInterface $resource, array $options = array(), \UrlBuilderInterface $urlBuilder)
     {
         $this->resource = $resource;
-        $this->sc = $sc;
+        $this->urlBuilder = $urlBuilder;
         
         if (!empty($options)) {
             $this->setOptions($options);
@@ -54,7 +59,7 @@ class Request implements RequestInterface
     public function exec()
     {
         $ch = curl_init();
-        
-        curl_setopt($ch, $option, $ch);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: ' . $this->responseFormat));
+        curl_setopt_array($ch, $this->options);
     }    
 }
