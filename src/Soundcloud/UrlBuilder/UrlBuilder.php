@@ -14,19 +14,15 @@ class UrlBuilder implements UrlBuilderInterface
     private $auth;
     private $resource;
 
-    public function __construct(ResourceInterface $resource, 
-                                AuthInterface $auth,
-                                $subdomain = "api", 
-                                $hostname = "soundcloud.com", 
-                                $scheme = "https://"
-                                )
+    public function __construct(ResourceInterface $resource, AuthInterface $auth, $subdomain = "api", $hostname = "soundcloud.com", $scheme = "https://")
     {
         $this->resource = $resource;
         $this->auth = $auth;
         $this->scheme = $scheme;
         $this->subdomain = $subdomain;
         $this->hostname = $hostname;
-
+        
+        $this->setQuery($this->resource->getParams());
     }
     
     
@@ -37,21 +33,19 @@ class UrlBuilder implements UrlBuilderInterface
     
     public function setQuery(array $params = array())
     {
-        if (!empty($params)) {
-            $params = $this->mergeAuthParams($params);
-            $this->query = http_build_query($params);
-        } else {
-            $this->query = null;
-        }
+        $params = $this->mergeAuthParams($params);
+        $this->query = http_build_query($params);
     }
     
     public function getUrl()
     {
         $url = $this->scheme . $this->subdomain . "." . $this->hostname;
-        $path = $this->getPath();
-        $url .= ($this->path) ?: "/";
+        $path = $this->resource->getPath();
         
-        if (strtolower($this->verb) == "get") {            
+        if (!empty($path)) {
+            $url .= $path;
+        }
+        if (strtolower($this->resource->getVerb()) == "get") {            
             $url .= ($this->query) ? "?" . $this->query : '';
         }
         
@@ -60,12 +54,14 @@ class UrlBuilder implements UrlBuilderInterface
     
     public function mergeAuthParams(array $params = array()) 
     {
-        $params = array_merge(
+        $return = array_merge(
             array(
                 'client_id' => $this->auth->getClientID()
             ),
-            $this->resource->getParams()
-        );        
+            $params
+        );
+        
+        return $return;
     }
     
     public function getPath()
