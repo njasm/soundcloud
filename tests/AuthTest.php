@@ -59,4 +59,17 @@ class AuthTest extends \PHPUnit_Framework_TestCase
         $auth->setRefreshToken("1-3456-asfaSy5hhjsWE");
         $this->assertEquals("1-3456-asfaSy5hhjsWE", $auth->getRefreshToken());     
     }
+    
+    public function testHasTokenFalse()
+    {
+        $auth = new Auth("ClientIDHash");
+        $this->assertFalse($auth->hasToken());
+    }
+    
+    public function testHasTokenTrue()
+    {
+        $auth = new Auth("ClientIDHash");
+        $auth->setToken("1314-426fdv4ths");
+        $this->assertTrue($auth->hasToken());
+    }
 }
