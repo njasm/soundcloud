@@ -3,18 +3,81 @@
 namespace Njasm\Soundcloud\Auth;
 
 interface AuthInterface {
-    public function __construct($clientID = null, $clientSecret = null, $authCallback = null);
+    
+    /**
+     * @param string $clientID Soundcloud Client id.
+     * @param string $clientSecret Soundcloud Client secret.
+     * @param string $authUrlCallBack Authorization url callback.
+     */
+    public function __construct($clientID = null, $clientSecret = null, $authUrlCallback = null);
+    
+    /**
+     * @param string $clientID Soundcloud Client id.
+     */
     public function setClientID($clientID = null);
+    
+    /**
+     * @return string Soundcloud Client id.
+     */
     public function getClientID();
-    public function setClientSecret($clientSecret = null);
+    
+    /**
+     * @param string $clientSecret Soudncloud Client Secret.
+     */
+    public function setClientSecret($clientSecret);
+    
+    /**
+     * @return string|null Client Secret string if set, else null is returned.
+     */
     public function getClientSecret();
-    public function setAuthUrlCallback($authCallback = null);
+    
+    /**
+     * @param string $authCallback the Callback URL after user authorization at Soundcloud.
+     */
+    public function setAuthUrlCallback($authCallback);
+    
+    /**
+     * @return string|null Access token, null if not set.
+     */
     public function getToken();
-    public function setToken($token = null);
-    public function setScope($scope = null);
+    
+    /**
+     * @return bool true if access token is set, false otherwise.
+     */
+    public function hasToken();
+    
+    /**
+     * @param string $token Access token.
+     */
+    public function setToken($token);
+    
+    /**
+     * @param string $scope Authorization Scope.
+     */
+    public function setScope($scope);
+    
+    /**
+     * @return string|null Authorization Scope.
+     */
     public function getScope();
-    public function setExpires($expire = null);
+    
+    /**
+     * @param int $expire Expire time.
+     */
+    public function setExpires($expire);
+    
+    /**
+     * @return int|null Expire time, null if not set.
+     */
     public function getExpires();
-    public function setRefreshToken($token = null);
+    
+    /**
+     * @param string $token Refresh Token.
+     */
+    public function setRefreshToken($token);
+    
+    /**
+     * @return string|null The refresh token, null if not set.
+     */
     public function getRefreshToken();
 }

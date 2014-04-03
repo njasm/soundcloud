@@ -1,6 +1,6 @@
 <?php 
 
-namespace Njasm\Soundcloud\Exceptions;
+namespace Njasm\Soundcloud\Exception;
 
 /**
  * SoundCloud Exception
