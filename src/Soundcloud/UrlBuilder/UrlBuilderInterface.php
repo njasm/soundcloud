@@ -7,8 +7,24 @@ use Njasm\Soundcloud\Auth\AuthInterface;
 
 interface UrlBuilderInterface 
 {
-    public function __construct(ResourceInterface $resource, AuthInterface $auth, $subdomain = "api", $hostname = "soundcloud.com", $scheme = "https://");
-    public function setQuery(array $params = array());
-    public function getQuery();
+    /**
+     * Set http params to be used with this resource
+     * 
+     * @return void
+     */
+    public function setParams(array $params);
+    
+    /**
+     * Get params of this resource
+     * 
+     * @return array (key => value) pairs
+     */
+    public function getParams();
+    
+    /**
+     * Get full URL for the request
+     * 
+     * @return string the fully qualified url
+     */
     public function getUrl();    
 }

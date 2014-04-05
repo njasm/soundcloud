@@ -22,9 +22,10 @@ class Auth implements AuthInterface
         $this->setAuthUrlCallback($authUrlCallback);
     }
     
-    public function setClientID($clientID = null)
+    public function setClientID($clientID)
     {
-        if (is_string($clientID)) {
+        $clientID = trim($clientID);
+        if (is_string($clientID) && !empty($clientID)) {
             $this->clientID = $clientID;
         } else {
             throw new \InvalidArgumentException("No ClientID Provided.");

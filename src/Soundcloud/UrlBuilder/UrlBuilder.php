@@ -7,70 +7,49 @@ use Njasm\Soundcloud\Auth\AuthInterface;
 
 class UrlBuilder implements UrlBuilderInterface
 {
-    private $query;
+    private $params = array();
     private $scheme;
     private $hostname;
     private $subdomain;
-    private $auth;
     private $resource;
 
-    public function __construct(ResourceInterface $resource, AuthInterface $auth, $subdomain = "api", $hostname = "soundcloud.com", $scheme = "https://")
+    public function __construct(ResourceInterface $resource, $subdomain = "api", $hostname = "soundcloud.com", $scheme = "https://")
     {
         $this->resource = $resource;
-        $this->auth = $auth;
         $this->scheme = $scheme;
         $this->subdomain = $subdomain;
         $this->hostname = $hostname;
-        
-        $this->setQuery($this->resource->getParams());
+        $this->setParams($this->resource->getParams());
     }
     
-    
-    public function getQuery()
+    public function getParams()
     {
-        return $this->query;
+        return $this->params;
     }
     
-    public function setQuery(array $params = array())
+    public function setParams(array $params = array())
     {
-        $params = $this->mergeAuthParams($params);
-        $this->query = http_build_query($params);
+        $this->params = $params;
     }
     
     public function getUrl()
     {
         $url = $this->scheme . $this->subdomain . "." . $this->hostname;
-        $path = $this->resource->getPath();
+        $url .= $this->getCleanPath();
+        $verb = strtoupper($this->resource->getVerb());
         
-        if (!empty($path)) {
-            $url .= $path;
+        if ($verb == 'GET') {
+            $url .= '?' . http_build_query($this->getParams());
         }
-        if (strtolower($this->resource->getVerb()) == "get") {            
-            $url .= ($this->query) ? "?" . $this->query : '';
-        }
-        
+
         return $url;
     }
     
-    public function mergeAuthParams(array $params = array()) 
-    {
-        $return = array_merge(
-            array(
-                'client_id' => $this->auth->getClientID()
-            ),
-            $params
-        );
-        
-        return $return;
-    }
-    
-    public function getPath()
+    private function getCleanPath()
     {
         $path = $this->resource->getPath();
         if (substr($path, strlen($path) - 1) == "/") {
             $path = substr($path, 0, strlen($path) - 1);
-        } else {
-            $path .= "&client_id=" . $this->auth->getClientID();
         }
         
         return $path;

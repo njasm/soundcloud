@@ -10,7 +10,9 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
     {
         // should return https://api.soundcloud.com/me
         $auth = new Auth("ClientIDHash");
-        $builder = new UrlBuilder(Resource::get("/me"), $auth);
+        $resource = Resource::get("/me");
+        $resource->setParams(array('client_id' => $auth->getClientID()));
+        $builder = new UrlBuilder($resource);
         $this->assertEquals("https://api.soundcloud.com/me?client_id=ClientIDHash", $builder->getUrl());
     }
     
@@ -18,7 +20,14 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
     {
         // should return https://api.soundcloud.com/tracks?q=buskers&license=cc-by-sa
         $auth = new Auth("ClientIDHash");
-        $builder = new UrlBuilder(Resource::get("/tracks", array('q' => 'buskers', 'license' => 'cc-by-sa')), $auth);
+        $resource = Resource::get("/tracks");
+        $resource->setParams(array(
+            'client_id' => $auth->getClientID(),
+            'q' => 'buskers',
+            'license' => 'cc-by-sa'
+        )); 
+        
+        $builder = new UrlBuilder($resource);
         $this->assertEquals("https://api.soundcloud.com/tracks?client_id=ClientIDHash&q=buskers&license=cc-by-sa", $builder->getUrl());                
     }
     
@@ -26,27 +35,44 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
     {    
         // should return https://www.soundcloud.com/resolve
         $auth = new Auth("ClientIDHash");
-        $builder = new UrlBuilder(Resource::get("/resolve", array('url' => 'http://soundcloud.com/matas/hobnotropic')), $auth);
+        $resource = Resource::get("/resolve");
+        $resource->setParams(array(
+            'client_id' => $auth->getClientID(),
+            'url' => 'http://soundcloud.com/matas/hobnotropic'
+        ));
+        
+        $builder = new UrlBuilder($resource);
         $this->assertEquals("https://api.soundcloud.com/resolve?client_id=ClientIDHash&url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic", $builder->getUrl());          
     }
     
-    public function testSetAndGetQuery()
+    public function testSetAndGetParams()
     {
         $auth = new Auth("ClientIDHash");
-        $builder = new UrlBuilder(Resource::get("/resolve", array('q' => 'john', 'license' => 'cc-by-sa')), $auth);
-        $this->assertEquals("client_id=ClientIDHash&q=john&license=cc-by-sa", $builder->getQuery());
-        
-        $query = array(
-            'q' => 'hybrid',
+        $resource = Resource::get("/resolve", array(
+            'client_id' => $auth->getClientID(),
+            'q' => 'john',
+            'license' => 'cc-by-sa'
+        ));
+    
+        $builder = new UrlBuilder($resource);  
+        // order does not matter
+        $shoudBeArray = array(
+            'client_id' => 'ClientIDHash',
+            'q' => 'john',
+            'license' => 'cc-by-sa'
         );
-        $builder->setQuery($query);
-        $this->assertEquals("client_id=ClientIDHash&q=hybrid", $builder->getQuery());
+        
+        $this->assertEmpty(array_merge(array_diff($shoudBeArray, $builder->getParams())));
+        $builder->setParams(array('q' => 'hybrid'));
+        // order does not matter
+        $shoudBeArray = array('q' => 'hybrid');        
+        $this->assertEmpty(array_merge(array_diff($shoudBeArray, $builder->getParams())));
     }    
     
-    public function testNullSetAndGetQuery()
+    public function testNullSetAndGetParams()
     {
-        $auth = new Auth("ClientIDHash");        
+        $auth = new Auth("ClientIDHash"); 
         $builder = new UrlBuilder(Resource::get("/resolve", array()), $auth, "post", "www");
-        $this->assertEquals("client_id=ClientIDHash", $builder->getQuery());     
+        $this->assertArrayNotHasKey("client_id", $builder->getParams());     
     }       
 }
