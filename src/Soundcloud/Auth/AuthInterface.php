@@ -2,19 +2,12 @@
 
 namespace Njasm\Soundcloud\Auth;
 
-interface AuthInterface {
-    
-    /**
-     * @param string $clientID Soundcloud Client id.
-     * @param string $clientSecret Soundcloud Client secret.
-     * @param string $authUrlCallBack Authorization url callback.
-     */
-    public function __construct($clientID = null, $clientSecret = null, $authUrlCallback = null);
-    
+interface AuthInterface 
+{ 
     /**
      * @param string $clientID Soundcloud Client id.
      */
-    public function setClientID($clientID = null);
+    public function setClientID($clientID);
     
     /**
      * @return string Soundcloud Client id.
