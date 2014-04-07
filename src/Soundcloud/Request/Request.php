@@ -10,9 +10,7 @@ use Njasm\Soundcloud\Auth\AuthInterface;
 class Request implements RequestInterface 
 {
     private $resource;
-    private $auth;
     private $urlBuilder;
-    private $response;
         
     private $options = array(
         CURLOPT_RETURNTRANSFER => true,
@@ -30,7 +28,7 @@ class Request implements RequestInterface
     
     public function setOptions(array $options)
     {
-        $this->options = array_merge($this->options, $options);
+        $this->options = array_merge($options, $this->options);
         
         return $this;
     }
