@@ -35,19 +35,18 @@ class UrlBuilder implements UrlBuilderInterface
     public function getUrl()
     {
         $url = $this->scheme . $this->subdomain . "." . $this->hostname;
-        $url .= $this->getCleanPath();
+        $url .= $this->getCleanPath($this->resource->getPath());
         $verb = strtoupper($this->resource->getVerb());
         
-        if ($verb == 'GET') {
+        if ($verb == 'GET' && !empty($this->getParams())) {
             $url .= '?' . http_build_query($this->getParams());
         }
 
         return $url;
     }
     
-    private function getCleanPath()
+    private function getCleanPath($path)
     {
-        $path = $this->resource->getPath();
         if (substr($path, strlen($path) - 1) == "/") {
             $path = substr($path, 0, strlen($path) - 1);
         }

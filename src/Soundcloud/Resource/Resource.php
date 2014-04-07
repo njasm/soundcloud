@@ -55,11 +55,11 @@ class Resource implements ResourceInterface
             case 'delete':
                 $path = !empty($arguments[0]) ? $arguments[0] : null;
                 $params = isset($arguments[1]) ? $arguments[1] : array();
-                return new self($name, $path, $params);
             break;
             default:
-                throw new SoundcloudException("Resource of type: $name, not available!");
-                                
+                throw new SoundcloudException("Resource of type: $name, not available!");              
         };
+        
+        return new self($name, $path, $params);
     }
 }

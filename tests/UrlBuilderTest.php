@@ -72,7 +72,14 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
     public function testNullSetAndGetParams()
     {
         $auth = new Auth("ClientIDHash"); 
-        $builder = new UrlBuilder(Resource::get("/resolve", array()), $auth, "post", "www");
+        $builder = new UrlBuilder(Resource::get("/resolve", array()));
         $this->assertArrayNotHasKey("client_id", $builder->getParams());     
-    }       
+    }    
+    
+    public function testGetCleanPath()
+    {
+        $auth = new Auth("ClientIDHash");
+        $builder = new UrlBuilder(Resource::get("/me/"));
+        $this->assertEquals("https://api.soundcloud.com/me", $builder->getUrl());
+    }
 }
