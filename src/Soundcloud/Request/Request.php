@@ -7,11 +7,22 @@ use Njasm\Soundcloud\Resource\ResourceInterface;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 use Njasm\Soundcloud\Auth\AuthInterface;
 
+/**
+ * SoundCloud API wrapper in PHP
+ *
+ * @author      Nelson J Morais <njmorais@gmail.com>
+ * @copyright   2014 Nelson J Morais <njmorais@gmail.com>
+ * @license     http://www.opensource.org/licenses/mit-license.php MIT
+ * @link        http://github.com/njasm/soundcloud
+ * @package     Njasm\Soundcloud
+ * @version     1.1.0-BETA
+ */
+
 class Request implements RequestInterface 
 {
     private $resource;
     private $urlBuilder;
-        
+
     private $options = array(
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_SSL_VERIFYPEER => false,
@@ -64,12 +75,14 @@ class Request implements RequestInterface
             curl_setopt($ch, CURLOPT_POSTFIELDS, $this->resource->getParams());
         }
 
+        //DEBUG ONLY
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
         $response = curl_exec($ch);
         $info = curl_getinfo($ch);
         $errno = curl_errno($ch);
         $errorString = curl_error($ch);
         curl_close($ch);
-        
+
         return new Response($response, $info, $errno, $errorString);
     }    
 }
