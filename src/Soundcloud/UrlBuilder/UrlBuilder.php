@@ -7,7 +7,6 @@ use Njasm\Soundcloud\Auth\AuthInterface;
 
 class UrlBuilder implements UrlBuilderInterface
 {
-    private $params = array();
     private $scheme;
     private $hostname;
     private $subdomain;
@@ -24,12 +23,12 @@ class UrlBuilder implements UrlBuilderInterface
     
     public function getParams()
     {
-        return $this->params;
+        return $this->resource->getParams();
     }
     
     public function setParams(array $params = array())
     {
-        $this->params = $params;
+        $this->resource->setParams($params);
     }
     
     public function getUrl()
@@ -37,9 +36,10 @@ class UrlBuilder implements UrlBuilderInterface
         $url = $this->scheme . $this->subdomain . "." . $this->hostname;
         $url .= $this->getCleanPath($this->resource->getPath());
         $verb = strtoupper($this->resource->getVerb());
+        $params = $this->getParams();
         
-        if ($verb == 'GET' && !empty($this->getParams())) {
-            $url .= '?' . http_build_query($this->getParams());
+        if ($verb == 'GET' && !empty($params)) {
+            $url .= '?' . http_build_query($params);
         }
 
         return $url;
