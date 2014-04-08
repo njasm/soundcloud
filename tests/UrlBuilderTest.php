@@ -45,37 +45,6 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("https://api.soundcloud.com/resolve?client_id=ClientIDHash&url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic", $builder->getUrl());          
     }
     
-    public function testSetAndGetParams()
-    {
-        $auth = new Auth("ClientIDHash");
-        $resource = Resource::get("/resolve", array(
-            'client_id' => $auth->getClientID(),
-            'q' => 'john',
-            'license' => 'cc-by-sa'
-        ));
-    
-        $builder = new UrlBuilder($resource);  
-        // order does not matter
-        $shoudBeArray = array(
-            'client_id' => 'ClientIDHash',
-            'q' => 'john',
-            'license' => 'cc-by-sa'
-        );
-        
-        $this->assertEmpty(array_merge(array_diff($shoudBeArray, $builder->getParams())));
-        $builder->setParams(array('q' => 'hybrid'));
-        // order does not matter
-        $shoudBeArray = array('q' => 'hybrid');        
-        $this->assertEmpty(array_merge(array_diff($shoudBeArray, $builder->getParams())));
-    }    
-    
-    public function testNullSetAndGetParams()
-    {
-        $auth = new Auth("ClientIDHash"); 
-        $builder = new UrlBuilder(Resource::get("/resolve", array()));
-        $this->assertArrayNotHasKey("client_id", $builder->getParams());     
-    }    
-    
     public function testGetCleanPath()
     {
         $auth = new Auth("ClientIDHash");

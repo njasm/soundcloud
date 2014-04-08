@@ -18,17 +18,6 @@ class UrlBuilder implements UrlBuilderInterface
         $this->scheme = $scheme;
         $this->subdomain = $subdomain;
         $this->hostname = $hostname;
-        $this->setParams($this->resource->getParams());
-    }
-    
-    public function getParams()
-    {
-        return $this->resource->getParams();
-    }
-    
-    public function setParams(array $params = array())
-    {
-        $this->resource->setParams($params);
     }
     
     public function getUrl()
@@ -36,7 +25,7 @@ class UrlBuilder implements UrlBuilderInterface
         $url = $this->scheme . $this->subdomain . "." . $this->hostname;
         $url .= $this->getCleanPath($this->resource->getPath());
         $verb = strtoupper($this->resource->getVerb());
-        $params = $this->getParams();
+        $params = $this->resource->getParams();
         
         if ($verb == 'GET' && !empty($params)) {
             $url .= '?' . http_build_query($params);

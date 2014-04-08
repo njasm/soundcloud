@@ -61,7 +61,7 @@ class Request implements RequestInterface
         curl_setopt($ch, CURLOPT_URL, $this->urlBuilder->getUrl());
         
         if ($verb != 'GET') {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $this->urlBuilder->getParams());
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $this->resource->getParams());
         }
 
         $response = curl_exec($ch);
