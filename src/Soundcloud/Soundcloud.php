@@ -5,6 +5,7 @@ namespace Njasm\Soundcloud;
 use Njasm\Soundcloud\Resource\Resource;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Request\Request;
+use Njasm\Soundcloud\Request\RequestInterface;
 use Njasm\Soundcloud\Auth\Auth;
 use Njasm\Soundcloud\Exception\SoundcloudException;
 
@@ -15,16 +16,15 @@ use Njasm\Soundcloud\Exception\SoundcloudException;
  * @copyright   2014 Nelson J Morais <njmorais@gmail.com>
  * @license     http://www.opensource.org/licenses/mit-license.php MIT
  * @link        http://github.com/njasm/soundcloud
- * @category    Services
- * @package     Soundcloud
- * @version     2.0.0-ALPHA
+ * @package     Njasm\Soundcloud
+ * @version     1.1.0-BETA
  */
+
 Class Soundcloud {
     
     private $resource;
     private $request;
     private $response;
-    private $urlBuilder;
     private $auth;
     
     private $responseFormat;
@@ -35,39 +35,44 @@ Class Soundcloud {
     }
     
     /**
-     * Auth Direct Methods
+     * Get ClientID for this instance
+     * 
+     * @return string  The ClientID set for this instance
      */
-    public function setAuthClientID($clientID)
-    {
-        $this->auth->setClientID($clientID);
-        return $this;
-    }
-    
     public function getAuthClientID()
     {
         return $this->auth->getClientID();
     }
     
+    /**
+     * Get the access token.
+     * 
+     * @return mixed the token, else null is returned
+     */
     public function getAuthToken()
     {
         return $this->auth->getToken();
     }
     
+    /**
+     * Sets the access token.
+     * 
+     * @return Soundcloud this object
+     */
     public function setAuthToken($token)
     {
         $this->auth->setToken($token);
         return $this;
     }
     
+    /**
+     * Get the token scope.
+     * 
+     * @return mixed the scope for this access token, null if empty
+     */
     public function getAuthScope()
     {
         return $this->auth->getScope();
-    }
-    
-    public function setAuthScope($scope)
-    {
-        $this->auth->setScope($scope);
-        return $this;
     }
     
     /**
@@ -173,7 +178,7 @@ Class Soundcloud {
      * @param string $username user username
      * @param string $password user password
      */
-    public function getTokenViaUserCredentials($username, $password) 
+    public function userCredentialsFlow($username, $password) 
     {
         $username = trim($username);
         $password = trim($password);
@@ -186,42 +191,82 @@ Class Soundcloud {
         
         $params = $this->mergeAuthParams($params, true);
         $this->resource = Resource::post("/oauth2/token", $params);
-        $this->urlBuilder = new UrlBuilder($this->resource);
-        $this->request = new Request($this->resource, $this->urlBuilder);
+        $this->request = new Request($this->resource, new UrlBuilder($this->resource));
+        $this->setResponseFormat($this->request);
         $this->response = $this->request->exec();
+        $response = json_decode($this->response->getBody());
         
+        if (isset($response->access_token)) {
+            $this->setAuthToken($response->access_token);
+        }
         return $this->response;
     }
     
+    /**
+     * Executes the request against soundcloud api.
+     * 
+     * @param array $params
+     * @return Response
+     */
+    public function request(array $params = array())
+    {
+        $this->request = new Request($this->resource, new UrlBuilder($this->resource));
+        $this->setResponseFormat($this->request);
+        
+        if (!empty($params)) {
+            $this->request->setOptions($params);
+        }
+        
+        $this->response =$this->request->exec();
+        
+        return $this->response->getBody();
+    }
+    
+    /**
+     * Get Last Curl Response object.
+     * 
+     * @return mixed The Response Object, null if no request was yet made
+     */
+    public function getCurlResponse()
+    {
+        return (isset($this->response)) ? $this->response : null;
+    }
+    
+    /**
+     * Sets the Accept Header to application/xml.
+     * 
+     * @return Soundcloud
+     */
     public function asXml()
     {
         $this->responseFormat = "xml";
         return $this;
     }
     
+    /**
+     * Sets the Accept Header to application/json.
+     * 
+     * @return Soundcloud
+     */
     public function asJson()
     {
         $this->responseFormat = "json";
         return $this;
-    }
+    }    
     
-    public function request(array $params = array())
+    /**
+     * Set response format for Request.
+     * 
+     * @return void
+     */
+    private function setResponseFormat(RequestInterface $request)
     {
-        $this->urlBuilder = new UrlBuilder($this->resource);
-        $this->request = new Request($this->resource, $this->urlBuilder);
-        if (!empty($params)) {
-            $this->request->setOptions($params);
-        }
-        
-        // set response format
         if ($this->responseFormat == "xml") {
-            $this->request->asXml();
-        } else if ($this->responseFormat == "json") {
-            $this->request->asJson();
-        }
-        
-        return $this->request->exec();
-    }  
+            $request->asXml();
+        } else {
+            $request->asJson();
+        }        
+    }
     
     /**
      * Manage auth values for requests.
@@ -250,5 +295,4 @@ Class Soundcloud {
         
         return $params;
     }
-    
 }

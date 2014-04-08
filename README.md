@@ -3,14 +3,18 @@
 This DEV branch is still under development.
 Design decisions are still being made, so have fun with the master branch TAG 1.0.0. :)
 
+
+## Implemented features 
+
+* Authentication with OAuth2 (and User Credentials flow)
+* Access to all GET, PUT, POST and DELETE Resources
+
 ## Examples
 ### Authentication with user credentials flow.
 ```php
 $facade = new Soundcloud($clientID, $clientSecret);
-$response = $facade->getTokenViaUserCredentials($username, $password);
-$jsonObj = json_decode($response->getBody());
-$facade->setAuthToken($jsonObj->access_token);
-
+$facade->userCredentialsFlow($username, $password);
 $response = $facade->get('/me')->request();
-echo $response->getBody();
+// if you want the CURL response object
+$curlResponse = $facade->getCurlResponse();
 ```
