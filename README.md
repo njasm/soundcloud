@@ -11,6 +11,17 @@ If you want a stable version, have fun with the master TAG 0.0.1 :)
 * Access to all GET, PUT, POST and DELETE Resources
 
 ### Examples
+#### Add params to resource.
+```php
+$facade = new Soundcloud($clientID, $clientSecret);
+// like this
+$response = $facade->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species'))->request();
+// or
+$facade->get('/resolve');
+$facade->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
+$response = $facade->request();
+```
+
 #### Authentication with user credentials flow.
 ```php
 $facade = new Soundcloud($clientID, $clientSecret);
