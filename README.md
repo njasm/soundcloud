@@ -15,7 +15,9 @@ If you want a stable version, have fun with the master TAG 0.0.1 :)
 ```php
 $facade = new Soundcloud($clientID, $clientSecret);
 // like this
-$response = $facade->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species'))->request();
+$response = $facade->get('/resolve', array(
+    'url' => 'http://www.soundcloud.com/hybrid-species'
+))->request();
 // or
 $facade->get('/resolve');
 $facade->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
