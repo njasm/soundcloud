@@ -67,6 +67,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("1958699183", $value);
     }
     
+    public function testNullGetHeader()
+    {
+        $this->assertNull($this->responseObj->getHeader("Non-Existent-Head-Param"));
+    }
+    
     public function testHasHeader()
     {
         $this->assertTrue($this->responseObj->hasHeader("X-Varnish"));
