@@ -43,12 +43,12 @@ class Response implements ResponseInterface
         $headers = explode("\n", $header);
         foreach ($headers as $head) {
             if (substr($head, 0, 4) == "HTTP") {
-                list($this->httpVersion, $this->httpCode) = explode(" ", $head, 2);
-                list($this->httpCode, $this->httpCodeString) = explode(" ", $this->httpCode);
+                @list($this->httpVersion, $this->httpCode) = explode(" ", $head, 2);
+                @list($this->httpCode, $this->httpCodeString) = explode(" ", $this->httpCode);
                 continue;
             }
             
-            list($key, $value) = explode(": ", $head, 2);
+            @list($key, $value) = explode(": ", $head, 2);
             $this->headers[trim($key)] = trim($value);
         }
     }
