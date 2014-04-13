@@ -41,7 +41,7 @@ class Response implements ResponseInterface
     
     private function buildHeaderArray($header)
     {
-        $headers = explode("\r", $header);
+        $headers = explode("\n", $header);
         foreach ($headers as $head) {
             if (substr($head, 0, 4) == "HTTP") {
                 list($this->httpVersion, $this->httpCode) = explode(" ", $head, 2);
