@@ -3,3 +3,4 @@ composer.lock
 /example
 /vendor
 /report
+/build
