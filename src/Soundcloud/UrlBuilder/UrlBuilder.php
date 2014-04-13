@@ -13,7 +13,6 @@ use Njasm\Soundcloud\Auth\AuthInterface;
  * @license     http://www.opensource.org/licenses/mit-license.php MIT
  * @link        http://github.com/njasm/soundcloud
  * @package     Njasm\Soundcloud
- * @version     1.1.0-BETA
  */
 
 class UrlBuilder implements UrlBuilderInterface

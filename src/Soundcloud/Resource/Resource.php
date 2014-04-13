@@ -12,7 +12,6 @@ use Njasm\Soundcloud\Exception\SoundcloudException;
  * @license     http://www.opensource.org/licenses/mit-license.php MIT
  * @link        http://github.com/njasm/soundcloud
  * @package     Njasm\Soundcloud
- * @version     1.1.0-BETA
  */
 
 class Resource implements ResourceInterface 
