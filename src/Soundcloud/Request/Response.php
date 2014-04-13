@@ -33,7 +33,7 @@ class Response implements ResponseInterface
         $this->errno = $errno;
         $this->errorString = $errorString;
         
-        list($header, $body) = explode("\r\n\r\n", str_replace("HTTP/1.1 100 Continue\r\n\r\n", "", $response), 2);
+        @list($header, $body) = explode("\r\n\r\n", str_replace("HTTP/1.1 100 Continue\r\n\r\n", "", $response), 2);
         $this->body = $body;
         $this->buildHeaderArray($header);
     }
