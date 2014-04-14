@@ -1,6 +1,7 @@
 <?php
 
 use Njasm\Soundcloud\Resource\Resource;
+use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Auth\Auth;
 
 Class SoundcloudTest extends \PHPUnit_Framework_TestCase
@@ -102,6 +103,55 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $facade = $this->soundcloud->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
     }   
     
+    public function testAsXmlAsJson()
+    {
+        $property = $this->reflectProperty("Njasm\\SoundCloud\\Soundcloud", "responseFormat");
+        $this->soundcloud->asJson();
+        $this->assertEquals("json", $property->getValue($this->soundcloud));
+        $this->soundcloud->asXml();
+        $this->assertEquals("xml", $property->getValue($this->soundcloud));
+    }
+    
+    public function testMergeAuthParams()
+    {
+        $method = $this->reflectMethod("Njasm\\Soundcloud\\Soundcloud", "mergeAuthParams");
+        $params = $method->invoke($this->soundcloud, array(), false);
+        $this->assertArrayHasKey("client_id", $params);
+        
+        $params = $method->invoke($this->soundcloud, array(), true);
+        $this->assertArrayHasKey("client_secret", $params);
+        
+        $this->soundcloud->setAuthToken("Test-Token");
+        $params = $method->invoke($this->soundcloud, array(), false);
+        $this->assertArrayHasKey("oauth_token", $params);
+        $this->assertArrayNotHasKey("client_id", $params);
+    }
+    
+    /**
+     * Code Coverage
+     */
+    public function testSetResponseFormat()
+    {
+        $reqMock = $this->getMock("Njasm\\Soundcloud\\Request\\Request", 
+            array('asXml', 'asJson'), 
+            array(Resource::get("/resolve"), new UrlBuilder(Resource::get("/resolve")))
+        );
+        $reqMock->expects($this->once())->method('asXml');
+        $reqMock->expects($this->once())->method('asJson');
+        
+        $method = $this->reflectMethod("Njasm\\Soundcloud\\Soundcloud", "setResponseFormat");
+
+        $this->soundcloud->asXml();
+        $method->invoke($this->soundcloud, $reqMock);
+        $this->soundcloud->asJson();
+        $method->invoke($this->soundcloud, $reqMock);
+    }
+    
+    public function testGetCurlResponse()
+    {
+        $this->assertNull($this->soundcloud->getCurlResponse());
+    }
+    
     /**
      * Helper method for properties reflection testing.
      */
@@ -111,6 +161,14 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $property->setAccessible(true);
         
         return $property;
+    }
+    
+    private function reflectMethod($class, $method)
+    {
+        $method = new ReflectionMethod($class, $method);
+        $method->setAccessible(true);
+        
+        return $method;
     }
 }
 

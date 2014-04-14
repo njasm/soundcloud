@@ -11,8 +11,8 @@ If you want a stable version, have fun with the master TAG 0.0.1 :)
 * User Credentials Flow Authentication
 * Access to all GET, PUT, POST and DELETE Resources
 
-### Examples
-#### Get Authorization Url.
+#### Examples
+##### Get Authorization Url.
 ```php
 $facade = new Soundcloud($clientID, $clientSecret, $callbackUri);
 $url = $facade->getAuthUrl();
@@ -23,25 +23,31 @@ $url = $facade->getAuthUrl(array(
     'state' => 'my_app_state_code'
 ));
 ```
-#### Add params to resource.
+##### Add params to resource.
 ```php
 $facade = new Soundcloud($clientID, $clientSecret);
-// like this
 $response = $facade->get('/resolve', array(
     'url' => 'http://www.soundcloud.com/hybrid-species'
 ))->request();
-// or
+```
+or
+```php
 $facade->get('/resolve');
 $facade->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
 $response = $facade->request();
 ```
 
-#### Authentication with user credentials flow.
+##### Authentication with user credentials flow.
 ```php
 $facade = new Soundcloud($clientID, $clientSecret);
-$facade->userCredentialsFlow($username, $password);
-// response body string
-$response = $facade->get('/me')->request();
-// if you want the CURL response object
+// if an access token is returned from soundcloud, it will be automatically
+// set for future requests. body response will allways be returned to the client.
+$response = $facade->userCredentialsFlow($username, $password);
+$facade->get('/me')->request();
+```
+
+##### Get CURL last response object
+```php
+// if you want the CURL response object from last CURL request.
 $curlResponse = $facade->getCurlResponse();
 ```
