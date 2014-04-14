@@ -38,7 +38,7 @@ class Request implements RequestInterface
     
     public function setOptions(array $options)
     {
-        $this->options = array_merge($options, $this->options);
+        $this->options = $options + $this->options;
         
         return $this;
     }
