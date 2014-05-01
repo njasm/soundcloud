@@ -160,7 +160,7 @@ Class Soundcloud {
             'client_id' => $this->auth->getClientID(),
             'scope' => 'non-expiring',
             'display' => 'popup',
-            'response_type' => 'token_and_code',
+            'response_type' => 'code',
             'redirect_uri' => $this->auth->getAuthUrlCallback(),
             'state' => ''
         );

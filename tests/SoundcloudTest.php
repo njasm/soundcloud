@@ -89,7 +89,7 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
     
     public function testGetAuthUrl()
     {
-        $expected = "https://www.soundcloud.com/connect?client_id=ClientIDHash&scope=non-expiring&display=popup&response_type=token_and_code&redirect_uri=http%3A%2F%2Fexample.com%2Fsoundcloud&state=";
+        $expected = "https://www.soundcloud.com/connect?client_id=ClientIDHash&scope=non-expiring&display=popup&response_type=code&redirect_uri=http%3A%2F%2Fexample.com%2Fsoundcloud&state=";
         $this->assertEquals($expected, $this->soundcloud->getAuthUrl());
     }
     
@@ -130,6 +130,37 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
     /**
      * Code Coverage
      */
+    public function testRequest()
+    {
+           
+        // built-in webserver for code coverage
+        $command = sprintf(
+            'php -S %s:%d -t %s >/dev/null 2>&1 & echo $!',
+            'localhost',
+            8888,
+            '~/'
+        );
+
+        // Execute the command and store the process ID
+        $output = array();
+        exec($command, $output);
+        $pid = (int) $output[0];
+
+        echo sprintf(
+            'Web server started on %s:%d with PID %d',
+            'localhost',
+            8888,
+            $pid
+        ) . PHP_EOL;
+       
+        // start test
+        $this->soundcloud->get('/resolve');
+
+        // kill webserver in the end
+        $output = array();
+        exec('kill -s TERM ' . $pid);
+    }
+    
     public function testSetResponseFormat()
     {
         $reqMock = $this->getMock("Njasm\\Soundcloud\\Request\\Request", 
