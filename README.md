@@ -4,7 +4,6 @@ This is still under development.
 Design decisions are still being made, and still needs further testing.
 If you want a stable version, have fun with the master TAG 0.0.1 :)
 
-## v1.0.0-ALPHA
 ### Implemented features 
 
 * User Authorization/Authentication
@@ -23,6 +22,7 @@ $url = $facade->getAuthUrl(array(
     'state' => 'my_app_state_code'
 ));
 ```
+
 ##### Add params to resource.
 ```php
 $facade = new Soundcloud($clientID, $clientSecret);
