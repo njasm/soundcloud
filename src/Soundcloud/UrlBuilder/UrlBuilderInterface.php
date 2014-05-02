@@ -2,9 +2,6 @@
 
 namespace Njasm\Soundcloud\UrlBuilder;
 
-use Njasm\Soundcloud\Resource\ResourceInterface;
-use Njasm\Soundcloud\Auth\AuthInterface;
-
 interface UrlBuilderInterface 
 {
     /**
