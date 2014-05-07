@@ -3,6 +3,7 @@
 use Njasm\Soundcloud\Resource\Resource;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Auth\Auth;
+use Njasm\Soundcloud\Container\Container;
 
 Class SoundcloudTest extends \PHPUnit_Framework_TestCase
 {
@@ -135,7 +136,7 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
     {
         $reqMock = $this->getMock("Njasm\\Soundcloud\\Request\\Request", 
             array('asXml', 'asJson'), 
-            array(Resource::get("/resolve"), new UrlBuilder(Resource::get("/resolve")))
+            array(Resource::get("/resolve"), new UrlBuilder(Resource::get("/resolve")), new Container())
         );
         $reqMock->expects($this->once())->method('asXml');
         $reqMock->expects($this->once())->method('asJson');
