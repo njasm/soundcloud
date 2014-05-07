@@ -3,6 +3,7 @@
 use Njasm\Soundcloud\Request\Request;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Resource\Resource;
+use Njasm\Soundcloud\Container\Container;
 
 
 class RequestTest extends \PHPUnit_Framework_TestCase 
@@ -15,7 +16,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->resource = Resource::get("/resolve");
         $this->urlBuilder = new UrlBuilder($this->resource);
-        $this->request = new Request($this->resource, $this->urlBuilder);
+        $this->request = new Request($this->resource, $this->urlBuilder, new Container());
     }
     
     public function testSetOptions()

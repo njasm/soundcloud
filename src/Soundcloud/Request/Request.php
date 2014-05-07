@@ -2,10 +2,10 @@
 
 namespace Njasm\Soundcloud\Request;
 
-use Njasm\Soundcloud\Request\Response;
 use Njasm\Soundcloud\Resource\ResourceInterface;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 use Njasm\Soundcloud\Auth\AuthInterface;
+use Njasm\Soundcloud\Container\ContainerInterface;
 
 /**
  * SoundCloud API wrapper in PHP
@@ -21,6 +21,7 @@ class Request implements RequestInterface
 {
     private $resource;
     private $urlBuilder;
+    private $container;
 
     private $options = array(
         CURLOPT_RETURNTRANSFER => true,
@@ -30,10 +31,11 @@ class Request implements RequestInterface
 
     private $responseFormat = 'application/json';
     
-    public function __construct(ResourceInterface $resource, UrlBuilderInterface $urlBuilder)
+    public function __construct(ResourceInterface $resource, UrlBuilderInterface $urlBuilder, ContainerInterface $container)
     {
         $this->resource = $resource;
         $this->urlBuilder = $urlBuilder;
+        $this->container = $container;
     }
     
     public function setOptions(array $options)
@@ -82,6 +84,6 @@ class Request implements RequestInterface
         $errorString = curl_error($ch);
         curl_close($ch);
 
-        return new Response($response, $info, $errno, $errorString);
+        return $this->container->make('ResponseInterface', array($response, $info, $errno, $errorString));
     }    
 }
