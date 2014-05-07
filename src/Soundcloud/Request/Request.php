@@ -76,8 +76,6 @@ class Request implements RequestInterface
             curl_setopt($ch, CURLOPT_POSTFIELDS, $this->resource->getParams());
         }
 
-        //DEBUG ONLY
-        curl_setopt($ch, CURLOPT_VERBOSE, 1);
         $response = curl_exec($ch);
         $info = curl_getinfo($ch);
         $errno = curl_errno($ch);

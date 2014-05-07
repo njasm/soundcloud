@@ -213,7 +213,7 @@ Class Soundcloud {
     public function request(array $params = array())
     {
         $urlBuilder = $this->container->make('UrlBuilderInterface', array($this->resource));
-        $this->request = $this->container->make('RequestInterface', array($this->resource, $urlBuilder));
+        $this->request = $this->container->make('RequestInterface', array($this->resource, $urlBuilder, $this->container));
         $this->setResponseFormat($this->request);
         
         if (!empty($params)) {
