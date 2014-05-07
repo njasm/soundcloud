@@ -42,7 +42,7 @@ class Container implements ContainerInterface
     
     public function has($interface) 
     {
-        return $this->map[$interface] ? true : false;  
+        return isset($this->map[$interface]) ? true : false;  
     }
     
     private function validate($interface) 
