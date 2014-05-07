@@ -8,6 +8,7 @@ use Njasm\Soundcloud\Request\Request;
 use Njasm\Soundcloud\Request\RequestInterface;
 use Njasm\Soundcloud\Auth\Auth;
 use Njasm\Soundcloud\Exception\SoundcloudException;
+use Njasm\Soundcloud\Container\Container;
 
 /**
  * SoundCloud API wrapper in PHP
@@ -25,12 +26,14 @@ Class Soundcloud {
     private $request;
     private $response;
     private $auth;
+    private $container;
     
     private $responseFormat;
 
     public function __construct($clientID = null, $clientSecret = null, $authCallbackUri = null)
     {
-        $this->auth = new Auth($clientID, $clientSecret, $authCallbackUri);
+        $this->container = new Container();
+        $this->auth = $this->container->make('AuthInterface', array($clientID, $clientSecret, $authCallbackUri));
     }
     
     /**
@@ -209,16 +212,17 @@ Class Soundcloud {
      */
     public function request(array $params = array())
     {
-        $this->request = new Request($this->resource, new UrlBuilder($this->resource));
+        $urlBuilder = $this->container->make('UrlBuilderInterface', array($this->resource));
+        $this->request = $this->container->make('RequestInterface', array($this->resource, $urlBuilder));
         $this->setResponseFormat($this->request);
         
         if (!empty($params)) {
             $this->request->setOptions($params);
         }
         
-        $this->response =$this->request->exec();
+        $this->response = $this->request->exec();
         
-        return $this->response->getBody();
+        return $this->response;
     }
     
     /**
