@@ -27,12 +27,12 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $reqContMock = $this->getMock("Njasm\\Soundcloud\\Container\\Container",
             array('make')
         );
-        $reqContMock->expects($this->once())
+        $reqContMock->expects($this->any())
             ->method('make')
             ->with($this->equalTo('ResponseInterface'))
             ->will($this->returnCallback(
                 function($arg) {
-                    return new Response("A\r\n\r\nDummy Response Body", array('url' => 'http://127.0.0.1/index.php'), 0, "No Error");
+                    return new Response("url: http://127.0.0.1/index.php\r\n\r\nDummy Response Body", array('url' => 'http://127.0.0.1/index.php'), 0, "No Error");
                 }
             ));
             
@@ -67,6 +67,8 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);
         $this->assertEquals("Dummy Response Body", $response->getBody());
+        // coverage, already tested inside Request class
+        $this->soundcloud->request(array(CURLOPT_RETURNTRANSFER => true));
     }
 
     /**
@@ -186,19 +188,19 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
     
     public function testSetResponseFormat()
     {
-//        $reqMock = $this->getMock("Njasm\\Soundcloud\\Request\\Request", 
-//            array('asXml', 'asJson'), 
-//            array(Resource::get("/resolve"), new UrlBuilder(Resource::get("/resolve")), new Container())
-//        );
-//        $reqMock->expects($this->once())->method('asXml');
-//        $reqMock->expects($this->once())->method('asJson');
-//        
-//        $method = $this->reflectMethod("Njasm\\Soundcloud\\Soundcloud", "setResponseFormat");
-//
-//        $this->soundcloud->asXml();
-//        $method->invoke($this->soundcloud, $reqMock);
-//        $this->soundcloud->asJson();
-//        $method->invoke($this->soundcloud, $reqMock);
+        $reqMock = $this->getMock("Njasm\\Soundcloud\\Request\\Request", 
+            array('asXml', 'asJson'), 
+            array(Resource::get("/resolve"), new UrlBuilder(Resource::get("/resolve")), new Container())
+        );
+        $reqMock->expects($this->once())->method('asXml');
+        $reqMock->expects($this->once())->method('asJson');
+        
+        $method = $this->reflectMethod("Njasm\\Soundcloud\\Soundcloud", "setResponseFormat");
+
+        $this->soundcloud->asXml();
+        $method->invoke($this->soundcloud, $reqMock);
+        $this->soundcloud->asJson();
+        $method->invoke($this->soundcloud, $reqMock);
     }
     
     public function testGetCurlResponse()
