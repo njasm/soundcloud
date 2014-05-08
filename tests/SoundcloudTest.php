@@ -4,6 +4,9 @@ use Njasm\Soundcloud\Resource\Resource;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Auth\Auth;
 use Njasm\Soundcloud\Container\Container;
+use Njasm\Soundcloud\Request\Request;
+use Njasm\Soundcloud\Soundcloud;
+use Njasm\Soundcloud\Request\Response;
 
 Class SoundcloudTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,29 +17,44 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $clientID = "ClientIDHash";
         $clientSecret = "ClientSecretHash";
         $uriCallback = "http://example.com/soundcloud";
-        $this->soundcloud = new \Njasm\Soundcloud\Soundcloud($clientID, $clientSecret, $uriCallback);
+        $this->soundcloud = new Soundcloud($clientID, $clientSecret, $uriCallback);
     }
     
     
     public function testRequest()
     {
-        $reqMock = $this->getMock("Njasm\\Soundcloud\\Container\\Container", 
+        // request container mock
+        $reqContMock = $this->getMock("Njasm\\Soundcloud\\Container\\Container",
             array('make')
         );
-        $reqMock->expects($this->any())
+        $reqContMock->expects($this->once())
+            ->method('make')
+            ->with($this->equalTo('ResponseInterface'))
+            ->will($this->returnCallback(
+                function($arg) {
+                    return new Response("A\r\n\r\nDummy Response Body", array('url' => 'http://127.0.0.1/index.php'), 0, "No Error");
+                }
+            ));
+            
+        // soundcloud container mock
+        $contMock = $this->getMock("Njasm\\Soundcloud\\Container\\Container", 
+            array('make')
+        );
+        $contMock->expects($this->any())
             ->method('make')
             ->with($this->logicalOr(
-                 $this->equalTo('UrlBuilderInterface'), 
-                 $this->equalTo('RequestInterface')))
+                $this->equalTo('UrlBuilderInterface'), 
+                $this->equalTo('RequestInterface')
+                ))
             ->will($this->returnCallback(
-               function($arg) {
+               function($arg) use (&$reqContMock) {             
                     if ($arg == 'UrlBuilderInterface') {
                         return new UrlBuilder(Resource::get('/index.php'), "127", "0.0.1", "http://");
                     } else if ($arg == 'RequestInterface') {
-                        return new Njasm\Soundcloud\Request\Request(
+                        return new Request(
                             Resource::get('/index.php'),
                             new UrlBuilder(Resource::get('/index.php'), "127", "0.0.1", "http://"),
-                            new Container()
+                            $reqContMock
                         );
                     }
                }
@@ -44,11 +62,11 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
                 
         $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "container");
         $property->setAccessible(TRUE);
-        $property->setValue($this->soundcloud, $reqMock);
+        $property->setValue($this->soundcloud, $contMock);
         $response = $this->soundcloud->request();
-        
+
         $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);
-        var_dump($response);
+        $this->assertEquals("Dummy Response Body", $response->getBody());
     }
 
     /**
