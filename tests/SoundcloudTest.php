@@ -49,11 +49,11 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(
                function($arg) use (&$reqContMock) {             
                     if ($arg == 'UrlBuilderInterface') {
-                        return new UrlBuilder(Resource::get('/index.php'), "127", "0.0.1", "http://");
+                        return new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://");
                     } else if ($arg == 'RequestInterface') {
                         return new Request(
-                            Resource::get('/index.php'),
-                            new UrlBuilder(Resource::get('/index.php'), "127", "0.0.1", "http://"),
+                            new Resource('get', '/index.php'),
+                            new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://"),
                             $reqContMock
                         );
                     }
@@ -190,7 +190,7 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
     {
         $reqMock = $this->getMock("Njasm\\Soundcloud\\Request\\Request", 
             array('asXml', 'asJson'), 
-            array(Resource::get("/resolve"), new UrlBuilder(Resource::get("/resolve")), new Factory())
+            array(new Resource('get', '/resolve'), new UrlBuilder(new Resource('get', '/resolve')), new Factory())
         );
         $reqMock->expects($this->once())->method('asXml');
         $reqMock->expects($this->once())->method('asJson');

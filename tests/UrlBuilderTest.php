@@ -10,7 +10,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
     {
         // should return https://api.soundcloud.com/me
         $auth = new Auth("ClientIDHash");
-        $resource = Resource::get("/me");
+        $resource = new Resource('get', '/me');
         $resource->setParams(array('client_id' => $auth->getClientID()));
         $builder = new UrlBuilder($resource);
         $this->assertEquals("https://api.soundcloud.com/me?client_id=ClientIDHash", $builder->getUrl());
@@ -20,7 +20,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
     {
         // should return https://api.soundcloud.com/tracks?q=buskers&license=cc-by-sa
         $auth = new Auth("ClientIDHash");
-        $resource = Resource::get("/tracks");
+        $resource = new Resource('get', '/tracks');
         $resource->setParams(array(
             'client_id' => $auth->getClientID(),
             'q' => 'buskers',
@@ -35,7 +35,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
     {    
         // should return https://www.soundcloud.com/resolve
         $auth = new Auth("ClientIDHash");
-        $resource = Resource::get("/resolve");
+        $resource = new Resource('get', '/resolve');
         $resource->setParams(array(
             'client_id' => $auth->getClientID(),
             'url' => 'http://soundcloud.com/matas/hobnotropic'
@@ -48,7 +48,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
     public function testGetCleanPath()
     {
         $auth = new Auth("ClientIDHash");
-        $builder = new UrlBuilder(Resource::get("/me/"));
+        $builder = new UrlBuilder(new Resource('get', '/me/'));
         $this->assertEquals("https://api.soundcloud.com/me", $builder->getUrl());
     }
 }

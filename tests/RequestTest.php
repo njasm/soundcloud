@@ -14,7 +14,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        $this->resource = Resource::get("/resolve");
+        $this->resource = new Resource('get', '/resolve');
         $this->urlBuilder = new UrlBuilder($this->resource);
         $this->request = new Request($this->resource, $this->urlBuilder, new Factory());
     }
