@@ -20,8 +20,9 @@ class Resource implements ResourceInterface
     private $params = array();
     private $verb;
     
-    private function __construct($verb, $path = null, array $params = array())
+    public function __construct($verb = null, $path = null, array $params = array())
     {
+        $this->validate($verb);
         $this->verb = $verb;
         $this->params = $params;        
         
@@ -54,9 +55,9 @@ class Resource implements ResourceInterface
         return $this->verb;
     }
     
-    public static function __callStatic($name, $arguments)
+    private function validate($verb)
     {
-        switch ($name) {
+        switch (strtolower($verb)) {
             case 'get':
             case 'post':
             case 'put':
@@ -67,9 +68,7 @@ class Resource implements ResourceInterface
                 $params = isset($arguments[1]) ? $arguments[1] : array();
             break;
             default:
-                throw new SoundcloudException("Resource of type: $name, not available!");              
+                throw new SoundcloudException("Resource of type: $verb, not available!");              
         };
-        
-        return new self($name, $path, $params);
     }
 }

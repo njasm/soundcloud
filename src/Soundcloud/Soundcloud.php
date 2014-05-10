@@ -87,7 +87,7 @@ Class Soundcloud {
     public function get($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = Resource::get($path, $params);
+        $this->resource = $this->factory->make('ResourceInterface', array('get', $path, $params));
         return $this;
     }
 
@@ -101,7 +101,7 @@ Class Soundcloud {
     public function put($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);        
-        $this->resource = Resource::put($path, $params);     
+        $this->resource = $this->factory->make('ResourceInterface', array('put', $path, $params));     
         return $this;
     }
     
@@ -115,7 +115,7 @@ Class Soundcloud {
     public function post($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = Resource::post($path, $params);      
+        $this->resource = $this->factory->make('ResourceInterface', array('post', $path, $params));
         return $this;
     }
     
@@ -129,7 +129,7 @@ Class Soundcloud {
     public function delete($path = null, array $params = array())
     {
         $params = $this->mergeAuthParams($params);        
-        $this->resource = Resource::delete($path, $params);        
+        $this->resource = $this->factory->make('ResourceInterface', array('delete', $path, $params));        
         return $this;
     }   
     
@@ -169,8 +169,8 @@ Class Soundcloud {
         );
         
         $params = array_merge($defaultParams, $params);
-        $resource = Resource::get("/connect", $params);
-        $url = new UrlBuilder($resource, "www");
+        $resource = $this->factory->make('ResourceInterface', array('get', '/connect', $params));
+        $url = $this->factory->make('UrlBuilderInterface', array($resource, 'www'));
         return $url->getUrl();
     }
     
@@ -192,8 +192,10 @@ Class Soundcloud {
         );
         
         $params = $this->mergeAuthParams($params, true);
-        $this->resource = Resource::post("/oauth2/token", $params);
-        $this->request = new Request($this->resource, new UrlBuilder($this->resource));
+        $this->resource = $this->factory->make('ResourceInterface', array('post', '/oauth2/token', $params));
+        $urlBuilder = $this->factory->make('UrlBuilder', array($this->resource));
+        $this->request = $this->factory->make('RequestInterface', array($this->resource, $urlBuilder));
+        
         $this->setResponseFormat($this->request);
         $this->response = $this->request->exec();
         $response = json_decode($this->response->getBody());

@@ -1,16 +1,21 @@
 <?php
 
-use Njasm\Soundcloud\Resource\Resource;
-
 class ResourceTest extends \PHPUnit_Framework_TestCase 
 {
+    private $factory;
+    
+    public function setUp()
+    {
+        $this->factory = new \Njasm\Soundcloud\Factory\Factory();
+    }
+    
     public function testException()
     {
         $this->setExpectedException(
             'Njasm\Soundcloud\Exception\SoundcloudException',
             "Path cannot be other then a string type and should start with a '/' (Slash)."
         );
-        Resource::get();
+        $this->factory->make('ResourceInterface', array('get'));
     }
     
     public function testResourceOfTypeNotAvailableException()
@@ -19,33 +24,33 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
             'Njasm\Soundcloud\Exception\SoundcloudException',
             "Resource of type: head, not available!"
         );
-        Resource::head();
+        $this->factory->make('ResourceInterface', array('head'));
     }
     
     public function testGetVerb()
     {
-        $resource = Resource::get("/me");
+        $resource = $this->factory->make('ResourceInterface', array('get', '/me'));
         $this->assertEquals("get", $resource->getVerb());
 
-        $resource = Resource::post("/me");
+        $resource = $this->factory->make('ResourceInterface', array('post', '/me'));
         $this->assertEquals("post", $resource->getVerb());
         
-        $resource = Resource::put("/me");
+        $resource = $this->factory->make('ResourceInterface', array('put', '/me'));
         $this->assertEquals("put", $resource->getVerb());
         
-        $resource = Resource::patch("/me");
+        $resource = $this->factory->make('ResourceInterface', array('patch', '/me'));
         $this->assertEquals("patch", $resource->getVerb());
-        
-        $resource = Resource::delete("/me");
+
+        $resource = $this->factory->make('ResourceInterface', array('delete', '/me'));        
         $this->assertEquals("delete", $resource->getVerb());     
         
-        $resource = Resource::options("/me");
+        $resource = $this->factory->make('ResourceInterface', array('options', '/me'));
         $this->assertEquals("options", $resource->getVerb());
     }
      
     public function testSetAndGetParams()
     {
-        $resource = Resource::get("/tracks", array("q" => "Great Artist"));
+        $resource = $this->factory->make('ResourceInterface', array('get', '/track', array('q' => 'Great Artist')));        
         $this->assertArrayHasKey("q", $resource->getParams());
         $resource->setParams(array("license" => "mit"));
         $this->assertArrayHasKey("q", $resource->getParams());
@@ -54,7 +59,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
     
     public function testGetPath()
     {
-        $resource = Resource::get("/tracks");
+        $resource = $this->factory->make('ResourceInterface', array('get', '/tracks'));        
         $this->assertEquals("/tracks", $resource->getPath());
         $this->assertNotEquals("/me", $resource->getPath());
     }
