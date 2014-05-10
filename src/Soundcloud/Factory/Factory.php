@@ -1,10 +1,10 @@
 <?php
 
-namespace Njasm\Soundcloud\Container;
+namespace Njasm\Soundcloud\Factory;
 
-use Njasm\Soundcloud\Container\ContainerInterface;
+use Njasm\Soundcloud\Factory\FactoryInterface;
 
-class Container implements ContainerInterface
+class Factory implements FactoryInterface
 {
     private $map = array(
         'AuthInterface' => 'Njasm\\Soundcloud\\Auth\\Auth',
@@ -36,7 +36,7 @@ class Container implements ContainerInterface
                 return $reflected->newInstanceArgs($params);
             }
         } else {
-            throw new \InvalidArgumentException("You should register $interface in the Container first.");
+            throw new \InvalidArgumentException("You should register $interface in the Factory first.");
         }
     }
     
