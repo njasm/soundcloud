@@ -1,8 +1,8 @@
 <?php
 
-namespace Njasm\Soundcloud\Container;
+namespace Njasm\Soundcloud\Factory;
 
-interface ContainerInterface
+interface FactoryInterface
 {
     public function register($interface, $class);
     public function has($interface);

@@ -3,7 +3,7 @@
 use Njasm\Soundcloud\Resource\Resource;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Auth\Auth;
-use Njasm\Soundcloud\Container\Container;
+use Njasm\Soundcloud\Factory\Factory;
 use Njasm\Soundcloud\Request\Request;
 use Njasm\Soundcloud\Soundcloud;
 use Njasm\Soundcloud\Request\Response;
@@ -23,8 +23,8 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
     
     public function testRequest()
     {
-        // request container mock
-        $reqContMock = $this->getMock("Njasm\\Soundcloud\\Container\\Container",
+        // request Factory mock
+        $reqContMock = $this->getMock("Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
         $reqContMock->expects($this->any())
@@ -36,8 +36,8 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
                 }
             ));
             
-        // soundcloud container mock
-        $contMock = $this->getMock("Njasm\\Soundcloud\\Container\\Container", 
+        // soundcloud Factory mock
+        $contMock = $this->getMock("Njasm\\Soundcloud\\Factory\\Factory", 
             array('make')
         );
         $contMock->expects($this->any())
@@ -60,7 +60,7 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
                }
            ));
                 
-        $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "container");
+        $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "factory");
         $property->setAccessible(TRUE);
         $property->setValue($this->soundcloud, $contMock);
         $response = $this->soundcloud->request();
@@ -190,7 +190,7 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
     {
         $reqMock = $this->getMock("Njasm\\Soundcloud\\Request\\Request", 
             array('asXml', 'asJson'), 
-            array(Resource::get("/resolve"), new UrlBuilder(Resource::get("/resolve")), new Container())
+            array(Resource::get("/resolve"), new UrlBuilder(Resource::get("/resolve")), new Factory())
         );
         $reqMock->expects($this->once())->method('asXml');
         $reqMock->expects($this->once())->method('asJson');
