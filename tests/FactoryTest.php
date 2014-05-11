@@ -45,5 +45,11 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $obj = $this->factory->make('AuthInterface', array('FakeClientID'));
         $this->assertTrue($obj instanceof Njasm\Soundcloud\Auth\AuthInterface);
     }
+    
+    public function testMakeFactory()
+    {
+        $obj = $this->factory->make('FactoryInterface');
+        $this->assertInstanceOf('Njasm\\Soundcloud\\Factory\\FactoryInterface', $obj);
+    }
 
 }
