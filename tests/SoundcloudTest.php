@@ -31,7 +31,7 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('ResponseInterface'))
             ->will($this->returnCallback(
                 function($arg) {
-                    return new Response("url: http://127.0.0.1/index.php\r\n\r\n{access_token: 1234567890}", array('url' => 'http://127.0.0.1/index.php'), 0, "No Error");
+                    return new Response("url: http://127.0.0.1/index.php\r\n\r\n{\"access_token\": \"1234567890\"}", array('url' => 'http://127.0.0.1/index.php'), 0, "No Error");
                 }
         ));
             
@@ -73,7 +73,7 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $response = $this->soundcloud->userCredentialsFlow("FakeUser", "FakePassword");
 
         $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);
-        $this->assertEquals("{access_token: 1234567890}", $response->getBody());   
+        $this->assertEquals('{"access_token": "1234567890"}', $response->getBody());   
     }
     
     public function testRequest()

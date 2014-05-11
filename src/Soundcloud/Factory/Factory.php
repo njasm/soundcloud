@@ -7,11 +7,12 @@ use Njasm\Soundcloud\Factory\FactoryInterface;
 class Factory implements FactoryInterface
 {
     private $map = array(
-        'AuthInterface' => 'Njasm\\Soundcloud\\Auth\\Auth',
-        'RequestInterface' => 'Njasm\\Soundcloud\\Request\\Request',   
-        'ResponseInterface' => 'Njasm\\Soundcloud\\Request\\Response',
-        'ResourceInterface' => 'Njasm\\Soundcloud\\Resource\\Resource',
-        'UrlBuilderInterface' => 'Njasm\\Soundcloud\\UrlBuilder\\UrlBuilder'
+        'AuthInterface'         => 'Njasm\\Soundcloud\\Auth\\Auth',
+        'RequestInterface'      => 'Njasm\\Soundcloud\\Request\\Request',   
+        'ResponseInterface'     => 'Njasm\\Soundcloud\\Request\\Response',
+        'ResourceInterface'     => 'Njasm\\Soundcloud\\Resource\\Resource',
+        'UrlBuilderInterface'   => 'Njasm\\Soundcloud\\UrlBuilder\\UrlBuilder',
+        'FactoryInterface'      => 'Njasm\\Soundcloud\\Factory\\Factory'
     );
     
     public function register($interface, $class) 

@@ -4,6 +4,7 @@ use Njasm\Soundcloud\Request\Request;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Resource\Resource;
 use Njasm\Soundcloud\Factory\Factory;
+use Njasm\Soundcloud\Request\Response;
 
 
 class RequestTest extends \PHPUnit_Framework_TestCase 
@@ -41,5 +42,27 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertArrayHasKey(CURLOPT_HEADER, $this->request->getOptions());
         $this->assertArrayNotHasKey(CURLOPT_COOKIE, $this->request->getOptions());
+    }
+    
+    public function testRequest()
+    {
+        $resource = new Resource('post', '/me', array('name' => 'John Doe'));
+        $urlBuilder = new UrlBuilder($resource, '127', '0.0.1', 'http://');
+        // request Factory mock
+        $reqFactoryMock = $this->getMock("Njasm\\Soundcloud\\Factory\\Factory",
+            array('make')
+        );
+        $reqFactoryMock->expects($this->any())
+            ->method('make')
+            ->with($this->equalTo('ResponseInterface'))
+            ->will($this->returnCallback(
+                function($arg) {
+                    return new Response("url: http://127.0.0.1/index.php\r\n\r\n{\"status\": \"ok\"}", array('url' => 'http://127.0.0.1/index.php'), 0, "No Error");
+                }
+        ));        
+        $request = new Request($resource, $urlBuilder, $reqFactoryMock);
+        $response = $request->exec();
+        
+        $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);
     }
 }
