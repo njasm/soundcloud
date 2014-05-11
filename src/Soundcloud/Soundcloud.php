@@ -160,17 +160,18 @@ Class Soundcloud {
     public function getAuthUrl(array $params = array())
     {
         $defaultParams = array(
-            'client_id' => $this->auth->getClientID(),
-            'scope' => 'non-expiring',
-            'display' => 'popup',
+            'client_id'     => $this->auth->getClientID(),
+            'scope'         => 'non-expiring',
+            'display'       => 'popup',
             'response_type' => 'code',
-            'redirect_uri' => $this->auth->getAuthUrlCallback(),
-            'state' => ''
+            'redirect_uri'  => $this->auth->getAuthUrlCallback(),
+            'state'         => ''
         );
         
         $params = array_merge($defaultParams, $params);
         $resource = $this->factory->make('ResourceInterface', array('get', '/connect', $params));
         $url = $this->factory->make('UrlBuilderInterface', array($resource, 'www'));
+        
         return $url->getUrl();
     }
     
@@ -185,15 +186,15 @@ Class Soundcloud {
         $username = trim($username);
         $password = trim($password);
         $params = array(
-            'grant_type' => 'password',
-            'scope' => 'non-expiring',
-            'username' => $username,
-            'password' => $password                
+            'grant_type'    => 'password',
+            'scope'         => 'non-expiring',
+            'username'      => $username,
+            'password'      => $password                
         );
         
         $params = $this->mergeAuthParams($params, true);
         $this->resource = $this->factory->make('ResourceInterface', array('post', '/oauth2/token', $params));
-        $urlBuilder = $this->factory->make('UrlBuilder', array($this->resource));
+        $urlBuilder = $this->factory->make('UrlBuilderInterface', array($this->resource));
         $this->request = $this->factory->make('RequestInterface', array($this->resource, $urlBuilder));
         
         $this->setResponseFormat($this->request);
@@ -203,6 +204,7 @@ Class Soundcloud {
         if (isset($response->access_token)) {
             $this->setAuthToken($response->access_token);
         }
+        
         return $this->response;
     }
     
