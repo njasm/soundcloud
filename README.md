@@ -31,21 +31,30 @@ $url = $facade->getAuthUrl(array(
 
 ###### Add params to resource.
 ```php
+// argument array style
 $facade = new Soundcloud($clientID, $clientSecret);
-$response = $facade->get('/resolve', array(
+$facade->get('/resolve', array(
     'url' => 'http://www.soundcloud.com/hybrid-species'
 ));
-```
-or
-```php
+$response = $facade->request();
+
+// chaining-methods
+
+$response = $facade->get('/resolve')
+    ->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'))
+    ->request();
+
+// or not
+
 $facade->get('/resolve');
 $facade->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
+$response = $facade->request();
 ```
 
 ###### Send request
 ```php
 $facade = new Soundcloud($clientID, $clientSecret);
-$facade->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species));
+$facade->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species'));
 $response = $facade->request();
 ```
 
@@ -53,9 +62,11 @@ $response = $facade->request();
 ```php
 $facade = new Soundcloud($clientID, $clientSecret);
 // if an access token is returned from soundcloud, it will be automatically
-// set for future requests. body response will allways be returned to the client.
-$response = $facade->userCredentialsFlow($username, $password);
-$facade->get('/me')->request();
+// set for future requests by the Response object will always be returned to the client.
+$facade->userCredentialsFlow($username, $password);
+$response = $facade->get('/me')->request();
+// raw body response
+echo $response->getBody();
 ```
 
 ###### Get CURL last response object
