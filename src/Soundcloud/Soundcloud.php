@@ -176,6 +176,36 @@ Class Soundcloud {
     }
     
     /**
+     * Second step in user authorization. 
+     * Exchange code for token
+     * 
+     * @param string $code the code received to exchange for token
+     * @param array $params 
+     */
+    public function codeForToken($code, array $params = array())
+    {
+        $defaultParams = array(
+            'redirect_uri'  => $this->auth->getAuthUrlCallback(),
+            'grant_type'    => 'authorization_code',
+            'code'          => $code
+        );
+        
+        $mergedParams = array_merge($defaultParams, $params);
+        $finalParams = $this->mergeAuthParams($mergedParams, true);  
+        $this->resource = $this->factory->make('ResourceInterface', 
+            array('post', '/oauth2/token', $finalParams)
+        );
+        
+        $response = json_decode($this->request()->getBody());
+        
+        if (isset($response->access_token)) {
+            $this->setAuthToken($response->access_token);
+        }
+        
+        return $this->response;        
+    }
+    
+    /**
      * Request for a valid access token via User Credential Flow
      * 
      * @param string $username user username
@@ -183,23 +213,19 @@ Class Soundcloud {
      */
     public function userCredentialsFlow($username, $password) 
     {
-        $username = trim($username);
-        $password = trim($password);
-        $params = array(
+        $defaultParams = array(
             'grant_type'    => 'password',
             'scope'         => 'non-expiring',
             'username'      => $username,
             'password'      => $password                
         );
         
-        $params = $this->mergeAuthParams($params, true);
-        $this->resource = $this->factory->make('ResourceInterface', array('post', '/oauth2/token', $params));
-        $urlBuilder = $this->factory->make('UrlBuilderInterface', array($this->resource));
-        $this->request = $this->factory->make('RequestInterface', array($this->resource, $urlBuilder));
+        $params = $this->mergeAuthParams($defaultParams, true);
+        $this->resource = $this->factory->make('ResourceInterface', 
+            array('post', '/oauth2/token', $params)
+        );
         
-        $this->setResponseFormat($this->request);
-        $this->response = $this->request->exec();
-        $response = json_decode($this->response->getBody());
+        $response = json_decode($this->request()->getBody());
         
         if (isset($response->access_token)) {
             $this->setAuthToken($response->access_token);

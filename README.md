@@ -29,6 +29,27 @@ $url = $facade->getAuthUrl(array(
 ));
 ```
 
+###### Authentication 
+```php
+$facade = new Soundcloud($clientID, $clientSecret, $callbackUri);
+// this is your callbackUri script that will receive the $_GET['code']
+// example only, you should always sanitize your submitted params
+$code = $_GET['code'];
+$facade->codeForToken($code);
+$response = $facade->get('/me')->request();
+```
+
+###### Authentication with user credentials flow.
+```php
+$facade = new Soundcloud($clientID, $clientSecret);
+// if an access token is returned from soundcloud, it will be automatically
+// set for future requests by the Response object will always be returned to the client.
+$facade->userCredentialsFlow($username, $password);
+$response = $facade->get('/me')->request();
+// raw body response
+echo $response->getBody();
+```
+
 ###### Add params to resource.
 ```php
 // argument array style
@@ -56,17 +77,6 @@ $response = $facade->request();
 $facade = new Soundcloud($clientID, $clientSecret);
 $facade->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species'));
 $response = $facade->request();
-```
-
-###### Authentication with user credentials flow.
-```php
-$facade = new Soundcloud($clientID, $clientSecret);
-// if an access token is returned from soundcloud, it will be automatically
-// set for future requests by the Response object will always be returned to the client.
-$facade->userCredentialsFlow($username, $password);
-$response = $facade->get('/me')->request();
-// raw body response
-echo $response->getBody();
 ```
 
 ###### Get CURL last response object
