@@ -66,21 +66,21 @@ class Request implements RequestInterface
     {
         $verb = strtoupper($this->resource->getVerb());
         
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: ' . $this->responseFormat));
-        curl_setopt_array($ch, $this->options);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $verb);
-        curl_setopt($ch, CURLOPT_URL, $this->urlBuilder->getUrl());
+        $curlHandler = curl_init();
+        curl_setopt($curlHandler, CURLOPT_HTTPHEADER, array('Accept: ' . $this->responseFormat));
+        curl_setopt_array($curlHandler, $this->options);
+        curl_setopt($curlHandler, CURLOPT_CUSTOMREQUEST, $verb);
+        curl_setopt($curlHandler, CURLOPT_URL, $this->urlBuilder->getUrl());
         
         if ($verb != 'GET') {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $this->resource->getParams());
+            curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->resource->getParams());
         }
 
-        $response = curl_exec($ch);
-        $info = curl_getinfo($ch);
-        $errno = curl_errno($ch);
-        $errorString = curl_error($ch);
-        curl_close($ch);
+        $response = curl_exec($curlHandler);
+        $info = curl_getinfo($curlHandler);
+        $errno = curl_errno($curlHandler);
+        $errorString = curl_error($curlHandler);
+        curl_close($curlHandler);
 
         return $this->factory->make('ResponseInterface', array($response, $info, $errno, $errorString));
     }
