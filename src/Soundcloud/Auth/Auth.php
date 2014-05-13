@@ -81,7 +81,7 @@ class Auth implements AuthInterface
     public function hasToken()
     {
         return !empty($this->accessToken) ? true : false;
-    }        
+    }
     
     public function setScope($scope)
     {
@@ -112,6 +112,4 @@ class Auth implements AuthInterface
     {
         return isset($this->refreshToken) ? $this->refreshToken : null;
     }
-    
 }
-

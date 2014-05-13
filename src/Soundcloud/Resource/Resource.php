@@ -14,7 +14,7 @@ use Njasm\Soundcloud\Exception\SoundcloudException;
  * @package     Njasm\Soundcloud
  */
 
-class Resource implements ResourceInterface 
+class Resource implements ResourceInterface
 {
     private $path;
     private $params = array();
@@ -24,12 +24,14 @@ class Resource implements ResourceInterface
     {
         $this->validate($verb);
         $this->verb = $verb;
-        $this->params = $params;        
+        $this->params = $params;
         
         if (is_string($path) && substr($path, 0, 1) == "/") {
             $this->path = $path;
         } else {
-            throw new SoundcloudException("Path cannot be other then a string type and should start with a '/' (Slash).");
+            throw new SoundcloudException(
+                "Path cannot be other then a string type and should start with a '/' (Slash)."
+            );
         }
     }
     
@@ -62,13 +64,11 @@ class Resource implements ResourceInterface
             case 'post':
             case 'put':
             case 'patch':
-            case 'options':          
+            case 'options':
             case 'delete':
-                $path = !empty($arguments[0]) ? $arguments[0] : null;
-                $params = isset($arguments[1]) ? $arguments[1] : array();
-            break;
+                break;
             default:
-                throw new SoundcloudException("Resource of type: $verb, not available!");              
+                throw new SoundcloudException("Resource of type: $verb, not available!");
         };
     }
 }

@@ -14,8 +14,8 @@ use Njasm\Soundcloud\Exception\SoundcloudException;
  * @package     Njasm\Soundcloud
  */
 
-class Response implements ResponseInterface 
-{   
+class Response implements ResponseInterface
+{
     private $httpVersion;
     private $httpCode;
     private $httpCodeString;
@@ -98,4 +98,3 @@ class Response implements ResponseInterface
         return $this->info;
     }
 }
-
