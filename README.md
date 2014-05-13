@@ -53,23 +53,16 @@ echo $response->getBody();
 ###### Add params to resource.
 ```php
 // argument array style
-$facade = new Soundcloud($clientID, $clientSecret);
 $facade->get('/resolve', array(
     'url' => 'http://www.soundcloud.com/hybrid-species'
 ));
-$response = $facade->request();
 
 // chaining-methods
-
 $response = $facade->get('/resolve')
     ->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'))
-    ->request();
-
-// or not
 
 $facade->get('/resolve');
 $facade->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
-$response = $facade->request();
 ```
 
 ###### Send request
@@ -77,6 +70,13 @@ $response = $facade->request();
 $facade = new Soundcloud($clientID, $clientSecret);
 $facade->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species'));
 $response = $facade->request();
+```
+
+###### Get raw Response Body
+```php
+...
+$response = $facade->request();
+$response->getBody();
 ```
 
 ###### Get CURL last response object
