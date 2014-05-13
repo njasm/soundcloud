@@ -17,6 +17,8 @@ before_script:
   
 script:
   - mkdir -p build/logs
+  - vendor/bin/phpcs --standard=PSR2 src/
+  - vendor/bin/phpmd src/ xml codesize,controversial,design,naming,unusedcode
   - phpunit --coverage-clover build/logs/clover.xml
   
 after_script:

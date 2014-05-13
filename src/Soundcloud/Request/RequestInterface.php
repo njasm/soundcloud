@@ -38,5 +38,5 @@ interface RequestInterface
      * 
      * @return void
      */
-    public function asJson();    
+    public function asJson();
 }

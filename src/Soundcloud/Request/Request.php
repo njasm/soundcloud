@@ -17,7 +17,7 @@ use Njasm\Soundcloud\Factory\FactoryInterface;
  * @package     Njasm\Soundcloud
  */
 
-class Request implements RequestInterface 
+class Request implements RequestInterface
 {
     private $resource;
     private $urlBuilder;
@@ -56,10 +56,10 @@ class Request implements RequestInterface
         return $this;
     }
     
-    public function asJson() 
+    public function asJson()
     {
-       $this->responseFormat = 'application/json'; 
-       return $this;
+        $this->responseFormat = 'application/json';
+        return $this;
     }
     
     public function exec()
@@ -83,5 +83,5 @@ class Request implements RequestInterface
         curl_close($ch);
 
         return $this->factory->make('ResponseInterface', array($response, $info, $errno, $errorString));
-    }    
+    }
 }

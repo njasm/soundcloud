@@ -21,8 +21,12 @@ class UrlBuilder implements UrlBuilderInterface
     private $subdomain;
     private $resource;
 
-    public function __construct(ResourceInterface $resource, $subdomain = "api", $hostname = "soundcloud.com", $scheme = "https://")
-    {
+    public function __construct(
+        ResourceInterface $resource,
+        $subdomain = "api",
+        $hostname = "soundcloud.com",
+        $scheme = "https://"
+    ) {
         $this->resource = $resource;
         $this->scheme = $scheme;
         $this->subdomain = $subdomain;

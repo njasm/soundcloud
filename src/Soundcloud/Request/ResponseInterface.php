@@ -9,5 +9,3 @@ interface ResponseInterface
     public function hasHeader($header);
     public function getBody();
 }
-
-

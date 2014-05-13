@@ -20,8 +20,8 @@ use Njasm\Soundcloud\Factory\Factory;
  * @package     Njasm\Soundcloud
  */
 
-Class Soundcloud {
-    
+class Soundcloud
+{
     private $resource;
     private $request;
     private $response;
@@ -97,11 +97,11 @@ Class Soundcloud {
      * @param string $path
      * @param array $params
      * @return \Njasm\Soundcloud\Soundcloud Soundcloud
-     */    
+     */
     public function put($path, array $params = array())
     {
-        $params = $this->mergeAuthParams($params);        
-        $this->resource = $this->factory->make('ResourceInterface', array('put', $path, $params));     
+        $params = $this->mergeAuthParams($params);
+        $this->resource = $this->factory->make('ResourceInterface', array('put', $path, $params));
         return $this;
     }
     
@@ -111,7 +111,7 @@ Class Soundcloud {
      * @param string $path
      * @param array $params
      * @return \Njasm\Soundcloud\Soundcloud Soundcloud
-     */    
+     */
     public function post($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
@@ -128,10 +128,10 @@ Class Soundcloud {
      */
     public function delete($path = null, array $params = array())
     {
-        $params = $this->mergeAuthParams($params);        
-        $this->resource = $this->factory->make('ResourceInterface', array('delete', $path, $params));        
+        $params = $this->mergeAuthParams($params);
+        $this->resource = $this->factory->make('ResourceInterface', array('delete', $path, $params));
         return $this;
-    }   
+    }
     
     /**
      * Sets resource params.
@@ -144,7 +144,7 @@ Class Soundcloud {
     {
         if (is_object($this->resource)) {
             $this->resource->setParams($params);
-        } else if (!isset($this->resource)){
+        } elseif (!isset($this->resource)) {
             throw new SoundcloudException("No Resource found. you must call a http verb method before " . __METHOD__);
         }
         
@@ -191,10 +191,8 @@ Class Soundcloud {
         );
         
         $mergedParams = array_merge($defaultParams, $params);
-        $finalParams = $this->mergeAuthParams($mergedParams, true);  
-        $this->resource = $this->factory->make('ResourceInterface', 
-            array('post', '/oauth2/token', $finalParams)
-        );
+        $finalParams = $this->mergeAuthParams($mergedParams, true);
+        $this->resource = $this->factory->make('ResourceInterface', array('post', '/oauth2/token', $finalParams));
         
         $response = json_decode($this->request()->getBody());
         
@@ -202,7 +200,7 @@ Class Soundcloud {
             $this->setAuthToken($response->access_token);
         }
         
-        return $this->response;        
+        return $this->response;
     }
     
     /**
@@ -211,19 +209,17 @@ Class Soundcloud {
      * @param string $username user username
      * @param string $password user password
      */
-    public function userCredentialsFlow($username, $password) 
+    public function userCredentialsFlow($username, $password)
     {
         $defaultParams = array(
             'grant_type'    => 'password',
             'scope'         => 'non-expiring',
             'username'      => $username,
-            'password'      => $password                
+            'password'      => $password
         );
         
         $params = $this->mergeAuthParams($defaultParams, true);
-        $this->resource = $this->factory->make('ResourceInterface', 
-            array('post', '/oauth2/token', $params)
-        );
+        $this->resource = $this->factory->make('ResourceInterface', array('post', '/oauth2/token', $params));
         
         $response = json_decode($this->request()->getBody());
         
@@ -285,7 +281,7 @@ Class Soundcloud {
     {
         $this->responseFormat = "json";
         return $this;
-    }    
+    }
     
     /**
      * Set response format for Request.
@@ -298,7 +294,7 @@ Class Soundcloud {
             $request->asXml();
         } else {
             $request->asJson();
-        }        
+        }
     }
     
     /**
@@ -309,7 +305,7 @@ Class Soundcloud {
      * @return array
      */
     private function mergeAuthParams(array $params = array(), $includeClientSecret = false)
-    {     
+    {
         $token = $this->auth->getToken();
         if ($token) {
             $params = array_merge($params, array('oauth_token' => $token));

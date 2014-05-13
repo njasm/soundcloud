@@ -8,14 +8,14 @@ class Factory implements FactoryInterface
 {
     private $map = array(
         'AuthInterface'         => 'Njasm\\Soundcloud\\Auth\\Auth',
-        'RequestInterface'      => 'Njasm\\Soundcloud\\Request\\Request',   
+        'RequestInterface'      => 'Njasm\\Soundcloud\\Request\\Request',
         'ResponseInterface'     => 'Njasm\\Soundcloud\\Request\\Response',
         'ResourceInterface'     => 'Njasm\\Soundcloud\\Resource\\Resource',
         'UrlBuilderInterface'   => 'Njasm\\Soundcloud\\UrlBuilder\\UrlBuilder',
         'FactoryInterface'      => 'Njasm\\Soundcloud\\Factory\\Factory'
     );
     
-    public function register($interface, $class) 
+    public function register($interface, $class)
     {
         $this->validate($interface);
         $this->map[$interface] = $class;
@@ -41,15 +41,15 @@ class Factory implements FactoryInterface
         }
     }
     
-    public function has($interface) 
+    public function has($interface)
     {
-        return isset($this->map[$interface]) ? true : false;  
+        return isset($this->map[$interface]) ? true : false;
     }
     
-    private function validate($interface) 
+    private function validate($interface)
     {
         if (empty($interface)) {
-            throw new \InvalidArgumentException("Invalid interface requested");            
+            throw new \InvalidArgumentException("Invalid interface requested");
         }
     }
 }

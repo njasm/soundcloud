@@ -1,7 +1,7 @@
 <?php
 namespace Njasm\Soundcloud\Resource;
 
-interface ResourceInterface 
+interface ResourceInterface
 {
     /**
      * Get resource path
@@ -32,4 +32,3 @@ interface ResourceInterface
      */
     public function getVerb();
 }
-

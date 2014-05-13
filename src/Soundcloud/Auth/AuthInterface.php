@@ -2,8 +2,8 @@
 
 namespace Njasm\Soundcloud\Auth;
 
-interface AuthInterface 
-{ 
+interface AuthInterface
+{
     /**
      * @param string $clientID Soundcloud Client id.
      */
