@@ -354,7 +354,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
      */
     private function reflectProperty($class, $property)
     {
-        $property = new ReflectionProperty($class, $property);
+        $property = new \ReflectionProperty($class, $property);
         $property->setAccessible(true);
         
         return $property;
@@ -362,7 +362,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
     
     private function reflectMethod($class, $method)
     {
-        $method = new ReflectionMethod($class, $method);
+        $method = new \ReflectionMethod($class, $method);
         $method->setAccessible(true);
         
         return $method;

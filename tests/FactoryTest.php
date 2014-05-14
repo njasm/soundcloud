@@ -39,7 +39,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     
     public function testRegister()
     {
-        $returnObj = $this->factory->register("OtherInterface", "Other\\Namespace");
+        $returnObj = $this->factory->register("OtherInterface", "Other\\Namespace\\Class");
         $this->assertTrue($returnObj instanceof Factory);
         $this->assertTrue($this->factory->has("OtherInterface"));
     }
@@ -47,7 +47,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testMakeWithArgs()
     {
         $obj = $this->factory->make('AuthInterface', array('FakeClientID'));
-        $this->assertTrue($obj instanceof Njasm\Soundcloud\Auth\AuthInterface);
+        $this->assertInstanceOf("Njasm\\Soundcloud\\Auth\\AuthInterface", $obj);
     }
     
     public function testMakeFactory()

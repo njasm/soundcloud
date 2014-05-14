@@ -30,7 +30,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     
     public function testAsJsonAsXml()
     {
-        $property = new ReflectionProperty("Njasm\\Soundcloud\\Request\\Request", "responseFormat");
+        $property = new \ReflectionProperty("Njasm\\Soundcloud\\Request\\Request", "responseFormat");
         $property->setAccessible(true);
         
         $this->request->asJson();
