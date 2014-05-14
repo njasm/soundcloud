@@ -82,7 +82,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     public function testGetBody()
     {
-        $property = new ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
         $property->setAccessible(true);
         $property->setValue(
             $this->responseObj,
