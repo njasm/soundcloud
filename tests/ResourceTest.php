@@ -1,6 +1,8 @@
 <?php
 
-class ResourceTest extends \PHPUnit_Framework_TestCase 
+namespace Njasm\Soundcloud\Tests;
+
+class ResourceTest extends \PHPUnit_Framework_TestCase
 {
     private $factory;
     
@@ -41,8 +43,8 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
         $resource = $this->factory->make('ResourceInterface', array('patch', '/me'));
         $this->assertEquals("patch", $resource->getVerb());
 
-        $resource = $this->factory->make('ResourceInterface', array('delete', '/me'));        
-        $this->assertEquals("delete", $resource->getVerb());     
+        $resource = $this->factory->make('ResourceInterface', array('delete', '/me'));
+        $this->assertEquals("delete", $resource->getVerb());
         
         $resource = $this->factory->make('ResourceInterface', array('options', '/me'));
         $this->assertEquals("options", $resource->getVerb());
@@ -50,16 +52,16 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      
     public function testSetAndGetParams()
     {
-        $resource = $this->factory->make('ResourceInterface', array('get', '/track', array('q' => 'Great Artist')));        
+        $resource = $this->factory->make('ResourceInterface', array('get', '/track', array('q' => 'Great Artist')));
         $this->assertArrayHasKey("q", $resource->getParams());
         $resource->setParams(array("license" => "mit"));
         $this->assertArrayHasKey("q", $resource->getParams());
-        $this->assertArrayHasKey("license", $resource->getParams());        
+        $this->assertArrayHasKey("license", $resource->getParams());
     }
     
     public function testGetPath()
     {
-        $resource = $this->factory->make('ResourceInterface', array('get', '/tracks'));        
+        $resource = $this->factory->make('ResourceInterface', array('get', '/tracks'));
         $this->assertEquals("/tracks", $resource->getPath());
         $this->assertNotEquals("/me", $resource->getPath());
     }

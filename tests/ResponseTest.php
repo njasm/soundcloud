@@ -1,8 +1,10 @@
 <?php
 
+namespace Njasm\Soundcloud\Tests;
+
 use Njasm\Soundcloud\Request\Response;
 
-class ResponseTest extends \PHPUnit_Framework_TestCase 
+class ResponseTest extends \PHPUnit_Framework_TestCase
 {
     public $response;
     public $info;
@@ -32,7 +34,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
             Access-Control-Allow-Origin: *
             Via: 1.1 varnish
             Content-Type: application/json; charset=utf-8\r\n\r\n
-            {\"status\": \"302 - Found\",\"location\": \"https://api.soundcloud.com/users/1492543?consumer_key=apigee\"}";
+          {\"status\": \"302 - Found\",\"location\": \"https://api.soundcloud.com/users/1492543?consumer_key=apigee\"}";
         
         $this->info = array('curlInfo' => 'array');
         $this->errno = 0;
@@ -82,11 +84,13 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     {
         $property = new ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
         $property->setAccessible(true);
-        $property->setValue($this->responseObj, '{"status": "302 - Found","location": "https://api.soundcloud.com/users/1492543?consumer_key=apigee"}');
+        $property->setValue(
+            $this->responseObj,
+            '{"status": "302 - Found","location": "https://api.soundcloud.com/users/1492543?consumer_key=apigee"}'
+        );
         $this->assertEquals(
             '{"status": "302 - Found","location": "https://api.soundcloud.com/users/1492543?consumer_key=apigee"}',
             $this->responseObj->getBody()
         );
     }
 }
-

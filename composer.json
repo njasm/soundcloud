@@ -26,7 +26,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Njasm\\": "src/"
+            "Njasm\\": "src/",
+            "Njasm\\Soundcloud\\Tests\\": "tests/"
         }
     }   
 }
