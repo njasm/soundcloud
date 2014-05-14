@@ -1,5 +1,7 @@
 <?php
 
+namespace Njasm\Soundcloud\Tests;
+
 use Njasm\Soundcloud\Resource\Resource;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Auth\Auth;
@@ -8,7 +10,7 @@ use Njasm\Soundcloud\Request\Request;
 use Njasm\Soundcloud\Soundcloud;
 use Njasm\Soundcloud\Request\Response;
 
-Class SoundcloudTest extends \PHPUnit_Framework_TestCase
+class SoundcloudTest extends \PHPUnit_Framework_TestCase
 {
     public $soundcloud;
     
@@ -23,157 +25,183 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
     public function testUserCredentialsFlow()
     {
         // request Factory mock
-        $reqFactoryMock = $this->getMock("Njasm\\Soundcloud\\Factory\\Factory",
+        $reqFactoryMock = $this->getMock(
+            "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
         $reqFactoryMock->expects($this->any())
             ->method('make')
             ->with($this->equalTo('ResponseInterface'))
-            ->will($this->returnCallback(
-                function($arg) {
-                    return new Response("url: http://127.0.0.1/index.php\r\n\r\n{\"access_token\": \"1234567890\"}", array('url' => 'http://127.0.0.1/index.php'), 0, "No Error");
-                }
-        ));
+            ->will(
+                $this->returnCallback(
+                    function ($arg) {
+                        return new Response(
+                            "url: http://127.0.0.1/index.php\r\n\r\n{\"access_token\": \"1234567890\"}",
+                            array('url' => 'http://127.0.0.1/index.php'),
+                            0,
+                            "No Error"
+                        );
+                    }
+                )
+            );
             
         // soundcloud Factory mock
-        $factoryMock = $this->getMock("Njasm\\Soundcloud\\Factory\\Factory", 
+        $factoryMock = $this->getMock(
+            "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
         $factoryMock->expects($this->any())
             ->method('make')
-            ->with($this->logicalOr(
-                $this->equalTo('UrlBuilderInterface'), 
-                $this->equalTo('RequestInterface'),
-                $this->equalTo('ResourceInterface')
-            ))
-            ->will($this->returnCallback(
-               function($arg) use (&$reqFactoryMock) {             
-                    if ($arg == 'UrlBuilderInterface') {
-                        
-                        return new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://");
-                        
-                    } else if ($arg == 'RequestInterface') {
-                        
-                        return new Request(
-                            new Resource('get', '/index.php'),
-                            new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://"),
-                            $reqFactoryMock
-                        );
-                        
-                    } else if ($arg == 'ResourceInterface') {
-                        
-                        return new Resource('get', '/index.php');
-                        
+            ->with(
+                $this->logicalOr(
+                    $this->equalTo('UrlBuilderInterface'),
+                    $this->equalTo('RequestInterface'),
+                    $this->equalTo('ResourceInterface')
+                )
+            )->will(
+                $this->returnCallback(
+                    function ($arg) use (&$reqFactoryMock) {
+                        if ($arg == 'UrlBuilderInterface') {
+                            return new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://");
+                        } elseif ($arg == 'RequestInterface') {
+                            return new Request(
+                                new Resource('get', '/index.php'),
+                                new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://"),
+                                $reqFactoryMock
+                            );
+                        } elseif ($arg == 'ResourceInterface') {
+                            return new Resource('get', '/index.php');
+                        }
                     }
-               }
-        ));
+                )
+            );
+                
         $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "factory");
-        $property->setAccessible(TRUE);
+        $property->setAccessible(true);
         $property->setValue($this->soundcloud, $factoryMock);
         $response = $this->soundcloud->userCredentialsFlow("FakeUser", "FakePassword");
 
         $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);
-        $this->assertEquals('{"access_token": "1234567890"}', $response->getBody());   
+        $this->assertEquals('{"access_token": "1234567890"}', $response->getBody());
     }
     
     public function testCodeForToken()
     {
         // request Factory mock
-        $reqFactoryMock = $this->getMock("Njasm\\Soundcloud\\Factory\\Factory",
+        $reqFactoryMock = $this->getMock(
+            "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
         $reqFactoryMock->expects($this->any())
             ->method('make')
             ->with($this->equalTo('ResponseInterface'))
-            ->will($this->returnCallback(
-                function($arg) {
-                    return new Response("url: http://127.0.0.1/index.php\r\n\r\n{\"access_token\": \"1234567890\"}", array('url' => 'http://127.0.0.1/index.php'), 0, "No Error");
-                }
-        ));
+            ->will(
+                $this->returnCallback(
+                    function ($arg) {
+                        return new Response(
+                            "url: http://127.0.0.1/index.php\r\n\r\n{\"access_token\": \"1234567890\"}",
+                            array('url' => 'http://127.0.0.1/index.php'),
+                            0,
+                            "No Error"
+                        );
+                    }
+                )
+            );
             
         // soundcloud Factory mock
-        $factoryMock = $this->getMock("Njasm\\Soundcloud\\Factory\\Factory", 
+        $factoryMock = $this->getMock(
+            "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
         $factoryMock->expects($this->any())
             ->method('make')
-            ->with($this->logicalOr(
-                $this->equalTo('UrlBuilderInterface'), 
-                $this->equalTo('RequestInterface'),
-                $this->equalTo('ResourceInterface')
-            ))
-            ->will($this->returnCallback(
-               function($arg) use (&$reqFactoryMock) {             
-                    if ($arg == 'UrlBuilderInterface') {
-                        
-                        return new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://");
-                        
-                    } else if ($arg == 'RequestInterface') {
-                        
-                        return new Request(
-                            new Resource('get', '/index.php'),
-                            new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://"),
-                            $reqFactoryMock
-                        );
-                        
-                    } else if ($arg == 'ResourceInterface') {
-                        
-                        return new Resource('get', '/index.php');
-                        
+            ->with(
+                $this->logicalOr(
+                    $this->equalTo('UrlBuilderInterface'),
+                    $this->equalTo('RequestInterface'),
+                    $this->equalTo('ResourceInterface')
+                )
+            )->will(
+                $this->returnCallback(
+                    function ($arg) use (&$reqFactoryMock) {
+                        if ($arg == 'UrlBuilderInterface') {
+                            return new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://");
+                        } elseif ($arg == 'RequestInterface') {
+                            return new Request(
+                                new Resource('get', '/index.php'),
+                                new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://"),
+                                $reqFactoryMock
+                            );
+                        } elseif ($arg == 'ResourceInterface') {
+                            return new Resource('get', '/index.php');
+                        }
                     }
-               }
-        ));
+                )
+            );
+        
         $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "factory");
-        $property->setAccessible(TRUE);
+        $property->setAccessible(true);
         $property->setValue($this->soundcloud, $factoryMock);
         $response = $this->soundcloud->codeForToken("FakeCode");
 
         $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);
-        $this->assertEquals('{"access_token": "1234567890"}', $response->getBody());  
+        $this->assertEquals('{"access_token": "1234567890"}', $response->getBody());
         $this->assertEquals("1234567890", $this->soundcloud->getAuthToken());
     }
     
     public function testRequest()
     {
         // request Factory mock
-        $reqFactoryMock = $this->getMock("Njasm\\Soundcloud\\Factory\\Factory",
+        $reqFactoryMock = $this->getMock(
+            "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
         $reqFactoryMock->expects($this->any())
             ->method('make')
             ->with($this->equalTo('ResponseInterface'))
-            ->will($this->returnCallback(
-                function($arg) {
-                    return new Response("url: http://127.0.0.1/index.php\r\n\r\nDummy Response Body", array('url' => 'http://127.0.0.1/index.php'), 0, "No Error");
-                }
-            ));
+            ->will(
+                $this->returnCallback(
+                    function ($arg) {
+                        return new Response(
+                            "url: http://127.0.0.1/index.php\r\n\r\nDummy Response Body",
+                            array('url' => 'http://127.0.0.1/index.php'),
+                            0,
+                            "No Error"
+                        );
+                    }
+                )
+            );
             
         // soundcloud Factory mock
-        $factoryMock = $this->getMock("Njasm\\Soundcloud\\Factory\\Factory", 
+        $factoryMock = $this->getMock(
+            "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
         $factoryMock->expects($this->any())
             ->method('make')
-            ->with($this->logicalOr(
-                $this->equalTo('UrlBuilderInterface'), 
-                $this->equalTo('RequestInterface')
-                ))
-            ->will($this->returnCallback(
-               function($arg) use (&$reqFactoryMock) {             
-                    if ($arg == 'UrlBuilderInterface') {
-                        return new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://");
-                    } else if ($arg == 'RequestInterface') {
-                        return new Request(
-                            new Resource('get', '/index.php'),
-                            new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://"),
-                            $reqFactoryMock
-                        );
+            ->with(
+                $this->logicalOr(
+                    $this->equalTo('UrlBuilderInterface'),
+                    $this->equalTo('RequestInterface')
+                )
+            )->will(
+                $this->returnCallback(
+                    function ($arg) use (&$reqFactoryMock) {
+                        if ($arg == 'UrlBuilderInterface') {
+                            return new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://");
+                        } elseif ($arg == 'RequestInterface') {
+                            return new Request(
+                                new Resource('get', '/index.php'),
+                                new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://"),
+                                $reqFactoryMock
+                            );
+                        }
                     }
-               }
-           ));
+                )
+            );
                 
         $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "factory");
-        $property->setAccessible(TRUE);
+        $property->setAccessible(true);
         $property->setValue($this->soundcloud, $factoryMock);
         $response = $this->soundcloud->request();
 
@@ -188,7 +216,7 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAuthClientID()
     {
-        $this->assertEquals("ClientIDHash", $this->soundcloud->getAuthClientID());        
+        $this->assertEquals("ClientIDHash", $this->soundcloud->getAuthClientID());
     }
     
     public function testSetAndGetAuthToken()
@@ -214,31 +242,31 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
     public function testGetResourceCreation()
     {
         $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "resource");
-        $this->soundcloud->get('/resolve');       
+        $this->soundcloud->get('/resolve');
         $this->assertTrue($property->getValue($this->soundcloud) instanceof Resource);
-        $this->assertEquals("get", $property->getValue($this->soundcloud)->getVerb());        
+        $this->assertEquals("get", $property->getValue($this->soundcloud)->getVerb());
     }
 
     public function testPostResourceCreation()
     {
         $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "resource");
-        $this->soundcloud->post('/resolve');       
+        $this->soundcloud->post('/resolve');
         $this->assertTrue($property->getValue($this->soundcloud) instanceof Resource);
-        $this->assertEquals("post", $property->getValue($this->soundcloud)->getVerb());        
+        $this->assertEquals("post", $property->getValue($this->soundcloud)->getVerb());
     }
     
     public function testPutResourceCreation()
     {
         $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "resource");
-        $this->soundcloud->put('/resolve');       
+        $this->soundcloud->put('/resolve');
         $this->assertTrue($property->getValue($this->soundcloud) instanceof Resource);
-        $this->assertEquals("put", $property->getValue($this->soundcloud)->getVerb());        
+        $this->assertEquals("put", $property->getValue($this->soundcloud)->getVerb());
     }
     
     public function testDeleteResourceCreation()
     {
         $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "resource");
-        $this->soundcloud->delete('/resolve');       
+        $this->soundcloud->delete('/resolve');
         $this->assertTrue($property->getValue($this->soundcloud) instanceof Resource);
         $this->assertEquals("delete", $property->getValue($this->soundcloud)->getVerb());
     }
@@ -256,7 +284,8 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
     
     public function testGetAuthUrl()
     {
-        $expected = "https://www.soundcloud.com/connect?client_id=ClientIDHash&scope=non-expiring&display=popup&response_type=code&redirect_uri=http%3A%2F%2Fexample.com%2Fsoundcloud&state=";
+        $expected = "https://www.soundcloud.com/connect?client_id=ClientIDHash&scope="
+            . "non-expiring&display=popup&response_type=code&redirect_uri=http%3A%2F%2Fexample.com%2Fsoundcloud&state=";
         $this->assertEquals($expected, $this->soundcloud->getAuthUrl());
     }
     
@@ -268,7 +297,7 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
         );
         
         $facade = $this->soundcloud->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
-    }   
+    }
     
     public function testAsXmlAsJson()
     {
@@ -297,11 +326,11 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
     /**
      * Code Coverage
      */
-    
     public function testSetResponseFormat()
     {
-        $reqMock = $this->getMock("Njasm\\Soundcloud\\Request\\Request", 
-            array('asXml', 'asJson'), 
+        $reqMock = $this->getMock(
+            "Njasm\\Soundcloud\\Request\\Request",
+            array('asXml', 'asJson'),
             array(new Resource('get', '/resolve'), new UrlBuilder(new Resource('get', '/resolve')), new Factory())
         );
         $reqMock->expects($this->once())->method('asXml');
@@ -339,4 +368,3 @@ Class SoundcloudTest extends \PHPUnit_Framework_TestCase
         return $method;
     }
 }
-

@@ -1,10 +1,12 @@
 <?php
 
+namespace Njasm\Soundcloud\Tests;
+
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Resource\Resource;
 use Njasm\Soundcloud\Auth\Auth;
 
-class UrlBuilderTest extends \PHPUnit_Framework_TestCase 
+class UrlBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetUrlWithoutParams()
     {
@@ -25,14 +27,17 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
             'client_id' => $auth->getClientID(),
             'q' => 'buskers',
             'license' => 'cc-by-sa'
-        )); 
+        ));
         
         $builder = new UrlBuilder($resource);
-        $this->assertEquals("https://api.soundcloud.com/tracks?client_id=ClientIDHash&q=buskers&license=cc-by-sa", $builder->getUrl());                
+        $this->assertEquals(
+            "https://api.soundcloud.com/tracks?client_id=ClientIDHash&q=buskers&license=cc-by-sa",
+            $builder->getUrl()
+        );
     }
     
     public function testPostGetUrl()
-    {    
+    {
         // should return https://www.soundcloud.com/resolve
         $auth = new Auth("ClientIDHash");
         $resource = new Resource('get', '/resolve');
@@ -42,7 +47,11 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
         ));
         
         $builder = new UrlBuilder($resource);
-        $this->assertEquals("https://api.soundcloud.com/resolve?client_id=ClientIDHash&url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic", $builder->getUrl());          
+        $this->assertEquals(
+            "https://api.soundcloud.com/resolve?client_id=ClientIDHash&url="
+            ."http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic",
+            $builder->getUrl()
+        );
     }
     
     public function testGetCleanPath()
