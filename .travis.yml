@@ -17,9 +17,10 @@ before_script:
   
 script:
   - mkdir -p build/logs
-  - vendor/bin/phpcs --standard=PSR2 src/
-  - vendor/bin/phpmd src/ xml codesize,controversial,design,naming,unusedcode
-  - phpunit --coverage-clover build/logs/clover.xml
+  #- vendor/bin/phpcs --standard=PSR2 src/
+  # phpmd bug on trying to overwrite constant for hhvm
+  #- vendor/bin/phpmd src/ xml codesize,controversial,design,naming,unusedcode
+  - vendor/bin/phpunit -v -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
   
 after_script:
   - php vendor/bin/coveralls -v
