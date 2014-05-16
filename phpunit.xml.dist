@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<phpunit bootstrap="./tests/bootstrap.php" colors="true">
+<phpunit bootstrap="tests/bootstrap.php" colors="true">
     <testsuites>
         <testsuite name="Soundcloud API Tests">
             <directory suffix="Test.php">./tests</directory>
@@ -8,7 +8,7 @@
 
     <filter>
         <blacklist>
-            <directory>./vendor</directory>
+            <directory>vendor</directory>
         </blacklist>
     </filter>
 
