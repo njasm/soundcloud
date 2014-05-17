@@ -22,6 +22,15 @@ script:
   #- vendor/bin/phpcs --standard=PSR2 src/
   #- phpmd bug on trying to overwrite constant for hhvm
   #- vendor/bin/phpmd src/ xml codesize,controversial,design,naming,unusedcode
+  - phpunit --verbose tests/AuthTest.php
+  - phpunit --verbose tests/FactoryTest.php
+  - phpunit --verbose tests/RequestTest.php
+  - phpunit --verbose tests/ResourceTest.php
+  - phpunit --verbose tests/ResponseTest.php
+  - phpunit --verbose tests/UrlBuilderTest.php
+  - phpunit --verbose tests/SoundcloudTest.php
+
+  - phpunit -v -c phpunit.xml.dist --coverage-text
   - phpunit -v -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
   
 after_script:
