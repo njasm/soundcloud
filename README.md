@@ -7,10 +7,10 @@ If you want a stable and complete implementation, have fun with the master TAG 0
 * User Authorization/Authentication
 * User Credentials Flow Authentication
 * Access to all GET, PUT, POST and DELETE Resources
+* Media File Download
 
 #### Todo
 
-* Media File Download
 * Media File Upload
 
 ##### Examples
@@ -85,4 +85,16 @@ $theBodyString = $facade->request()->getBody();
 ```php
 // if you want the CURL response object from last CURL request.
 $response = $facade->getCurlResponse();
+```
+
+###### Media File Download
+```php
+//this will redirect user, sending a Location header to the track.
+$facade->download($track_id); 
+
+// for now if you want to do your flow without redirecting the user 
+// you can do the custom request like this..
+$facade->get('/tracks/' . intval($track_id) . '/download');
+$response = $facade->request(array(CURLOPT_FOLLOWLOCATION => false))->bodyObject();
+echo $response->location;
 ```

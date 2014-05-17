@@ -234,14 +234,16 @@ class Soundcloud
     /**
      * Download a track.
      * 
-     * @return \FileInfo|null An object representing the downloaded track in the server, or null on user redirect.
+     * @param integer track ID.
+     * @return mixed An object with the download location, or redirect user to that Location.
      */
-    public function download($id, $redirect = true)
+    public function download($id)
     {
         $path = '/tracks/' . intval($id) . '/download';
         $this->resource = $this->factory->make('ResourceInterface', array('get', $path));
         $this->request();
-        $response = $this->response->bodyObject();
+
+        header('Location: ' . $this->response->getHeader('Location'));
     }
     
     /**
@@ -250,7 +252,7 @@ class Soundcloud
      * @param array $params
      * @return Njasm\Soundcloud\Request\ResponseInterface
      */
-    public function  request(array $params = array())
+    public function request(array $params = array())
     {
         $urlBuilder = $this->factory->make('UrlBuilderInterface', array($this->resource));
         $this->request = $this->factory->make('RequestInterface', array($this->resource, $urlBuilder, $this->factory));
