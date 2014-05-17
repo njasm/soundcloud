@@ -75,7 +75,7 @@ class Request implements RequestInterface
         if ($verb != 'GET') {
             curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->resource->getParams());
         }
-
+        
         $response = curl_exec($curlHandler);
         $info = curl_getinfo($curlHandler);
         $errno = curl_errno($curlHandler);

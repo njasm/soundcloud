@@ -19,7 +19,7 @@ If you want a stable and complete implementation, have fun with the master TAG 0
 $facade = new Soundcloud($clientID, $clientSecret, $callbackUri);
 $url = $facade->getAuthUrl();
 
-// or inject your own params
+// or inject your speciefic request params
 $url = $facade->getAuthUrl(array(
     'response_type' => 'code',
     'scope' => '*',
@@ -31,18 +31,17 @@ $url = $facade->getAuthUrl(array(
 ```php
 $facade = new Soundcloud($clientID, $clientSecret, $callbackUri);
 // this is your callbackUri script that will receive the $_GET['code']
-// example only, you should always sanitize your submitted params
 $code = $_GET['code'];
-$facade->codeForToken($code);
-$response = $facade->get('/me')->request();
+$facade->codeForToken($code); 
+
 ```
 
 ###### Authentication with user credentials flow.
 ```php
 $facade = new Soundcloud($clientID, $clientSecret);
 // if an access token is returned from soundcloud, it will be automatically
-// set for future requests by the Response object will always be returned to the client.
-$facade->userCredentialsFlow($username, $password);
+// set for future requests. The Response object will always be returned to the client.
+$facade->userCredentials($username, $password);
 $response = $facade->get('/me')->request();
 // raw body response
 echo $response->getBody();
@@ -64,21 +63,26 @@ $facade->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
 ```
 
 ###### Send request
+To allow different ways to inject the Resources parameters - by array, setParams() method injection, etc..
+the request will only be sent to soundcloud, when you call request() method.
+Take in considerations that specific operations like userCredentials(), download($trackID), etc.. no call to request()
+is needed.
+
 ```php
 $facade = new Soundcloud($clientID, $clientSecret);
 $facade->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species'));
+// only this command will send the request
 $response = $facade->request();
 ```
 
-###### Get raw Response Body
+###### Get the raw response Body
 ```php
 ...
-$response = $facade->request();
-$response->getBody();
+$theBodyString = $facade->request()->getBody();
 ```
 
 ###### Get CURL last response object
 ```php
 // if you want the CURL response object from last CURL request.
-$curlResponse = $facade->getCurlResponse();
+$response = $facade->getCurlResponse();
 ```

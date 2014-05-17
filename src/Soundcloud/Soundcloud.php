@@ -27,7 +27,6 @@ class Soundcloud
     private $response;
     private $auth;
     private $factory;
-    
     private $responseFormat;
 
     public function __construct($clientID = null, $clientSecret = null, $authCallbackUri = null)
@@ -39,7 +38,7 @@ class Soundcloud
     /**
      * Get ClientID for this instance
      * 
-     * @return string  The ClientID set for this instance
+     * @return string The ClientID set for this instance
      */
     public function getAuthClientID()
     {
@@ -59,7 +58,7 @@ class Soundcloud
     /**
      * Sets the access token.
      * 
-     * @return Soundcloud this object
+     * @return \Njasm\Soundcloud\Soundcloud
      */
     public function setAuthToken($token)
     {
@@ -82,7 +81,7 @@ class Soundcloud
      * 
      * @param string $path
      * @param array $params
-     * @return \Njasm\Soundcloud\Soundcloud Soundcloud
+     * @return \Njasm\Soundcloud\Soundcloud
      */
     public function get($path, array $params = array())
     {
@@ -96,7 +95,7 @@ class Soundcloud
      * 
      * @param string $path
      * @param array $params
-     * @return \Njasm\Soundcloud\Soundcloud Soundcloud
+     * @return \Njasm\Soundcloud\Soundcloud
      */
     public function put($path, array $params = array())
     {
@@ -110,7 +109,7 @@ class Soundcloud
      * 
      * @param string $path
      * @param array $params
-     * @return \Njasm\Soundcloud\Soundcloud Soundcloud
+     * @return \Njasm\Soundcloud\Soundcloud
      */
     public function post($path, array $params = array())
     {
@@ -124,7 +123,7 @@ class Soundcloud
      * 
      * @param string $path
      * @param array $params
-     * @return \Njasm\Soundcloud\Soundcloud Soundcloud
+     * @return \Njasm\Soundcloud\Soundcloud
      */
     public function delete($path = null, array $params = array())
     {
@@ -137,7 +136,7 @@ class Soundcloud
      * Sets resource params.
      * 
      * @param array $params
-     * @return \Njasm\Soundcloud\Soundcloud Soundcloud
+     * @return \Njasm\Soundcloud\Soundcloud
      * @throws SoundcloudException
      */
     public function setParams(array $params = array())
@@ -181,6 +180,7 @@ class Soundcloud
      * 
      * @param string $code the code received to exchange for token
      * @param array $params 
+     * @return Njasm\Soundcloud\Request\ResponseInterface
      */
     public function codeForToken($code, array $params = array())
     {
@@ -194,7 +194,7 @@ class Soundcloud
         $finalParams = $this->mergeAuthParams($mergedParams, true);
         $this->resource = $this->factory->make('ResourceInterface', array('post', '/oauth2/token', $finalParams));
         
-        $response = json_decode($this->request()->getBody());
+        $response = $this->request()->bodyObject();
         
         if (isset($response->access_token)) {
             $this->setAuthToken($response->access_token);
@@ -208,8 +208,9 @@ class Soundcloud
      * 
      * @param string $username user username
      * @param string $password user password
+     * @return Njasm\Soundcloud\Request\ResponseInterface
      */
-    public function userCredentialsFlow($username, $password)
+    public function userCredentials($username, $password)
     {
         $defaultParams = array(
             'grant_type'    => 'password',
@@ -221,7 +222,7 @@ class Soundcloud
         $params = $this->mergeAuthParams($defaultParams, true);
         $this->resource = $this->factory->make('ResourceInterface', array('post', '/oauth2/token', $params));
         
-        $response = json_decode($this->request()->getBody());
+        $response = $this->request()->bodyObject();
         
         if (isset($response->access_token)) {
             $this->setAuthToken($response->access_token);
@@ -231,12 +232,25 @@ class Soundcloud
     }
     
     /**
+     * Download a track.
+     * 
+     * @return \FileInfo|null An object representing the downloaded track in the server, or null on user redirect.
+     */
+    public function download($id, $redirect = true)
+    {
+        $path = '/tracks/' . intval($id) . '/download';
+        $this->resource = $this->factory->make('ResourceInterface', array('get', $path));
+        $this->request();
+        $response = $this->response->bodyObject();
+    }
+    
+    /**
      * Executes the request against soundcloud api.
      * 
      * @param array $params
-     * @return Response
+     * @return Njasm\Soundcloud\Request\ResponseInterface
      */
-    public function request(array $params = array())
+    public function  request(array $params = array())
     {
         $urlBuilder = $this->factory->make('UrlBuilderInterface', array($this->resource));
         $this->request = $this->factory->make('RequestInterface', array($this->resource, $urlBuilder, $this->factory));
@@ -264,7 +278,7 @@ class Soundcloud
     /**
      * Sets the Accept Header to application/xml.
      * 
-     * @return Soundcloud
+     * @return Njasm\Soundcloud\Soundcloud
      */
     public function asXml()
     {
@@ -275,7 +289,7 @@ class Soundcloud
     /**
      * Sets the Accept Header to application/json.
      * 
-     * @return Soundcloud
+     * @return Njasm\Soundcloud\Soundcloud
      */
     public function asJson()
     {
