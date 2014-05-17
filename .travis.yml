@@ -16,13 +16,13 @@ matrix:
 before_script: 
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
+  - mkdir -p build/logs
   
 script:
-  - mkdir -p build/logs
   #- vendor/bin/phpcs --standard=PSR2 src/
-  # phpmd bug on trying to overwrite constant for hhvm
+  #- phpmd bug on trying to overwrite constant for hhvm
   #- vendor/bin/phpmd src/ xml codesize,controversial,design,naming,unusedcode
-  - vendor/bin/phpunit -v -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
+  - phpunit -v -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
   
 after_script:
   - php vendor/bin/coveralls -v
