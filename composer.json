@@ -17,7 +17,6 @@
     },
     "minimum-stability": "dev",
     "require-dev": {
-        "phpunit/phpunit": "~4.0",
         "satooshi/php-coveralls": "dev-master"       
     },
     "require": {
@@ -25,8 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Njasm\\": "src/",
-            "Njasm\\Soundcloud\\Tests\\": "tests/"
+            "Njasm\\": "src/"
         }
-    }   
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Njasm\\Soundcloud\\Tests\\": "tests/"            
+        }
+    }
 }
