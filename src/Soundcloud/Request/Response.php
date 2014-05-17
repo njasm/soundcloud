@@ -78,9 +78,21 @@ class Response implements ResponseInterface
         return null;
     }
     
-    public function getBody()
+    public function bodyString()
     {
         return $this->body;
+    }
+    
+    public function bodyObject()
+    {
+        $contentType = $this->getHeader('Content-Type');
+        if (stripos($contentType, 'application/json') !== false) {
+            return json_decode($this->body);
+        } elseif (stripos($contentType, 'application/xml') !== false) {
+            return simplexml_load_string($this->body);
+        } else {
+            throw new \OutOfBoundsException("Last Request Content-Type isn't application/json nor application/xml.");
+        }
     }
     
     public function getHttpVersion()

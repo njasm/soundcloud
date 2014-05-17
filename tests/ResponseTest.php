@@ -80,7 +80,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->responseObj->hasHeader("No-Header-Key"));
     }
     
-    public function testGetBody()
+    public function testBodyString()
     {
         $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
         $property->setAccessible(true);
@@ -90,7 +90,45 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(
             '{"status": "302 - Found","location": "https://api.soundcloud.com/users/1492543?consumer_key=apigee"}',
-            $this->responseObj->getBody()
+            $this->responseObj->bodyString()
         );
+    }
+    
+    public function testBodyObject()
+    {
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
+        $property->setAccessible(true);
+        $property->setValue(
+            $this->responseObj,
+            '{"status": "302 - Found","location": "https://api.soundcloud.com/users/1492543?consumer_key=apigee"}'
+        );
+        $this->assertTrue(
+            true && stripos($this->responseObj->getHeader('Content-Type'), 'application/json') !== false
+        ); 
+        
+        // aplication/xml
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "headers");
+        $property->setAccessible(true);
+        $property->setValue(
+            $this->responseObj,
+            array('Content-Type' => 'application/xml; charset=utf-8\r\n\r\n')
+        );
+        
+        $this->assertTrue(
+            true && stripos($this->responseObj->getHeader('Content-Type'), 'application/xml') !== false
+        );  
+        
+        // throw exception
+        $property->setValue(
+            $this->responseObj,
+            array('Content-Type' => 'wrong/content; charset=utf-8\r\n\r\n')
+        ); 
+        
+        $this->setExpectedException(
+            '\OutOfBoundsException',
+            "Last Request Content-Type isn't application/json nor application/xml."
+        );
+
+        $this->responseObj->bodyObject();
     }
 }
