@@ -31,7 +31,6 @@ script:
   - phpunit --verbose tests/SoundcloudTest.php
 
   - phpunit -v -c phpunit.xml.dist --coverage-text
-  - phpunit -v -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
   
 after_script:
   - php vendor/bin/coveralls -v
