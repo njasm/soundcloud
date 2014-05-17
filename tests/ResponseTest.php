@@ -94,7 +94,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         );
     }
     
-    public function testBodyObject()
+    public function testBodyObjectAsJson()
     {
         $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
         $property->setAccessible(true);
@@ -102,11 +102,15 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
             $this->responseObj,
             '{"status": "302 - Found","location": "https://api.soundcloud.com/users/1492543?consumer_key=apigee"}'
         );
+
         $this->assertTrue(
             true && stripos($this->responseObj->getHeader('Content-Type'), 'application/json') !== false
-        ); 
-        
-        // aplication/xml
+        );
+        $this->assertInstanceOf('\stdClass', $this->responseObj->bodyObject());
+    }
+    
+    public function testBodyObjectAsXML()
+    {
         $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "headers");
         $property->setAccessible(true);
         $property->setValue(
@@ -114,11 +118,21 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
             array('Content-Type' => 'application/xml; charset=utf-8\r\n\r\n')
         );
         
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
+        $property->setAccessible(true);
+        $property->setValue($this->responseObj, '<status>302 - Found</status>');       
+        $xmlObj = $this->responseObj->bodyObject();
+        
         $this->assertTrue(
             true && stripos($this->responseObj->getHeader('Content-Type'), 'application/xml') !== false
-        );  
-        
-        // throw exception
+        );        
+        $this->assertInstanceOf('\SimpleXMLElement', $xmlObj);        
+    }
+    
+    public function testbodyObjectException()
+    {
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "headers");
+        $property->setAccessible(true);        
         $property->setValue(
             $this->responseObj,
             array('Content-Type' => 'wrong/content; charset=utf-8\r\n\r\n')
@@ -129,6 +143,6 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
             "Last Request Content-Type isn't application/json nor application/xml."
         );
 
-        $this->responseObj->bodyObject();
+        $this->responseObj->bodyObject();        
     }
 }
