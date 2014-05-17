@@ -20,8 +20,8 @@ script:
   #- vendor/bin/phpcs --standard=PSR2 src/
   # phpmd bug on trying to overwrite constant for hhvm
   #- vendor/bin/phpmd src/ xml codesize,controversial,design,naming,unusedcode
-  - vendor/bin/phpunit -v tests/SoundcloudTest.php
-  - vendor/bin/phpunit -v -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
+  #- vendor/bin/phpunit -v tests/SoundcloudTest.php
+  - vendor/bin/phpunit -v -c phpunit.xml.dist
   
 after_script:
   - php vendor/bin/coveralls -v
