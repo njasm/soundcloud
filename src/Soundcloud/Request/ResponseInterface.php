@@ -32,7 +32,7 @@ interface ResponseInterface
      * 
      * @return string the last body response
      */
-    public function bodyString();
+    public function bodyRaw();
     
     /**
      * Returns an object based on the Content-Type of the response.

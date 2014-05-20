@@ -80,7 +80,7 @@ class Response implements ResponseInterface
         return null;
     }
     
-    public function bodyString()
+    public function bodyRaw()
     {
         return $this->body;
     }

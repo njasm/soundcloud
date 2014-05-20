@@ -39,12 +39,12 @@ $facade->codeForToken($code);
 ###### Authentication with user credentials flow.
 ```php
 $facade = new Soundcloud($clientID, $clientSecret);
-// if an access token is returned from soundcloud, it will be automatically
-// set for future requests. The Response object will always be returned to the client.
+// If an access token is returned from soundcloud, it will be automatically set for future requests. 
+// The Response object will always be returned to the client.
 $facade->userCredentials($username, $password);
 $response = $facade->get('/me')->request();
 // raw body response
-echo $response->getBody();
+echo $response->bodyRaw();
 ```
 
 ###### Add params to resource.
@@ -56,29 +56,30 @@ $facade->get('/resolve', array(
 
 // chaining-methods
 $response = $facade->get('/resolve')
-    ->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'))
+    ->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
 
+// or not
 $facade->get('/resolve');
 $facade->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
 ```
 
 ###### Send request
-To allow different ways to inject the Resources parameters - by array, setParams() method injection, etc..
-the request will only be sent to soundcloud, when you call request() method.
-Take in considerations that specific operations like userCredentials(), download($trackID), etc.. no call to request()
-is needed.
+To allow different ways to inject the Resource parameters that you are accessing - by injection an array or 
+setParams() method injection. The request will only be sent to soundcloud, when you invoke the request() method.
+Take in considerations that specific operations like userCredentials(), download($trackID), etc. will invoke request()
+automatically.
 
 ```php
 $facade = new Soundcloud($clientID, $clientSecret);
 $facade->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species'));
-// only this command will send the request
+// only this invocation will send the request
 $response = $facade->request();
 ```
 
 ###### Get the raw response Body
 ```php
 ...
-$theBodyString = $facade->request()->getBody();
+$theBodyString = $facade->request()->bodyRaw();
 ```
 
 ###### Get CURL last response object
@@ -87,14 +88,13 @@ $theBodyString = $facade->request()->getBody();
 $response = $facade->getCurlResponse();
 ```
 
-###### Media File Download
+###### File Download
 ```php
-//this will redirect user, sending a Location header to the track.
-$facade->download($track_id); 
+//this will redirect user, sending a header Location to the track.
+$facade->download($trackID);
 
-// for now if you want to do your flow without redirecting the user 
-// you can do the custom request like this..
-$facade->get('/tracks/' . intval($track_id) . '/download');
-$response = $facade->request(array(CURLOPT_FOLLOWLOCATION => false))->bodyObject();
-echo $response->location;
+// CAUTION: this will get the track into an in-memory variable in your server.
+$response = $facade->download($trackID, false);
+// save it to a file.
+file_put_contents("great_track.mp3, $response->bodyRaw());
 ```

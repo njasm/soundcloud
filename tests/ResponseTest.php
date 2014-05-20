@@ -80,7 +80,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->responseObj->hasHeader("No-Header-Key"));
     }
     
-    public function testBodyString()
+    public function testBodyRaw()
     {
         $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
         $property->setAccessible(true);
@@ -90,7 +90,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(
             '{"status": "302 - Found","location": "https://api.soundcloud.com/users/1492543?consumer_key=apigee"}',
-            $this->responseObj->bodyString()
+            $this->responseObj->bodyRaw()
         );
     }
     

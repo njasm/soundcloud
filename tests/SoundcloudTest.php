@@ -82,7 +82,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $response = $this->soundcloud->userCredentials("FakeUser", "FakePassword");
 
         $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);
-        $this->assertEquals('{"access_token": "1234567890"}', $response->bodyString());
+        $this->assertEquals('{"access_token": "1234567890"}', $response->bodyRaw());
     }
     
     public function testCodeForToken()
@@ -145,7 +145,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $response = $this->soundcloud->codeForToken("FakeCode");
 
         $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);
-        $this->assertEquals('{"access_token": "1234567890"}', $response->bodyString());
+        $this->assertEquals('{"access_token": "1234567890"}', $response->bodyRaw());
         $this->assertEquals("1234567890", $this->soundcloud->getAuthToken());
     }
     
@@ -206,7 +206,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $response = $this->soundcloud->request();
 
         $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);
-        $this->assertEquals("Dummy Response Body", $response->bodyString());
+        $this->assertEquals("Dummy Response Body", $response->bodyRaw());
         // coverage, already tested inside Request class
         $this->soundcloud->request(array(CURLOPT_RETURNTRANSFER => true));
     }

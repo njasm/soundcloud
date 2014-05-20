@@ -235,15 +235,21 @@ class Soundcloud
      * Download a track.
      * 
      * @param integer track ID.
+     * @param boolean $redirectWebUser if we should redirect the user, sending a header('Location: track_url');
      * @return mixed An object with the download location, or redirect user to that Location.
      */
-    public function download($id)
+    public function download($id, $redirectWebUser = true)
     {
         $path = '/tracks/' . intval($id) . '/download';
         $this->resource = $this->factory->make('ResourceInterface', array('get', $path));
-        $this->request();
 
-        header('Location: ' . $this->response->getHeader('Location'));
+        if ($redirectWebUser) {
+            $this->request();
+            header('Location: ' . $this->response->getHeader('Location'));
+        } else {
+            $this->request(array(CURLOPT_FOLLOWLOCATION => true));
+            return $this->response;
+        }
     }
     
     /**
