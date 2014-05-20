@@ -33,22 +33,24 @@ class Response implements ResponseInterface
         $this->errno = $errno;
         $this->errorString = $errorString;
         
-        list($header, $body) = explode("\r\n\r\n", str_replace("HTTP/1.1 100 Continue\r\n\r\n", "", $response), 2);
+        $parts = explode("\r\n\r\nHTTP/", $response);
+        $parts = (count($parts) > 1 ? 'HTTP/' : '') . array_pop($parts);
+        list($headers, $body) = explode("\r\n\r\n", $parts, 2);
+
         $this->body = $body;
-        $this->buildHeaderArray($header);
+        $this->buildHeadersArray($headers);
     }
     
-    private function buildHeaderArray($header)
+    private function buildHeadersArray($headers)
     {
-        $headers = explode("\n", $header);
-        foreach ($headers as $head) {
-            if (substr($head, 0, 4) == "HTTP") {
-                list($this->httpVersion, $this->httpCode) = explode(" ", $head, 2);
-                list($this->httpCode, $this->httpCodeString) = explode(" ", $this->httpCode);
+        $headers = explode("\n", $headers);
+        foreach ($headers as $header) {
+            if (substr($header, 0, 4) == "HTTP") {
+                list($this->httpVersion, $this->httpCode, $this->httpCodeString) = explode(" ", $header, 3);
                 continue;
             }
             
-            list($key, $value) = explode(": ", $head, 2);
+            list($key, $value) = explode(": ", $header, 2);
             $this->headers[trim($key)] = trim($value);
         }
     }
