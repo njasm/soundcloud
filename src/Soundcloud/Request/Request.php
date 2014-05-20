@@ -26,6 +26,7 @@ class Request implements RequestInterface
     private $options = array(
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_TIMEOUT => 90,
         CURLOPT_HEADER => true
     );
 
