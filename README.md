@@ -96,5 +96,5 @@ $facade->download($trackID);
 // CAUTION: this will get the track into an in-memory variable in your server.
 $response = $facade->download($trackID, false);
 // save it to a file.
-file_put_contents("great_track.mp3", $response->bodyRaw());
+file_put_contents("great_track.mp3, $response->bodyRaw());
 ```
