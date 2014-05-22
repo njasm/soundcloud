@@ -6,10 +6,7 @@ tools:
     timeout: 600 # Timeout in seconds.
     
   php_code_sniffer:
-        command:              ~
-        enabled:              true
         config:
-            encoding:             utf8
             standard:             "PSR2"
         
 checks:
