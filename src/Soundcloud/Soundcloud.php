@@ -2,11 +2,7 @@
 
 namespace Njasm\Soundcloud;
 
-use Njasm\Soundcloud\Resource\Resource;
-use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
-use Njasm\Soundcloud\Request\Request;
 use Njasm\Soundcloud\Request\RequestInterface;
-use Njasm\Soundcloud\Auth\Auth;
 use Njasm\Soundcloud\Exception\SoundcloudException;
 use Njasm\Soundcloud\Factory\Factory;
 
