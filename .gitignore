@@ -1,4 +1,5 @@
-.DS_Store
+# Global and local ignored files like .DS_Store, etc
+# are ignored in your home ~/.gitignore_global
 composer.lock
 /example
 /vendor

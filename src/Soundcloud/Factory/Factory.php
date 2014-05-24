@@ -27,7 +27,7 @@ class Factory implements FactoryInterface
     {
         $this->validate($interface);
         
-        if ($this->has($interface)) {
+        if ($this->has($interface) === true) {
             
             $reflected = new \ReflectionClass($this->map[$interface]);
             

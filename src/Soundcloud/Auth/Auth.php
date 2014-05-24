@@ -35,7 +35,7 @@ class Auth implements AuthInterface
     public function setClientID($clientID)
     {
         $clientID = trim($clientID);
-        if (is_string($clientID) && !empty($clientID)) {
+        if (is_string($clientID) === true && empty($clientID) === false) {
             $this->clientID = $clientID;
         } else {
             throw new \InvalidArgumentException("No ClientID Provided.");
