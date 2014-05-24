@@ -40,7 +40,7 @@ class UrlBuilder implements UrlBuilderInterface
         $verb = strtoupper($this->resource->getVerb());
         $params = $this->resource->getParams();
         
-        if ($verb == 'GET' && !empty($params)) {
+        if ($verb === 'GET' && empty($params) !== true) {
             $url .= '?' . http_build_query($params);
         }
 
@@ -49,7 +49,7 @@ class UrlBuilder implements UrlBuilderInterface
     
     private function getCleanPath($path)
     {
-        if (substr($path, strlen($path) - 1) == "/") {
+        if (substr($path, strlen($path) - 1) === "/") {
             $path = substr($path, 0, strlen($path) - 1);
         }
         

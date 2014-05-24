@@ -26,7 +26,7 @@ class Resource implements ResourceInterface
         $this->verb = $verb;
         $this->params = $params;
         
-        if (is_string($path) && substr($path, 0, 1) == "/") {
+        if (is_string($path) && substr($path, 0, 1) === "/") {
             $this->path = $path;
         } else {
             throw new SoundcloudException(

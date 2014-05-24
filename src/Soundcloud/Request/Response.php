@@ -2,8 +2,6 @@
 
 namespace Njasm\Soundcloud\Request;
 
-use Njasm\Soundcloud\Exception\SoundcloudException;
-
 /**
  * SoundCloud API wrapper in PHP
  *
@@ -45,7 +43,7 @@ class Response implements ResponseInterface
     {
         $headers = explode("\n", $headers);
         foreach ($headers as $header) {
-            if (substr($header, 0, 4) == "HTTP") {
+            if (substr($header, 0, 4) === "HTTP") {
                 list($this->httpVersion, $this->httpCode, $this->httpCodeString) = explode(" ", $header, 3);
                 continue;
             }

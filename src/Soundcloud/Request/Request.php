@@ -41,8 +41,7 @@ class Request implements RequestInterface
     
     public function setOptions(array $options)
     {
-        $this->options = $options + $this->options;
-        
+        $this->options = $options + $this->options; 
         return $this;
     }
     
@@ -73,7 +72,7 @@ class Request implements RequestInterface
         curl_setopt($curlHandler, CURLOPT_CUSTOMREQUEST, $verb);
         curl_setopt($curlHandler, CURLOPT_URL, $this->urlBuilder->getUrl());
         
-        if ($verb != 'GET') {
+        if ($verb !== 'GET') {
             curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->resource->getParams());
         }
         

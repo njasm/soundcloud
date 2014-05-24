@@ -43,7 +43,7 @@ class Factory implements FactoryInterface
     
     public function has($interface)
     {
-        return isset($this->map[$interface]) ? true : false;
+        return isset($this->map[$interface]) === true ? true : false;
     }
     
     private function validate($interface)
