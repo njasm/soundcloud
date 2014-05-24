@@ -6,16 +6,19 @@ interface AuthInterface
 {
     /**
      * @param string $clientID Soundcloud Client id.
+     * @return void
      */
     public function setClientID($clientID);
     
     /**
      * @return string Soundcloud Client id.
+     * @return string
      */
     public function getClientID();
     
     /**
      * @param string $clientSecret Soudncloud Client Secret.
+     * @return void
      */
     public function setClientSecret($clientSecret);
     
@@ -26,6 +29,7 @@ interface AuthInterface
     
     /**
      * @param string $authCallback the Callback URL after user authorization at Soundcloud.
+     * @return void
      */
     public function setAuthUrlCallback($authCallback);
     
@@ -46,6 +50,7 @@ interface AuthInterface
     
     /**
      * @param string $scope Authorization Scope.
+     * @return void
      */
     public function setScope($scope);
     
@@ -56,6 +61,7 @@ interface AuthInterface
     
     /**
      * @param int $expire Expire time.
+     * @return void
      */
     public function setExpires($expire);
     
@@ -66,6 +72,7 @@ interface AuthInterface
     
     /**
      * @param string $token Refresh Token.
+     * @return void
      */
     public function setRefreshToken($token);
     

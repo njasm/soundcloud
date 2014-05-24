@@ -55,7 +55,7 @@ class Auth implements AuthInterface
     
     public function getClientSecret()
     {
-        return !empty($this->clientSecret) ? $this->clientSecret : null;
+        return empty($this->clientSecret) === false ? $this->clientSecret : null;
     }
     
     public function setAuthUrlCallback($authCallback)
@@ -65,7 +65,7 @@ class Auth implements AuthInterface
     
     public function getAuthUrlCallback()
     {
-        return !empty($this->authUrlCallback) ? $this->authUrlCallback : null;
+        return empty($this->authUrlCallback) === false ? $this->authUrlCallback : null;
     }
     
     public function setToken($token)
@@ -75,12 +75,12 @@ class Auth implements AuthInterface
     
     public function getToken()
     {
-        return !empty($this->accessToken) ? $this->accessToken : null;
+        return empty($this->accessToken) === false ? $this->accessToken : null;
     }
     
     public function hasToken()
     {
-        return !empty($this->accessToken) ? true : false;
+        return empty($this->accessToken) === false ? true : false;
     }
     
     public function setScope($scope)
@@ -90,7 +90,7 @@ class Auth implements AuthInterface
     
     public function getScope()
     {
-        return isset($this->scope) ? $this->scope : null;
+        return isset($this->scope) === true ? $this->scope : null;
     }
     
     public function setExpires($expires)
@@ -100,7 +100,7 @@ class Auth implements AuthInterface
     
     public function getExpires()
     {
-        return isset($this->expires) ? $this->expires : null;
+        return isset($this->expires) === true ? $this->expires : null;
     }
     
     public function setRefreshToken($refreshToken)
@@ -110,6 +110,6 @@ class Auth implements AuthInterface
     
     public function getRefreshToken()
     {
-        return isset($this->refreshToken) ? $this->refreshToken : null;
+        return isset($this->refreshToken) === true ? $this->refreshToken : null;
     }
 }
