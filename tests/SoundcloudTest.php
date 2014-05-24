@@ -3,12 +3,18 @@
 namespace Njasm\Soundcloud\Tests;
 
 use Njasm\Soundcloud\Resource\Resource;
+use Njasm\Soundcloud\Resource\ResourceInterface;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
+use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 use Njasm\Soundcloud\Auth\Auth;
+use Njasm\Soundcloud\Auth\AuthInterface;
 use Njasm\Soundcloud\Factory\Factory;
+use Njasm\Soundcloud\Factory\FactoryInterface;
 use Njasm\Soundcloud\Request\Request;
+use Njasm\Soundcloud\Request\RequestInterface;
 use Njasm\Soundcloud\Soundcloud;
 use Njasm\Soundcloud\Request\Response;
+use Njasm\Soundcloud\Request\ResponseInterface;
 
 class SoundcloudTest extends \PHPUnit_Framework_TestCase
 {
@@ -81,7 +87,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $property->setValue($this->soundcloud, $factoryMock);
         $response = $this->soundcloud->userCredentials("FakeUser", "FakePassword");
 
-        $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);
+        $this->assertInstanceOf('Njasm\Soundcloud\Request\ResponseInterface', $response);
         $this->assertEquals('{"access_token": "1234567890"}', $response->bodyRaw());
     }
     
@@ -144,7 +150,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $property->setValue($this->soundcloud, $factoryMock);
         $response = $this->soundcloud->codeForToken("FakeCode");
 
-        $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);
+        $this->assertInstanceOf('Njasm\Soundcloud\Request\ResponseInterface', $response);
         $this->assertEquals('{"access_token": "1234567890"}', $response->bodyRaw());
         $this->assertEquals("1234567890", $this->soundcloud->getAuthToken());
     }
@@ -205,7 +211,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $property->setValue($this->soundcloud, $factoryMock);
         $response = $this->soundcloud->request();
 
-        $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);
+        $this->assertInstanceOf('Njasm\Soundcloud\Request\ResponseInterface', $response);
         $this->assertEquals("Dummy Response Body", $response->bodyRaw());
         // coverage, already tested inside Request class
         $this->soundcloud->request(array(CURLOPT_RETURNTRANSFER => true));
@@ -259,7 +265,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
     {
         $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "resource");
         $this->soundcloud->put('/resolve');
-        $this->assertTrue($property->getValue($this->soundcloud) instanceof Resource);
+        $this->assertTrue($property->getValue($this->soundcloud) instanceof \Njasm\Soundcloud\Resource\ResourceInterface);
         $this->assertEquals("put", $property->getValue($this->soundcloud)->getVerb());
     }
     

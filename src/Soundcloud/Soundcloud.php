@@ -329,10 +329,10 @@ class Soundcloud
     private function mergeAuthParams(array $params = array(), $includeClientSecret = false)
     {
         $token = $this->auth->getToken();
-        if ($token) {
+        if ($token !== null) {
             $params = array_merge($params, array('oauth_token' => $token));
         } else {
-            if ($includeClientSecret) {
+            if ($includeClientSecret === true) {
                 $params = array_merge($params, array(
                     'client_id' => $this->auth->getClientID(),
                     'client_secret' => $this->auth->getClientSecret()
