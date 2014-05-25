@@ -13,6 +13,7 @@ checks:
     php:
         no_unnecessary_function_call_in_for_loop: true
         avoid_unnecessary_concatenation: true
+        # code duplication checks, for this project alot of false positives, off for now.
         duplication: true
         prefer_sapi_constant: true
         code_rating: true
@@ -45,7 +46,8 @@ checks:
         avoid_corrupting_byteorder_marks: true
         avoid_entity_manager_injection: true
         catch_class_exists: true
-        encourage_shallow_comparison: false
+        # implicit/excplicit comparation checks
+        encourage_shallow_comparison: false 
         foreach_traversable: true
         foreach_usable_as_reference: true
         instanceof_class_exists: true
