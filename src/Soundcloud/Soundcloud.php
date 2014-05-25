@@ -121,7 +121,7 @@ class Soundcloud
      * @param array $params
      * @return \Njasm\Soundcloud\Soundcloud
      */
-    public function delete($path = null, array $params = array())
+    public function delete($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
         $this->resource = $this->factory->make('ResourceInterface', array('delete', $path, $params));
