@@ -14,7 +14,7 @@ checks:
         no_unnecessary_function_call_in_for_loop: true
         avoid_unnecessary_concatenation: true
         # code duplication checks, for this project alot of false positives, off for now.
-        duplication: true
+        duplication: false
         prefer_sapi_constant: true
         code_rating: true
         variable_existence: true
