@@ -282,7 +282,7 @@ class Soundcloud
     /**
      * Sets the Accept Header to application/xml.
      * 
-     * @return Njasm\Soundcloud\Soundcloud
+     * @return Soundcloud
      */
     public function asXml()
     {
@@ -293,7 +293,7 @@ class Soundcloud
     /**
      * Sets the Accept Header to application/json.
      * 
-     * @return Njasm\Soundcloud\Soundcloud
+     * @return Soundcloud
      */
     public function asJson()
     {

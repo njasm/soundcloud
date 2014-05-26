@@ -47,6 +47,10 @@ class UrlBuilder implements UrlBuilderInterface
         return $url;
     }
     
+    /**
+     * @param string $path
+     * @return string
+     */
     private function getCleanPath($path)
     {
         if (substr($path, strlen($path) - 1) === "/") {

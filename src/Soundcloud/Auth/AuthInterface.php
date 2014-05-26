@@ -17,21 +17,9 @@ interface AuthInterface
     public function getClientID();
     
     /**
-     * @param string $clientSecret Soudncloud Client Secret.
-     * @return void
-     */
-//    public function setClientSecret($clientSecret);
-    
-    /**
      * @return string|null Client Secret string if set, else null is returned.
      */
     public function getClientSecret();
-    
-    /**
-     * @param string $authCallback the Callback URL after user authorization at Soundcloud.
-     * @return void
-     */
-//    public function setAuthUrlCallback($authCallback);
     
     /**
      * @return string|null Access token, null if not set.
@@ -45,6 +33,7 @@ interface AuthInterface
     
     /**
      * @param string $token Access token.
+     * @return void
      */
     public function setToken($token);
     

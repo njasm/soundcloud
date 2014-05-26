@@ -46,6 +46,10 @@ class Factory implements FactoryInterface
         return isset($this->map[$interface]) === true ? true : false;
     }
     
+    /**
+     * @param string $interface
+     * @throws \InvalidArgumentException
+     */
     private function validate($interface)
     {
         if (empty($interface)) {
