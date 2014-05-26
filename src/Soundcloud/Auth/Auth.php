@@ -28,8 +28,10 @@ class Auth implements AuthInterface
     public function __construct($clientID = null, $clientSecret = null, $authUrlCallback = null)
     {
         $this->setClientID($clientID);
-        $this->setClientSecret($clientSecret);
-        $this->setAuthUrlCallback($authUrlCallback);
+//        $this->setClientSecret($clientSecret);
+//        $this->setAuthUrlCallback($authUrlCallback);
+        $this->clientSecret = $clientSecret;
+        $this->authUrlCallback = $authUrlCallback;
     }
     
     public function setClientID($clientID)
@@ -47,21 +49,20 @@ class Auth implements AuthInterface
         return $this->clientID;
     }
     
-    public function setClientSecret($clientSecret)
-    {
-
-        $this->clientSecret = $clientSecret;
-    }
+//    public function setClientSecret($clientSecret)
+//    {
+//        $this->clientSecret = $clientSecret;
+//    }
     
     public function getClientSecret()
     {
         return empty($this->clientSecret) === false ? $this->clientSecret : null;
     }
     
-    public function setAuthUrlCallback($authCallback)
-    {
-        $this->authUrlCallback = $authCallback;
-    }
+//    public function setAuthUrlCallback($authCallback)
+//    {
+//        $this->authUrlCallback = $authCallback;
+//    }
     
     public function getAuthUrlCallback()
     {
