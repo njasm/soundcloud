@@ -3,8 +3,7 @@
 [![Latest Stable Version](https://poser.pugx.org/njasm/soundcloud/v/stable.png)](https://packagist.org/packages/njasm/soundcloud) [![Latest Unstable Version](https://poser.pugx.org/njasm/soundcloud/v/unstable.png)](https://packagist.org/packages/njasm/soundcloud) [![License](https://poser.pugx.org/njasm/soundcloud/license.png)](https://packagist.org/packages/njasm/soundcloud) 
 [![HHVM Status](http://hhvm.h4cc.de/badge/njasm/soundcloud.png)](http://hhvm.h4cc.de/package/njasm/soundcloud) 
 [![Dependency Status](https://www.versioneye.com/user/projects/53826f5414c1582c24000094/badge.svg)](https://www.versioneye.com/user/projects/53826f5414c1582c24000094)
-### Soundcloud.com API Wrapper in PHP
-If you want a stable and complete implementation, have fun with the master TAG 0.0.1 :)
+## Soundcloud.com API Wrapper in PHP
 
 #### Implemented features 
 
