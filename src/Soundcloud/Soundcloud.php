@@ -28,7 +28,7 @@ class Soundcloud
     public function __construct($clientID = null, $clientSecret = null, $authCallbackUri = null)
     {
         $this->factory = new Factory();
-        $this->auth = $this->factory->make('AuthInterface', array($clientID, $clientSecret, $authCallbackUri));
+        $this->auth = $this->make('AuthInterface', array($clientID, $clientSecret, $authCallbackUri));
     }
     
     /**
@@ -82,7 +82,7 @@ class Soundcloud
     public function get($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = $this->factory->make('ResourceInterface', array('get', $path, $params));
+        $this->resource = $this->make('ResourceInterface', array('get', $path, $params));
         return $this;
     }
 
@@ -96,7 +96,7 @@ class Soundcloud
     public function put($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = $this->factory->make('ResourceInterface', array('put', $path, $params));
+        $this->resource = $this->make('ResourceInterface', array('put', $path, $params));
         return $this;
     }
     
@@ -110,7 +110,7 @@ class Soundcloud
     public function post($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = $this->factory->make('ResourceInterface', array('post', $path, $params));
+        $this->resource = $this->make('ResourceInterface', array('post', $path, $params));
         return $this;
     }
     
@@ -124,8 +124,18 @@ class Soundcloud
     public function delete($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = $this->factory->make('ResourceInterface', array('delete', $path, $params));
+        $this->resource = $this->make('ResourceInterface', array('delete', $path, $params));
         return $this;
+    }
+    
+    /**
+     * @param string $interface the interface to build
+     * @param array $params the interface object dependencies
+     * @return object
+     */
+    private function make($interface, array $params = array())
+    {
+        return $this->factory->make($interface, $params);
     }
     
     /**
@@ -164,8 +174,8 @@ class Soundcloud
         );
         
         $params = array_merge($defaultParams, $params);
-        $resource = $this->factory->make('ResourceInterface', array('get', '/connect', $params));
-        $url = $this->factory->make('UrlBuilderInterface', array($resource, 'www'));
+        $resource = $this->make('ResourceInterface', array('get', '/connect', $params));
+        $url = $this->make('UrlBuilderInterface', array($resource, 'www'));
         
         return $url->getUrl();
     }
@@ -188,7 +198,7 @@ class Soundcloud
         
         $mergedParams = array_merge($defaultParams, $params);
         $finalParams = $this->mergeAuthParams($mergedParams, true);
-        $this->resource = $this->factory->make('ResourceInterface', array('post', '/oauth2/token', $finalParams));
+        $this->resource = $this->make('ResourceInterface', array('post', '/oauth2/token', $finalParams));
         
         $response = $this->request()->bodyObject();
         
@@ -216,7 +226,7 @@ class Soundcloud
         );
         
         $params = $this->mergeAuthParams($defaultParams, true);
-        $this->resource = $this->factory->make('ResourceInterface', array('post', '/oauth2/token', $params));
+        $this->resource = $this->make('ResourceInterface', array('post', '/oauth2/token', $params));
         
         $response = $this->request()->bodyObject();
         
@@ -237,7 +247,7 @@ class Soundcloud
     public function download($trackID, $redirectWebUser = true)
     {
         $path = '/tracks/' . intval($trackID) . '/download';
-        $this->resource = $this->factory->make('ResourceInterface', array('get', $path));
+        $this->resource = $this->make('ResourceInterface', array('get', $path));
 
         if ($redirectWebUser) {
             $this->request();
@@ -256,8 +266,8 @@ class Soundcloud
      */
     public function request(array $params = array())
     {
-        $urlBuilder = $this->factory->make('UrlBuilderInterface', array($this->resource));
-        $this->request = $this->factory->make('RequestInterface', array($this->resource, $urlBuilder, $this->factory));
+        $urlBuilder = $this->make('UrlBuilderInterface', array($this->resource));
+        $this->request = $this->make('RequestInterface', array($this->resource, $urlBuilder, $this->factory));
         $this->setResponseFormat($this->request);
         
         if (!empty($params)) {
