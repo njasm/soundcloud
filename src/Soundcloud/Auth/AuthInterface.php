@@ -5,12 +5,6 @@ namespace Njasm\Soundcloud\Auth;
 interface AuthInterface
 {
     /**
-     * @param string $clientID Soundcloud Client id.
-     * @return void
-     */
-    public function setClientID($clientID);
-    
-    /**
      * @return string Soundcloud Client id.
      * @return string
      */

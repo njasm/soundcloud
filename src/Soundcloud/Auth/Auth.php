@@ -27,18 +27,13 @@ class Auth implements AuthInterface
     
     public function __construct($clientID = null, $clientSecret = null, $authUrlCallback = null)
     {
-        $this->setClientID($clientID);
-        $this->clientSecret = $clientSecret;
-        $this->authUrlCallback = $authUrlCallback;
-    }
-    
-    public function setClientID($clientID)
-    {
         if ($this->isValidClientID($clientID) === false) {
-            throw new \InvalidArgumentException("No ClientID Provided.");
+            throw new \InvalidArgumentException("No ClientID Provided.");            
         }
         
         $this->clientID = $clientID;
+        $this->clientSecret = $clientSecret;
+        $this->authUrlCallback = $authUrlCallback;
     }
     
     /**
@@ -57,12 +52,12 @@ class Auth implements AuthInterface
     
     public function getClientSecret()
     {
-        return empty($this->clientSecret) === false ? $this->clientSecret : null;
+        return $this->clientSecret;
     }
     
     public function getAuthUrlCallback()
     {
-        return empty($this->authUrlCallback) === false ? $this->authUrlCallback : null;
+        return $this->authUrlCallback;
     }
     
     public function setToken($token)
@@ -72,7 +67,7 @@ class Auth implements AuthInterface
     
     public function getToken()
     {
-        return empty($this->accessToken) === false ? $this->accessToken : null;
+        return $this->accessToken;
     }
     
     public function hasToken()
@@ -87,7 +82,7 @@ class Auth implements AuthInterface
     
     public function getScope()
     {
-        return isset($this->scope) === true ? $this->scope : null;
+        return $this->scope;
     }
     
     public function setExpires($expires)
@@ -97,7 +92,7 @@ class Auth implements AuthInterface
     
     public function getExpires()
     {
-        return isset($this->expires) === true ? $this->expires : null;
+        return $this->expires;
     }
     
     public function setRefreshToken($refreshToken)
@@ -107,6 +102,6 @@ class Auth implements AuthInterface
     
     public function getRefreshToken()
     {
-        return isset($this->refreshToken) === true ? $this->refreshToken : null;
+        return $this->refreshToken;
     }
 }
