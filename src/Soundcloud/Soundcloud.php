@@ -52,17 +52,6 @@ class Soundcloud
     }
     
     /**
-     * Sets the access token.
-     * 
-     * @return \Njasm\Soundcloud\Soundcloud
-     */
-    public function setAuthToken($token)
-    {
-        $this->auth->setToken($token);
-        return $this;
-    }
-    
-    /**
      * Get the token scope.
      * 
      * @return mixed the scope for this access token, null if empty
@@ -203,7 +192,7 @@ class Soundcloud
         $response = $this->request()->bodyObject();
         
         if (isset($response->access_token)) {
-            $this->setAuthToken($response->access_token);
+            $this->auth->setToken($response->access_token);
         }
         
         return $this->response;
@@ -231,7 +220,7 @@ class Soundcloud
         $response = $this->request()->bodyObject();
         
         if (isset($response->access_token)) {
-            $this->setAuthToken($response->access_token);
+            $this->auth->setToken($response->access_token);
         }
         
         return $this->response;
@@ -268,11 +257,8 @@ class Soundcloud
     {
         $urlBuilder = $this->make('UrlBuilderInterface', array($this->resource));
         $this->request = $this->make('RequestInterface', array($this->resource, $urlBuilder, $this->factory));
+        $this->request->setOptions($params);
         $this->setResponseFormat($this->request);
-        
-        if (!empty($params)) {
-            $this->request->setOptions($params);
-        }
         
         $this->response = $this->request->exec();
         

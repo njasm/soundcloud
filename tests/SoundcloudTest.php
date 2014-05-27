@@ -225,13 +225,6 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("ClientIDHash", $this->soundcloud->getAuthClientID());
     }
     
-    public function testSetAndGetAuthToken()
-    {
-        $token = "1-12345-1234567-8cee6a54ad797923";
-        $this->soundcloud->setAuthToken($token);
-        $this->assertEquals("1-12345-1234567-8cee6a54ad797923", $this->soundcloud->getAuthToken());
-    }
-    
     public function testNulledGetAuthToken()
     {
         $this->assertNull($this->soundcloud->getAuthToken());
@@ -319,21 +312,25 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $method = $this->reflectMethod("Njasm\\Soundcloud\\Soundcloud", "mergeAuthParams");
         $params = $method->invoke($this->soundcloud, array(), false);
         $this->assertArrayHasKey("client_id", $params);
-        
+        $this->assertArrayNotHasKey("oauth_token", $params);
+                
         $params = $method->invoke($this->soundcloud, array(), true);
         $this->assertArrayHasKey("client_secret", $params);
         
-        $this->soundcloud->setAuthToken("Test-Token");
-        $params = $method->invoke($this->soundcloud, array(), false);
-        $this->assertArrayHasKey("oauth_token", $params);
-        $this->assertArrayNotHasKey("client_id", $params);
-    }
-    
-    public function testDownload()
-    {
-//        $id = 1;
-//        $file = $this->soundcloud->download($id, false);
-//        $this->assertInstanceOf('\FileInfo', $file);
+        $authStub = $this->getMock(
+            "Njasm\\Soundcloud\\Auth\\Auth",
+            array('getToken'),
+            array('ClientIDHash', 'ClientSecretHash')
+        );
+        $authStub->expects($this->once())
+            ->method('getToken')
+            ->willReturn("1-23-456789");
+        $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", 'auth');
+        $property->setValue($this->soundcloud, $authStub);
+        
+        $params = $method->invoke($this->soundcloud, array(), true);
+        $this->assertArrayHasKey('oauth_token', $params);
+        $this->assertEquals("1-23-456789", $params['oauth_token']);
     }
     
     /**

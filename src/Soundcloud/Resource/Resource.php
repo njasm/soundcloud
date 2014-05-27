@@ -19,6 +19,7 @@ class Resource implements ResourceInterface
     private $path;
     private $params = array();
     private $verb;
+    private $availableVerbs = array('get', 'post', 'put', 'delete', 'patch', 'options');
     
     public function __construct($verb = null, $path = null, array $params = array())
     {
@@ -59,16 +60,8 @@ class Resource implements ResourceInterface
     
     private function validate($verb)
     {
-        switch (strtolower($verb)) {
-            case 'get':
-            case 'post':
-            case 'put':
-            case 'patch':
-            case 'options':
-            case 'delete':
-                break;
-            default:
-                throw new SoundcloudException("Resource of type: $verb, not available!");
-        };
+        if (in_array(strtolower($verb), $this->availableVerbs) === false) {
+            throw new SoundcloudException("Resource of type: $verb, not available!");
+        }
     }
 }
