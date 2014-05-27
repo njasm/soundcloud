@@ -41,6 +41,10 @@ class Auth implements AuthInterface
         $this->clientID = $clientID;
     }
     
+    /**
+     * @param string $clientID
+     * @return boolean
+     */
     private function isValidClientID($clientID)
     {
         return is_string($clientID) === true && empty($clientID) === false;
