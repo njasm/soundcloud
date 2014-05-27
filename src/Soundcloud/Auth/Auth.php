@@ -34,12 +34,16 @@ class Auth implements AuthInterface
     
     public function setClientID($clientID)
     {
-        $clientID = trim($clientID);
-        if (is_string($clientID) === true && empty($clientID) === false) {
-            $this->clientID = $clientID;
-        } else {
+        if ($this->isValidClientID($clientID) === false) {
             throw new \InvalidArgumentException("No ClientID Provided.");
         }
+        
+        $this->clientID = $clientID;
+    }
+    
+    private function isValidClientID($clientID)
+    {
+        return is_string($clientID) === true && empty($clientID) === false;
     }
     
     public function getClientID()
