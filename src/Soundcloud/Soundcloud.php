@@ -136,11 +136,11 @@ class Soundcloud
      */
     public function setParams(array $params = array())
     {
-        if (is_object($this->resource)) {
-            $this->resource->setParams($params);
-        } elseif (!isset($this->resource)) {
+        if (!isset($this->resource)) {
             throw new SoundcloudException("No Resource found. you must call a http verb method before " . __METHOD__);
         }
+        
+        $this->resource->setParams($params);
         
         return $this;
     }
@@ -322,20 +322,14 @@ class Soundcloud
     {
         $token = $this->auth->getToken();
         if ($token !== null) {
-            $params = array_merge($params, array('oauth_token' => $token));
-        } else {
-            if ($includeClientSecret === true) {
-                $params = array_merge($params, array(
-                    'client_id' => $this->auth->getClientID(),
-                    'client_secret' => $this->auth->getClientSecret()
-                ));
-            } else {
-                $params = array_merge($params, array(
-                    'client_id' => $this->auth->getClientID()
-                ));
-            }
+            return array_merge($params, array('oauth_token' => $token));
+        } elseif ($token === null && $includeClientSecret === false) {
+            return array_merge($params, array('client_id' => $this->auth->getClientID()));
         }
         
-        return $params;
+        return array_merge($params, array(
+            'client_id' => $this->auth->getClientID(),
+            'client_secret' => $this->auth->getClientSecret()
+        ));          
     }
 }
