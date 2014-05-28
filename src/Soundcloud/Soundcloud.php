@@ -323,7 +323,9 @@ class Soundcloud
         $token = $this->auth->getToken();
         if ($token !== null) {
             return array_merge($params, array('oauth_token' => $token));
-        } elseif ($token === null && $includeClientSecret === false) {
+        }
+        
+        if ($token === null && $includeClientSecret === false) {
             return array_merge($params, array('client_id' => $this->auth->getClientID()));
         }
         
