@@ -325,13 +325,10 @@ class Soundcloud
             return array_merge($params, array('oauth_token' => $token));
         }
         
-        if ($token === null && $includeClientSecret === false) {
-            return array_merge($params, array('client_id' => $this->auth->getClientID()));
+        if ($includeClientSecret === true) {
+            $params = array_merge($params, array('client_secret' => $this->auth->getClientSecret()));
         }
         
-        return array_merge($params, array(
-            'client_id' => $this->auth->getClientID(),
-            'client_secret' => $this->auth->getClientSecret()
-        ));          
+        return array_merge($params, array('client_id' => $this->auth->getClientID()));          
     }
 }
