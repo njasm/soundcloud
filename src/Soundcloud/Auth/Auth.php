@@ -104,4 +104,17 @@ class Auth implements AuthInterface
     {
         return $this->refreshToken;
     }
+    
+    public function mergeParams(array $params = array(), $includeClientSecret = false)
+    {
+        if ($this->accessToken !== null) {
+            return array_merge($params, array('oauth_token' => $this->accessToken));
+        }
+        
+        if ($includeClientSecret === true) {
+            $params = array_merge($params, array('client_secret' => $this->clientSecret));
+        }
+        
+        return array_merge($params, array('client_id' => $this->clientID));              
+    }
 }
