@@ -10,29 +10,27 @@
 * User Authorization/Authentication
 * User Credentials Flow Authentication
 * Access to all GET, PUT, POST and DELETE Resources
-* Media File Download
-
-#### Todo
-
-* Media File Upload
+* Media File Download/Upload
 
 ##### Examples
 ###### Get Authorization Url.
 ```php
-$facade = new Soundcloud($clientID, $clientSecret, $callbackUri);
+$facade = new SoundcloudFacade($clientID, $clientSecret, $callbackUri);
 $url = $facade->getAuthUrl();
 
-// or inject your speciefic request params
-$url = $facade->getAuthUrl(array(
-    'response_type' => 'code',
-    'scope' => '*',
-    'state' => 'my_app_state_code'
-));
+// or inject your specific request params
+$url = $facade->getAuthUrl(
+    array(
+        'response_type' => 'code',
+        'scope' => '*',
+        'state' => 'my_app_state_code'
+    )
+);
 ```
 
 ###### Authentication 
 ```php
-$facade = new Soundcloud($clientID, $clientSecret, $callbackUri);
+$facade = new SoundcloudFacade($clientID, $clientSecret, $callbackUri);
 // this is your callbackUri script that will receive the $_GET['code']
 $code = $_GET['code'];
 $facade->codeForToken($code); 
@@ -40,25 +38,34 @@ $facade->codeForToken($code);
 ```
 
 ###### Authentication with user credentials flow.
+If an access token is returned from soundcloud, it will be automatically set for future requests. 
+The Response object will always be returned to the client.
 ```php
-$facade = new Soundcloud($clientID, $clientSecret);
-// If an access token is returned from soundcloud, it will be automatically set for future requests. 
-// The Response object will always be returned to the client.
-$facade->userCredentials($username, $password);
+$facade = new SoundcloudFacade($clientID, $clientSecret);
+$facade->userCredentials($username, $password); // on success, access_token is set by default for next requests.
 $response = $facade->get('/me')->request();
-// raw body response
+// raw/string body response
 echo $response->bodyRaw();
+// as object
+echo $response->bodyObject()->id;
+```
+
+###### Accept response as json or xml
+```php
+...
+$response  = $facade->get('/tracks')->asJson()->request();
+// or
+$response = $facade->get('/tracks')->asXml()->request();
 ```
 
 ###### Add params to resource.
 ```php
 // argument array style
-$facade->get('/resolve', array(
-    'url' => 'http://www.soundcloud.com/hybrid-species'
-));
+$facade->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species'));
 
 // chaining-methods
-$response = $facade->get('/resolve')
+$response = $facade
+    ->get('/resolve')
     ->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
 
 // or not
@@ -93,11 +100,20 @@ $response = $facade->getCurlResponse();
 
 ###### File Download
 ```php
-//this will redirect user, sending a header Location to the track.
-$facade->download($trackID);
+// this will redirect user, sending a header Location to the track.
+$response = $facade->download($trackID);
+// redirect user to download URL suplied by soundcloud.
+header('Loacation: ' . $response->getHeader('Location'));
 
 // CAUTION: this will get the track into an in-memory variable in your server.
-$response = $facade->download($trackID, false);
+$response = $facade->download($trackID, true);
 // save it to a file.
 file_put_contents("great_track.mp3", $response->bodyRaw());
+```
+
+###### File Upload
+```php
+$trackPath = '/home/njasm/great.mp3';
+$params = array('track[name]' => 'Cool remix');
+$response = $facade->upload($trackPath, $params);
 ```

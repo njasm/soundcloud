@@ -223,6 +223,70 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
         $response = $this->soundcloud->download(123);
         $this->assertEquals('http://127.0.0.1/the_track.mp3', $response->getHeader('Location'));
     }
+    
+    public function testUpload()
+    {
+        // request Factory mock
+        $reqFactoryMock = $this->getMock(
+            "Njasm\\Soundcloud\\Factory\\Factory",
+            array('make')
+        );
+        $reqFactoryMock->expects($this->any())
+            ->method('make')
+            ->with($this->equalTo('ResponseInterface'))
+            ->will(
+                $this->returnCallback(
+                    function ($arg) {
+                        return new Response(
+                            "Content-Type: application/json\r\nurl: http://127.0.0.1/the_track.mp3\r\n\r\nSUCCESS_UPLOAD",
+                            array('url' => 'http://127.0.0.1/index.php'),
+                            0,
+                            "No Error"
+                        );
+                    }
+                )
+            );
+            
+        // soundcloud Factory mock
+        $factoryMock = $this->getMock(
+            "Njasm\\Soundcloud\\Factory\\Factory",
+            array('make')
+        );
+        $factoryMock->expects($this->any())
+            ->method('make')
+            ->with(
+                $this->logicalOr(
+                    $this->equalTo('UrlBuilderInterface'),
+                    $this->equalTo('RequestInterface'),
+                    $this->equalTo('ResourceInterface')
+                )
+            )->will(
+                $this->returnCallback(
+                    function ($arg) use (&$reqFactoryMock) {
+                        if ($arg == 'UrlBuilderInterface') {
+                            return new UrlBuilder(new Resource('post', '/tracks'), "127", "0.0.1", "http://");
+                        } elseif ($arg == 'RequestInterface') {
+                            return new Request(
+                                new Resource('post', '/tracks'),
+                                new UrlBuilder(new Resource('post', '/tracks'), "127", "0.0.1", "http://"),
+                                $reqFactoryMock
+                            );
+                        } elseif ($arg == 'ResourceInterface') {
+                            return new Resource('post', '/tracks');
+                        }
+                    }
+                )
+            );
+                
+        $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "factory");
+        $property->setAccessible(true);
+        $property->setValue($this->soundcloud, $factoryMock);
+        
+        $filePath = __DIR__ . 'bootstrap.php';
+        $response = $this->soundcloud->upload($filePath)->bodyRaw();
+        
+        $this->assertEquals("SUCCESS_UPLOAD", $response);
+    }
         
     /**
      * Helper method for properties reflection testing.

@@ -4,17 +4,16 @@ namespace Njasm\Soundcloud;
 
 use Njasm\Soundcloud\Soundcloud;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * SoundCloud API wrapper in PHP
+ *
+ * @author      Nelson J Morais <njmorais@gmail.com>
+ * @copyright   2014 Nelson J Morais <njmorais@gmail.com>
+ * @license     http://www.opensource.org/licenses/mit-license.php MIT
+ * @link        http://github.com/njasm/soundcloud
+ * @package     Njasm\Soundcloud
  */
 
-/**
- * Description of SoundcloudFacade
- *
- * @author njasm
- */
 class SoundcloudFacade extends Soundcloud
 {   
     /**
@@ -58,9 +57,7 @@ class SoundcloudFacade extends Soundcloud
         );
         
         $params = $this->mergeAuthParams($defaultParams, true);
-        $this->resource = $this->make('ResourceInterface', array('post', '/oauth2/token', $params));
-        
-        $response = $this->request()->bodyObject();
+        $response = $this->post('/oauth2/token', $params)->asJson()->request()->bodyObject();
         
         if (isset($response->access_token)) {
             $this->auth->setToken($response->access_token);
@@ -87,9 +84,7 @@ class SoundcloudFacade extends Soundcloud
         
         $mergedParams = array_merge($defaultParams, $params);
         $finalParams = $this->mergeAuthParams($mergedParams, true);
-        $this->resource = $this->make('ResourceInterface', array('post', '/oauth2/token', $finalParams));
-        
-        $response = $this->request()->bodyObject();
+        $response = $this->post('/oauth2/token', $finalParams)->asJson()->request()->bodyObject();
         
         if (isset($response->access_token)) {
             $this->auth->setToken($response->access_token);
@@ -99,16 +94,18 @@ class SoundcloudFacade extends Soundcloud
     }
     
     /**
-     * Download a track.
+     * Download a track from soundcloud.
      * 
      * @param integer track ID.
-     * @param boolean $redirectWebUser if we should redirect the user, sending a header('Location: track_url');
+     * @param boolean $download if we should follow location and download the media file to an in-memory variable 
+     *                          accessible on the Response::bodyRaw() method, or return the Response object with the
+     *                          location header with the direct URL.
      * @return mixed An object with the download location, or redirect user to that Location.
      */
     public function download($trackID, $download = false)
     {
         $path = '/tracks/' . intval($trackID) . '/download';
-        $this->resource = $this->make('ResourceInterface', array('get', $path));
+        $this->get($path);
 
         if ($download === true) {
             $this->request(array(CURLOPT_FOLLOWLOCATION => true));
@@ -118,4 +115,33 @@ class SoundcloudFacade extends Soundcloud
         
         return $this->response;        
     }
+    
+    /**
+     * Upload a track to soundcloud.
+     * 
+     * @param string $trackPath the path to the media file to be uploaded to soundcloud.
+     * @param array $params the params/info for the track that will be uploaded like, licence, name, etc.
+     */
+    public function upload($trackPath, array $params = array())
+    {
+        $file = $this->getCurlFile($trackPath);
+        $params = array_merge($params, array('track[asset_data]' => $file));
+        $params = $this->mergeAuthParams($params);
+        
+        return $this->post('/tracks')->setParams($params)->request();
+    }
+    
+    /**
+     * @param string $trackPath the full path for the media file to upload.
+     * @return mixed \CURLFile object if CurlFile class available, else prepend an @ for deprecated file upload.
+     */
+    private function getCurlFile($trackPath)
+    {
+        if (class_exists('CurlFile') === true) {
+            return new \CURLFile($trackPath);
+        }
+        
+        return "@" . $trackPath;
+    }
+    
 }
