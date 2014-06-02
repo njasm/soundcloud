@@ -36,9 +36,7 @@ class Resource implements ResourceInterface
     
     public function setParams(array $params = array())
     {
-        if (!empty($params)) {
-            $this->params = array_merge($this->params, $params);
-        }
+        $this->params = array_merge($this->params, $params);
     }
     
     public function getParams()
