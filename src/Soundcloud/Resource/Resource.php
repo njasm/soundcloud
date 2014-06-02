@@ -2,8 +2,6 @@
 
 namespace Njasm\Soundcloud\Resource;
 
-use Njasm\Soundcloud\Exception\SoundcloudException;
-
 /**
  * SoundCloud API wrapper in PHP
  *
@@ -28,7 +26,7 @@ class Resource implements ResourceInterface
         $this->params = $params;
         
         if ($this->isValidPath($path) === false) {
-            throw new SoundcloudException(
+            throw new \RuntimeException(
                 "Path cannot be other then a string type and should start with a '/' (Slash)."
             );
         }
@@ -61,7 +59,7 @@ class Resource implements ResourceInterface
     private function isValidVerb($verb)
     {
         if (in_array(strtolower($verb), $this->availableVerbs) === false) {
-            throw new SoundcloudException("Resource of type: $verb, not available!");
+            throw new \OutOfBoundsException("Resource of type: $verb, not available!");
         }
     }
     

@@ -3,7 +3,6 @@
 namespace Njasm\Soundcloud;
 
 use Njasm\Soundcloud\Request\RequestInterface;
-use Njasm\Soundcloud\Exception\SoundcloudException;
 use Njasm\Soundcloud\Factory\Factory;
 
 /**
@@ -142,12 +141,12 @@ class Soundcloud
      * 
      * @param array $params
      * @return \Njasm\Soundcloud\Soundcloud
-     * @throws SoundcloudException
+     * @throws RuntimeException
      */
     public function setParams(array $params = array())
     {
         if (!isset($this->resource)) {
-            throw new SoundcloudException("No Resource found. you must call a http verb method before " . __METHOD__);
+            throw new \RuntimeException("No Resource found. you must call a http verb method before " . __METHOD__);
         }
         
         $this->resource->setParams($params);

@@ -162,7 +162,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
     public function testNoResourceException()
     {
         $this->setExpectedException(
-            'Njasm\Soundcloud\Exception\SoundcloudException',
+            '\RuntimeException',
             "No Resource found. you must call a http verb method before Njasm\Soundcloud\Soundcloud::setParams"
         );
         

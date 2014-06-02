@@ -14,7 +14,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
     public function testException()
     {
         $this->setExpectedException(
-            'Njasm\Soundcloud\Exception\SoundcloudException',
+            '\RuntimeException',
             "Path cannot be other then a string type and should start with a '/' (Slash)."
         );
         $this->factory->make('ResourceInterface', array('get'));
@@ -23,7 +23,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
     public function testResourceOfTypeNotAvailableException()
     {
         $this->setExpectedException(
-            'Njasm\Soundcloud\Exception\SoundcloudException',
+            '\OutOfBoundsException',
             "Resource of type: head, not available!"
         );
         $this->factory->make('ResourceInterface', array('head'));
