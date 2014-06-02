@@ -1,0 +1,5 @@
+test:
+  override:
+    - pwd
+    - mkdir -p build/logs
+    - phpunit -v -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
