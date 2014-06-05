@@ -61,7 +61,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
                 $this->returnCallback(
                     function ($arg) {
                         return new Response(
-                            "HTTP/1.1 302 Found\n\nurl: http://127.0.0.1/index.php\r\n\r\n{\"status\": \"ok\"}",
+                            "HTTP/1.1 302 Found\nurl: http://127.0.0.1/index.php\r\n\r\n{\"status\": \"ok\"}",
                             array('url' => 'http://127.0.0.1/index.php'),
                             0,
                             "No Error"
