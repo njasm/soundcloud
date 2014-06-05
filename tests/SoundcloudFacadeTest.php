@@ -45,7 +45,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
                 $this->returnCallback(
                     function ($arg) {
                         return new Response(
-                            "Content-Type: application/json\r\nurl: http://127.0.0.1/index.php\r\n\r\n{\"access_token\": \"1234567890\"}",
+                            "HTTP/1.1 302 Found\nContent-Type: application/json\r\nurl: http://127.0.0.1/index.php\r\n\r\n{\"access_token\": \"1234567890\"}",
                             array('url' => 'http://127.0.0.1/index.php'),
                             0,
                             "No Error"
@@ -109,7 +109,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
                 $this->returnCallback(
                     function ($arg) {
                         return new Response(
-                            "Content-Type: application/json\r\nurl: http://127.0.0.1/index.php\r\n\r\n{\"access_token\": \"1234567890\"}",
+                            "HTTP/1.1 302 Found\nContent-Type: application/json\r\nurl: http://127.0.0.1/index.php\r\n\r\n{\"access_token\": \"1234567890\"}",
                             array('url' => 'http://127.0.0.1/index.php'),
                             0,
                             "No Error"
@@ -172,7 +172,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
                 $this->returnCallback(
                     function ($arg) {
                         return new Response(
-                            "Content-Type: application/octet-stream\r\nLocation: http://127.0.0.1/the_track.mp3\r\n\r\nBIG_DATA_TRACK",
+                            "HTTP/1.1 302 Found\nContent-Type: application/octet-stream\r\nLocation: http://127.0.0.1/the_track.mp3\r\n\r\nBIG_DATA_TRACK",
                             array('url' => 'http://127.0.0.1/index.php'),
                             0,
                             "No Error"
@@ -238,7 +238,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
                 $this->returnCallback(
                     function ($arg) {
                         return new Response(
-                            "Content-Type: application/json\r\nurl: http://127.0.0.1/the_track.mp3\r\n\r\nSUCCESS_UPLOAD",
+                            "HTTP/1.1 302 Found\nContent-Type: application/json\r\nurl: http://127.0.0.1/the_track.mp3\r\n\r\nSUCCESS_UPLOAD",
                             array('url' => 'http://127.0.0.1/index.php'),
                             0,
                             "No Error"
