@@ -33,8 +33,8 @@ class Response implements ResponseInterface
         
         list($headers, $body) = $this->buildHeaderParts($response);
 
+        $this->buildHeadersArray($headers);        
         $this->body = $body;
-        $this->buildHeadersArray($headers);
     }
     
     private function buildHeaderParts($response)
@@ -64,22 +64,12 @@ class Response implements ResponseInterface
     
     public function hasHeader($header)
     {
-        $header = trim($header);
-        if (array_key_exists($header, $this->headers)) {
-            return true;
-        }
-        
-        return false;
+        return (array_key_exists($header, $this->headers));
     }
     
     public function getHeader($header)
     {
-        $header = trim($header);
-        if (array_key_exists($header, $this->headers)) {
-            return $this->headers[$header];
-        }
-        
-        return null;
+        return ($this->hasHeader($header)) ? $this->headers[$header] : null;
     }
     
     public function bodyRaw()
@@ -92,11 +82,13 @@ class Response implements ResponseInterface
         $contentType = $this->getHeader('Content-Type');
         if (stripos($contentType, 'application/json') !== false) {
             return json_decode($this->body);
-        } elseif (stripos($contentType, 'application/xml') !== false) {
-            return simplexml_load_string($this->body);
-        } else {
-            throw new \OutOfBoundsException("Last Request Content-Type isn't application/json nor application/xml.");
         }
+        
+        if (stripos($contentType, 'application/xml') !== false) {
+            return simplexml_load_string($this->body);
+        }
+        
+        throw new \OutOfBoundsException("Last Request Content-Type isn't application/json nor application/xml.");
     }
     
     public function getHttpVersion()

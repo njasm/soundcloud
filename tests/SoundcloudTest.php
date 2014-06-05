@@ -42,7 +42,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
                 $this->returnCallback(
                     function ($arg) {
                         return new Response(
-                            "url: http://127.0.0.1/index.php\r\n\r\nDummy Response Body",
+                            "HTTP/1.1 302 Found\nurl: http://127.0.0.1/index.php\r\n\r\nDummy Response Body",
                             array('url' => 'http://127.0.0.1/index.php'),
                             0,
                             "No Error"
