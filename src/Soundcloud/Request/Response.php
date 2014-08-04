@@ -105,4 +105,24 @@ class Response implements ResponseInterface
     {
         return $this->info;
     }
+    
+    public function getErrorNo()
+    {
+        return $this->errno;
+    }
+    
+    public function getErrorString()
+    {
+        return $this->errorString;
+    }
+    
+    public function getRaw()
+    {
+        return $this->response;
+    }
+    
+    public function getHttpCodeString()
+    {
+        return $this->httpCodeString;
+    }
 }
