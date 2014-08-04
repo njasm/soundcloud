@@ -120,4 +120,9 @@ class Response implements ResponseInterface
     {
         return $this->response;
     }
+    
+    public function getHttpCodeString()
+    {
+        return $this->httpCodeString;
+    }
 }
