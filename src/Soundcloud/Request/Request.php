@@ -38,29 +38,54 @@ class Request implements RequestInterface
         $this->factory = $factory;
     }
     
+    /**
+     * {@inheritdoc}
+     * 
+     * @return Request
+     */
     public function setOptions(array $options)
     {
         $this->options = $options + $this->options; 
         return $this;
     }
     
+    /**
+     * {@inheritdoc}
+     * 
+     * @return array
+     */
     public function getOptions()
     {
         return $this->options;
     }
     
+    /**
+     * {@inheritdoc}
+     * 
+     * @return Request
+     */
     public function asXml()
     {
         $this->responseFormat = 'application/xml';
         return $this;
     }
     
+    /**
+     * {@inheritdoc}
+     * 
+     * @return Request
+     */    
     public function asJson()
     {
         $this->responseFormat = 'application/json';
         return $this;
     }
     
+    /**
+     * {@inheritdoc}
+     * 
+     * @return ResponseInterface
+     */
     public function exec()
     {
         $verb = strtoupper($this->resource->getVerb());

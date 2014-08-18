@@ -2,41 +2,40 @@
 
 namespace Njasm\Soundcloud\Request;
 
+/**
+ * SoundCloud API wrapper in PHP
+ *
+ * @author      Nelson J Morais <njmorais@gmail.com>
+ * @copyright   2014 Nelson J Morais <njmorais@gmail.com>
+ * @license     http://www.opensource.org/licenses/mit-license.php MIT
+ * @link        http://github.com/njasm/soundcloud
+ * @package     Njasm\Soundcloud
+ */
+
 interface RequestInterface
 {
     /**
-     * Set curl options.
-     * 
-     * @param array $options (key => value) pairs
-     * @return void 
+     * Set curl options
      */
     public function setOptions(array $options);
     
     /**
      * Get curl options
-     * 
-     * @return array (key => value) pairs
      */
     public function getOptions();
     
     /**
      * Execute a curl request
-     * 
-     * @return Response The Response object
      */
     public function exec();
     
     /**
      * Sets the request to accept XML response
-     * 
-     * @return void
      */
     public function asXml();
     
     /**
      * Sets the request to accept JSON response
-     * 
-     * @return void
      */
     public function asJson();
 }
