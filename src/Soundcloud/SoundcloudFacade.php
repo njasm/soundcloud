@@ -88,6 +88,38 @@ class SoundcloudFacade extends Soundcloud
         
         if (isset($response->access_token)) {
             $this->auth->setToken($response->access_token);
+            $this->auth->setScope($response->scope);
+        }
+        
+        return $this->response;
+    }
+    
+    /**
+     * Refresh Auth access token.
+     * 
+     * @param string $refreshToken the refresh token to send to soundcloud. if null, the default Auth object
+     *                             refresh token will be used.
+     * @param array $params 
+     * @return Njasm\Soundcloud\Request\ResponseInterface
+     */    
+    public function refreshAccessToken($refreshToken = null, array $params = array())
+    {
+        $defaultParams = array(
+            'redirect_uri'  => $this->auth->getAuthUrlCallback(),
+            'client_id'     => $this->auth->getClientID(),
+            'client_secret' => $this->auth->getClientSecret(),
+            'grant_type'    => 'refresh_token',
+            'refresh_token' => (!is_null($refreshToken)) ?: $this->auth->getRefreshToken()
+        );
+        
+        $finalParams = array_merge($defaultParams, $params);
+        $response = $this->post('oauth2/token', $finalParams)->asJson()->request()->bodyObject();
+        
+        if (isset($response->access_token)) {
+            $this->auth->setToken($response->access_token);
+            $this->auth->setScope($response->scope);
+            $this->auth->setExpires($response->expires);
+            $this->auth->setRefreshToken($response->refresh_token);
         }
         
         return $this->response;

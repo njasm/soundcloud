@@ -71,7 +71,7 @@ class Soundcloud
     }
 
     /**
-     * Set the access token.
+     * Set the Auth access token.
      * 
      * @return void
      */
@@ -79,6 +79,37 @@ class Soundcloud
     {
         $this->auth->setToken($accessToken);
     }
+
+    /**
+     * Set the Auth Scope.
+     * 
+     * @return void
+     */
+    public function setAuthScope($scope)
+    {
+        $this->auth->setScope($scope);
+    }
+
+    /**
+     * Set the Auth Expires.
+     * 
+     * @return void
+     */
+    public function setAuthExpires($expires)
+    {
+        $this->auth->setExpires($expires);
+    }
+    
+    /**
+     * Set the Auth refresh token.
+     * 
+     * @return void
+     */    
+    public function setRefreshToken($refreshToken)
+    {
+        $this->auth->setRefreshToken($refreshToken);
+    }
+        
     
     /**
      * Sets up a GET Resource.
