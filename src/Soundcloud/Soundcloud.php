@@ -72,10 +72,12 @@ class Soundcloud
 
     /**
      * Set the access token.
+     * 
+     * @return void
      */
     public function setAccessToken($accessToken)
     {
-        return $this->auth->setToken($accessToken);
+        $this->auth->setToken($accessToken);
     }
     
     /**
