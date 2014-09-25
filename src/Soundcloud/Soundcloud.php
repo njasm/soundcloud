@@ -69,6 +69,16 @@ class Soundcloud
     {
         return $this->auth->getExpires();
     }
+
+    /**
+     * Set the access token.
+     * 
+     * @return void
+     */
+    public function setAccessToken($accessToken)
+    {
+        return $this->auth->setToken($accessToken);
+    }
     
     /**
      * Sets up a GET Resource.
