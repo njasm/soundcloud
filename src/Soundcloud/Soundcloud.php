@@ -72,8 +72,6 @@ class Soundcloud
 
     /**
      * Set the access token.
-     * 
-     * @return void
      */
     public function setAccessToken($accessToken)
     {
