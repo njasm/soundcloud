@@ -58,4 +58,3 @@ checks:
         return_doc_comments: true
         verify_property_names: true
         verify_argument_usable_as_reference: true
-        
