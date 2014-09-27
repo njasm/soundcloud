@@ -90,8 +90,8 @@ class SoundcloudFacade extends Soundcloud
     /**
      * Refresh Auth access token.
      * 
-     * @param string $refreshToken the refresh token to send to soundcloud. if null, the default Auth object
-     *                             refresh token will be used.
+     * @param string|null $refreshToken the refresh token to send to soundcloud. if null, the default Auth object
+     *                                  refresh token will be used.
      * @param array $params 
      * @return Njasm\Soundcloud\Request\ResponseInterface
      */    
