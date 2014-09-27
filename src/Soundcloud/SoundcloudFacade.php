@@ -138,7 +138,7 @@ class SoundcloudFacade extends Soundcloud
      * @param boolean $download if we should follow location and download the media file to an in-memory variable 
      *                          accessible on the Response::bodyRaw() method, or return the Response object with the
      *                          location header with the direct URL.
-     * @return mixed An object with the download location, or redirect user to that Location.
+     * @return Njasm\Soundcloud\Request\ResponseInterface
      */
     public function download($trackID, $download = false)
     {
@@ -159,6 +159,7 @@ class SoundcloudFacade extends Soundcloud
      * 
      * @param string $trackPath the path to the media file to be uploaded to soundcloud.
      * @param array $params the params/info for the track that will be uploaded like, licence, name, etc.
+     * @return Njasm\Soundcloud\Request\ResponseInterface
      */
     public function upload($trackPath, array $params = array())
     {
@@ -171,7 +172,7 @@ class SoundcloudFacade extends Soundcloud
     
     /**
      * @param string $trackPath the full path for the media file to upload.
-     * @return mixed \CURLFile object if CurlFile class available, else prepend an @ for deprecated file upload.
+     * @return mixed \CURLFile object if CurlFile class available or string prepended with @ for deprecated file upload.
      */
     private function getCurlFile($trackPath)
     {
