@@ -6,7 +6,6 @@ interface AuthInterface
 {
     /**
      * @return string Soundcloud Client id.
-     * @return string
      */
     public function getClientID();
     

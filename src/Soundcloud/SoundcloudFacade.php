@@ -58,10 +58,7 @@ class SoundcloudFacade extends Soundcloud
         
         $params = $this->mergeAuthParams($defaultParams, true);
         $response = $this->post('/oauth2/token', $params)->asJson()->request()->bodyObject();
-        
-        if (isset($response->access_token)) {
-            $this->auth->setToken($response->access_token);
-        }
+        $this->setAuthData($response);
         
         return $this->response;
     }
@@ -85,12 +82,53 @@ class SoundcloudFacade extends Soundcloud
         $mergedParams = array_merge($defaultParams, $params);
         $finalParams = $this->mergeAuthParams($mergedParams, true);
         $response = $this->post('/oauth2/token', $finalParams)->asJson()->request()->bodyObject();
-        
-        if (isset($response->access_token)) {
-            $this->auth->setToken($response->access_token);
-        }
+        $this->setAuthData($response);
         
         return $this->response;
+    }
+    
+    /**
+     * Refresh Auth access token.
+     * 
+     * @param string|null $refreshToken the refresh token to send to soundcloud. if null, the default Auth object
+     *                                  refresh token will be used.
+     * @param array $params 
+     * @return Njasm\Soundcloud\Request\ResponseInterface
+     */    
+    public function refreshAccessToken($refreshToken = null, array $params = array())
+    {
+        $defaultParams = array(
+            'redirect_uri'  => $this->auth->getAuthUrlCallback(),
+            'client_id'     => $this->auth->getClientID(),
+            'client_secret' => $this->auth->getClientSecret(),
+            'grant_type'    => 'refresh_token',
+            'refresh_token' => (!is_null($refreshToken)) ?: $this->auth->getRefreshToken()
+        );
+        
+        $finalParams = array_merge($defaultParams, $params);
+        $response = $this->post('oauth2/token', $finalParams)->asJson()->request()->bodyObject();
+        $this->setAuthData($response);
+        
+        return $this->response;
+    }
+    
+    /**
+     * Sets OAuth data received from Soundcloud into Auth object.
+     * 
+     * @param stdClass $response
+     * @return void
+     */
+    protected function setAuthData($response)
+    {
+        $accessToken    = isset($response->access_token) ? $response->access_token : null;
+        $scope          = isset($response->scope) ? $response->scope : null;
+        $expires        = isset($response->expires_in) ? $response->expires : null;
+        $refreshToken   = isset($response->refresh_token) ? $response->refresh_token : null;
+
+        $this->auth->setToken($accessToken);
+        $this->auth->setScope($scope);
+        $this->auth->setExpires($expires);
+        $this->auth->setRefreshToken($refreshToken);
     }
     
     /**
@@ -100,7 +138,7 @@ class SoundcloudFacade extends Soundcloud
      * @param boolean $download if we should follow location and download the media file to an in-memory variable 
      *                          accessible on the Response::bodyRaw() method, or return the Response object with the
      *                          location header with the direct URL.
-     * @return mixed An object with the download location, or redirect user to that Location.
+     * @return Njasm\Soundcloud\Request\ResponseInterface
      */
     public function download($trackID, $download = false)
     {
@@ -121,19 +159,20 @@ class SoundcloudFacade extends Soundcloud
      * 
      * @param string $trackPath the path to the media file to be uploaded to soundcloud.
      * @param array $params the params/info for the track that will be uploaded like, licence, name, etc.
+     * @return Njasm\Soundcloud\Request\ResponseInterface
      */
     public function upload($trackPath, array $params = array())
     {
         $file = $this->getCurlFile($trackPath);
         $params = array_merge($params, array('track[asset_data]' => $file));
-        $params = $this->mergeAuthParams($params);
+        $finalParams = $this->mergeAuthParams($params);
         
-        return $this->post('/tracks')->setParams($params)->request();
+        return $this->post('/tracks')->setParams($finalParams)->request();
     }
     
     /**
      * @param string $trackPath the full path for the media file to upload.
-     * @return mixed \CURLFile object if CurlFile class available, else prepend an @ for deprecated file upload.
+     * @return mixed \CURLFile object if CurlFile class available or string prepended with @ for deprecated file upload.
      */
     private function getCurlFile($trackPath)
     {
