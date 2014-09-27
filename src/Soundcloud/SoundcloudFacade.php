@@ -58,10 +58,7 @@ class SoundcloudFacade extends Soundcloud
         
         $params = $this->mergeAuthParams($defaultParams, true);
         $response = $this->post('/oauth2/token', $params)->asJson()->request()->bodyObject();
-        
-        if (isset($response->access_token)) {
-            $this->auth->setToken($response->access_token);
-        }
+        $this->setAuthData($response);
         
         return $this->response;
     }
@@ -85,11 +82,7 @@ class SoundcloudFacade extends Soundcloud
         $mergedParams = array_merge($defaultParams, $params);
         $finalParams = $this->mergeAuthParams($mergedParams, true);
         $response = $this->post('/oauth2/token', $finalParams)->asJson()->request()->bodyObject();
-        
-        if (isset($response->access_token)) {
-            $this->auth->setToken($response->access_token);
-            $this->auth->setScope($response->scope);
-        }
+        $this->setAuthData($response);
         
         return $this->response;
     }
@@ -114,15 +107,28 @@ class SoundcloudFacade extends Soundcloud
         
         $finalParams = array_merge($defaultParams, $params);
         $response = $this->post('oauth2/token', $finalParams)->asJson()->request()->bodyObject();
-        
-        if (isset($response->access_token)) {
-            $this->auth->setToken($response->access_token);
-            $this->auth->setScope($response->scope);
-            $this->auth->setExpires($response->expires);
-            $this->auth->setRefreshToken($response->refresh_token);
-        }
+        $this->setAuthData($response);
         
         return $this->response;
+    }
+    
+    /**
+     * Sets OAuth data received from Soundcloud into Auth object.
+     * 
+     * @param stdClass $response
+     * @return void
+     */
+    protected function setAuthData($response)
+    {
+        $accessToken    = isset($response->access_token) ? $response->access_token : null;
+        $scope          = isset($response->scope) ? $response->scope : null;
+        $expires        = isset($response->expires_in) ? $response->expires : null;
+        $refreshToken   = isset($response->refresh_token) ? $response->refresh_token : null;
+
+        $this->auth->setToken($accessToken);
+        $this->auth->setScope($scope);
+        $this->auth->setExpires($expires);
+        $this->auth->setRefreshToken($refreshToken);
     }
     
     /**
@@ -158,9 +164,9 @@ class SoundcloudFacade extends Soundcloud
     {
         $file = $this->getCurlFile($trackPath);
         $params = array_merge($params, array('track[asset_data]' => $file));
-        $params = $this->mergeAuthParams($params);
+        $finalParams = $this->mergeAuthParams($params);
         
-        return $this->post('/tracks')->setParams($params)->request();
+        return $this->post('/tracks')->setParams($finalParams)->request();
     }
     
     /**
