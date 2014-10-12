@@ -45,7 +45,7 @@ class SoundcloudFacade extends Soundcloud
      * 
      * @param string $username user username
      * @param string $password user password
-     * @return Njasm\Soundcloud\Request\ResponseInterface
+     * @return \Njasm\Soundcloud\Request\ResponseInterface
      */
     public function userCredentials($username, $password)
     {
@@ -69,7 +69,7 @@ class SoundcloudFacade extends Soundcloud
      * 
      * @param string $code the code received to exchange for token
      * @param array $params 
-     * @return Njasm\Soundcloud\Request\ResponseInterface
+     * @return \Njasm\Soundcloud\Request\ResponseInterface
      */
     public function codeForToken($code, array $params = array())
     {
@@ -93,7 +93,7 @@ class SoundcloudFacade extends Soundcloud
      * @param string|null $refreshToken the refresh token to send to soundcloud. if null, the default Auth object
      *                                  refresh token will be used.
      * @param array $params 
-     * @return Njasm\Soundcloud\Request\ResponseInterface
+     * @return \Njasm\Soundcloud\Request\ResponseInterface
      */    
     public function refreshAccessToken($refreshToken = null, array $params = array())
     {
@@ -102,7 +102,7 @@ class SoundcloudFacade extends Soundcloud
             'client_id'     => $this->auth->getClientID(),
             'client_secret' => $this->auth->getClientSecret(),
             'grant_type'    => 'refresh_token',
-            'refresh_token' => (!is_null($refreshToken)) ?: $this->auth->getRefreshToken()
+            'refresh_token' => ($refreshToken) ?: $this->auth->getRefreshToken()
         );
         
         $finalParams = array_merge($defaultParams, $params);
@@ -138,7 +138,7 @@ class SoundcloudFacade extends Soundcloud
      * @param boolean $download if we should follow location and download the media file to an in-memory variable 
      *                          accessible on the Response::bodyRaw() method, or return the Response object with the
      *                          location header with the direct URL.
-     * @return Njasm\Soundcloud\Request\ResponseInterface
+     * @return \Njasm\Soundcloud\Request\ResponseInterface
      */
     public function download($trackID, $download = false)
     {
@@ -159,7 +159,7 @@ class SoundcloudFacade extends Soundcloud
      * 
      * @param string $trackPath the path to the media file to be uploaded to soundcloud.
      * @param array $params the params/info for the track that will be uploaded like, licence, name, etc.
-     * @return Njasm\Soundcloud\Request\ResponseInterface
+     * @return \Njasm\Soundcloud\Request\ResponseInterface
      */
     public function upload($trackPath, array $params = array())
     {
