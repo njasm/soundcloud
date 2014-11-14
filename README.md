@@ -4,6 +4,7 @@
 [![HHVM Status](http://hhvm.h4cc.de/badge/njasm/soundcloud.png)](http://hhvm.h4cc.de/package/njasm/soundcloud) 
 [![Dependency Status](https://www.versioneye.com/user/projects/53826f5414c1582c24000094/badge.svg)](https://www.versioneye.com/user/projects/53826f5414c1582c24000094)
 ## Soundcloud.com API Wrapper in PHP
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/njasm/soundcloud?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 #### Implemented features 
 
