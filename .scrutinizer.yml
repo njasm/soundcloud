@@ -1,5 +1,6 @@
 filter:
-    excluded_paths: [tests/*]
+    paths: [serc/*]
+    excluded_paths: [tests/*, vendor/*]
     
 tools:
   external_code_coverage:
