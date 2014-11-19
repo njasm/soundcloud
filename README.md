@@ -48,6 +48,8 @@ $response = $facade->get('/me')->request();
 echo $response->bodyRaw();
 // as object
 echo $response->bodyObject()->id;
+// as array
+$array = $response->bodyArray();
 ```
 
 ###### Accept response as json or xml

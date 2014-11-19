@@ -91,6 +91,13 @@ class Response implements ResponseInterface
         throw new \OutOfBoundsException("Last Request Content-Type isn't application/json nor application/xml.");
     }
     
+    public function bodyArray()
+    {
+        $object = $this->bodyObject();
+        
+        return json_decode(json_encode($object), true);
+    }
+    
     public function getHttpVersion()
     {
         return $this->httpVersion;
