@@ -22,23 +22,27 @@ class Factory implements FactoryInterface
         
         return $this;
     }
-    
+
+    /**
+     * @param string $interface
+     * @param array $params
+     * @return object
+     */
     public function make($interface, array $params = array())
     {
         $this->validate($interface);
         
-        if ($this->has($interface) === true) {
-            
-            $reflected = new \ReflectionClass($this->map[$interface]);
-            
-            if (empty($params)) {
-                return $reflected->newInstanceArgs();
-            } else {
-                return $reflected->newInstanceArgs($params);
-            }
-        } else {
+        if ($this->has($interface) === false) {
             throw new \InvalidArgumentException("You should register $interface in the Factory first.");
         }
+
+        $reflected = new \ReflectionClass($this->map[$interface]);
+
+        if (empty($params)) {
+            return $reflected->newInstanceArgs();
+        }
+
+        return $reflected->newInstanceArgs($params);
     }
     
     public function has($interface)

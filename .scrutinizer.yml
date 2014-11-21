@@ -1,5 +1,5 @@
 filter:
-    paths: [serc/*]
+    paths: [src/*]
     excluded_paths: [tests/*, vendor/*]
     
 tools:
