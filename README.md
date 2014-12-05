@@ -12,6 +12,32 @@
 * Access to all GET, PUT, POST and DELETE Resources
 * Media File Download/Upload
 
+### Requirements
+
+ - PHP 5.3 or higher.
+
+#### Installation
+
+Recommended installation is through composer. 
+Include ``njasm\soundcloud`` in your project, by adding it to your ``composer.json`` file.
+
+```javascript
+{
+    "require": {
+        "njasm/soundcloud": "dev-master"
+    }
+}
+```
+##### Usage
+
+Include ``Njasm\Soundcloud\`` namespace in the script where you intend to use ``SoundcloudFacade`` or ``Soundcloud`` class.
+
+```php
+use Njasm\Soundcloud\SoundcloudFacade;
+// or soundcloud if you don't need a facade for specific tasks
+use Njasm\Soundcloud\Soundcloud;
+```
+
 ##### Examples
 ###### Get Authorization Url.
 ```php
