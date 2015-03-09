@@ -27,6 +27,12 @@ Include ``njasm\soundcloud`` in your project, by adding it to your ``composer.js
     }
 }
 ```
+
+If you don't use ``composer`` to manage your project dependencies, this library provides your with an 
+[autoloader.php](https://github.com/njasm/soundcloud/blob/master/src/Soundcloud/autoload.php)
+You just need to include [autoloader.php](https://github.com/njasm/soundcloud/blob/master/src/Soundcloud/autoload.php) in your project to start using the library as you would if installed through
+``composer``.
+
 ##### Usage
 
 Include ``Njasm\Soundcloud\`` namespace in the script where you intend to use ``SoundcloudFacade`` or ``Soundcloud`` class.
@@ -36,6 +42,7 @@ use Njasm\Soundcloud\SoundcloudFacade;
 // or soundcloud if you don't need a facade for specific tasks
 use Njasm\Soundcloud\Soundcloud;
 ```
+``SoundcloudFacade.php`` provides your boilerplate code to set get auth url, change a code for a token, etc etc..
 
 ##### Examples
 ###### Get Authorization Url.
