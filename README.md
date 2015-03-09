@@ -42,7 +42,7 @@ use Njasm\Soundcloud\SoundcloudFacade;
 // or soundcloud if you don't need a facade for specific tasks
 use Njasm\Soundcloud\Soundcloud;
 ```
-``SoundcloudFacade.php`` provides your boilerplate code to set get auth url, change a code for a token, etc etc..
+``SoundcloudFacade.php`` provides you with boilerplate code to get authorization url, change a code for a token, etc etc..
 
 ##### Examples
 ###### Get Authorization Url.
