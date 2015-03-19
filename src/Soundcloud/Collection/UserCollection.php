@@ -1,11 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: njasm
- * Date: 19/03/15
- * Time: 20:46
- */
 
-class UserCollection {
+namespace Njasm\Soundcloud\Collection;
+
+class UserCollection extends Collection
+{
 
 }

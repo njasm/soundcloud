@@ -9,24 +9,29 @@ abstract class AbstractResource
     /** @var Soundcloud */
     private $sc;
 
+    /** @var array Soundcloud Resource Properties */
+    private $properties = [];
 
-    final public function __construct(Soundcloud $sc)
+    final public function __construct()
     {
-        $this->sc = $sc;
+        $this->sc = SoundcloudService::instance();
     }
 
-    protected function save()
+    public function get($property)
     {
-
+        return $this->properties[$property];
     }
 
-    protected function update()
+    public function __set($property, $value)
     {
+        if (property_exists($this, $property)) {
+            $this->{$property} = $value;
+        }
 
-    }
+        if (array_key_exists($property, $this->properties)) {
+            $this->properties[$property] = $value;
+        }
 
-    protected function delete()
-    {
-
+        throw new \Exception("Property $property non-existent.");
     }
 }
