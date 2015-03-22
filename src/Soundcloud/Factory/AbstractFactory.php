@@ -41,7 +41,6 @@ class AbstractFactory
             $line = json_decode($line, true);
         }
 
-        var_dump($line);
         $sc = Soundcloud::instance();
         $line['kind'] = str_replace("-", "", $line['kind']);
         $resourceClass = "\\Njasm\\Soundcloud\\Resource\\" . ucfirst($line['kind']);

@@ -6,8 +6,9 @@ use Njasm\Soundcloud\Factory\AbstractFactory;
 
 class User extends AbstractResource
 {
-
-    protected $writableProperties = ['permalink', 'username', 'country', 'city', 'first_name', 'last_name', 'description'];
+    protected $writableProperties = [
+        'permalink', 'username', 'country', 'city', 'first_name', 'last_name', 'description'
+    ];
 
     /*****************
      * SUB RESOURCES *
@@ -15,19 +16,33 @@ class User extends AbstractResource
 
     public function getTracks()
     {
-        $url = $this->getUri() . '/tracks';
-        $verb = "GET";
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        $uri .= '/tracks';
+        $serialized = $this->sc->get($uri)->request()->bodyRaw();
 
+        return AbstractFactory::unserialize($serialized);
     }
 
     public function getPlaylists()
     {
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        $uri .= '/playlists';
+        $serialized = $this->sc->get($uri)->request()->bodyRaw();
 
+        return AbstractFactory::unserialize($serialized);
     }
 
     public function  getFollowings()
     {
         // return UserCollection
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        $uri .= '/followings';
+        $serialized = $this->sc->get($uri)->request()->bodyRaw();
+
+        return AbstractFactory::unserialize($serialized);
     }
 
     public function getFollowing($id)
@@ -36,12 +51,23 @@ class User extends AbstractResource
             throw \Exception("Following id is not an integer");
         }
 
-        // return User
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        $uri .= '/followings/' . (string) $id;
+        $serialized = $this->sc->get($uri)->request()->bodyRaw();
+
+        return AbstractFactory::unserialize($serialized);
     }
 
     public function getFollowers()
     {
         // return UserCollection
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        $uri .= '/followers';
+        $serialized = $this->sc->get($uri)->request()->bodyRaw();
+
+        return AbstractFactory::unserialize($serialized);
     }
 
     public function getFollower($id)
@@ -50,12 +76,16 @@ class User extends AbstractResource
             throw \Exception("Follower id is not an integer");
         }
 
-        // return User
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        $uri .= '/followers/' . (string) $id;
+        $serialized = $this->sc->get($uri)->request()->bodyRaw();
+
+        return AbstractFactory::unserialize($serialized);
     }
 
     public function getComments()
     {
-        // return Comments made by User
         $uri = $this->get('uri');
         $uri = str_replace('https://api.soundcloud.com', '', $uri);
         $uri .= '/comments';
@@ -67,6 +97,12 @@ class User extends AbstractResource
     public function getFavorites()
     {
         // return TrackCollection favorited by User
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        $uri .= '/favorites';
+        $serialized = $this->sc->get($uri)->request()->bodyRaw();
+
+        return AbstractFactory::unserialize($serialized);
     }
 
     public function getFavorite($id)
@@ -75,30 +111,43 @@ class User extends AbstractResource
             throw \Exception("Favorite id is not an integer");
         }
 
-        // return Track
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        $uri .= '/favorites/' . (string) $id;
+        $serialized = $this->sc->get($uri)->request()->bodyRaw();
+
+        return AbstractFactory::unserialize($serialized);
     }
 
     public function getGroups()
     {
         // return GroupCollection joined by User
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        $uri .= '/groups';
+        $serialized = $this->sc->get($uri)->request()->bodyRaw();
+
+        return AbstractFactory::unserialize($serialized);
     }
 
     public function getWebProfiles()
     {
-        ///users/{id}/web-profiles
-
         // return Web-Profiles of User
         $uri = $this->get('uri');
         $uri = str_replace('https://api.soundcloud.com', '', $uri);
         $uri .= '/web-profiles';
         $serialized = $this->sc->get($uri)->request()->bodyRaw();
-        echo $serialized;
+
         return AbstractFactory::unserialize($serialized);
     }
 
     public function refresh()
     {
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        $serialized = $this->sc->get($uri)->request()->bodyRaw();
 
+        return $this->unserialize($serialized);
     }
 
     public function save()
