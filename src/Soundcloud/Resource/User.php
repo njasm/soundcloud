@@ -85,7 +85,25 @@ class User extends AbstractResource
 
     public function getWebProfiles()
     {
-        //
+        ///users/{id}/web-profiles
+
+        // return Web-Profiles of User
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        $uri .= '/web-profiles';
+        $serialized = $this->sc->get($uri)->request()->bodyRaw();
+        echo $serialized;
+        return AbstractFactory::unserialize($serialized);
+    }
+
+    public function refresh()
+    {
+
+    }
+
+    public function save()
+    {
+
     }
 
     public function update()
@@ -108,4 +126,9 @@ class User extends AbstractResource
         $this->sc->put($uri, $this->serialize());
         $this->sc->request();
    }
+
+    public function delete()
+    {
+
+    }
 }

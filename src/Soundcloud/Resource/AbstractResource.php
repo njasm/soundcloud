@@ -24,7 +24,8 @@ abstract class AbstractResource implements \Serializable
     public function get($property)
     {
         if (!isset($this->properties[$property])) {
-            throw new \Exception("Property $property non-existent.");
+            //throw new \Exception("Property $property non-existent.");
+            return null;
         }
 
         return $this->properties[$property];
@@ -79,17 +80,4 @@ abstract class AbstractResource implements \Serializable
     abstract public function save();
     abstract public function update();
     abstract public function delete();
-
-    public function __set($property, $value)
-    {
-        if (property_exists($this, $property)) {
-            $this->{$property} = $value;
-        }
-
-        if (array_key_exists($property, $this->properties)) {
-            $this->properties[$property] = $value;
-        }
-
-        throw new \Exception("Property $property non-existent.");
-    }
 }

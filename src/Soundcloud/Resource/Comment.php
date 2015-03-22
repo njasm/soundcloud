@@ -6,9 +6,21 @@ class Comment extends AbstractResource
 {
     protected $writableProperties = ['body', 'track_id', 'user_id', 'timestamp'];
 
-    public function save()
+    public function save(Track $t = null)
     {
+        if ($t) {
+            $track_id = $t->get('id');
+        } else {
+            $track_id = is_numeric($this->get('track_id'))
+                ? $this->get('track_id')
+                : null;
+        }
 
+        if (is_null($track_id)) {
+            throw new \Exception("Invalid track_id!");
+        }
+
+        $this->set('track_id', $track_id);
     }
 
     public function update()
