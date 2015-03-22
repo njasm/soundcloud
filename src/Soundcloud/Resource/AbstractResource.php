@@ -2,25 +2,83 @@
 
 namespace Njasm\Soundcloud\Resource;
 
-use Njasm\Soundcloud;
+use Njasm\Soundcloud\Soundcloud;
 
-abstract class AbstractResource
+abstract class AbstractResource implements \Serializable
 {
     /** @var Soundcloud */
-    private $sc;
+    protected $sc;
 
     /** @var array Soundcloud Resource Properties */
-    private $properties = [];
+    protected $properties = [];
 
-    final public function __construct()
+    /** @var array should be overwritten by sub class */
+    protected $writableProperties = [];
+
+    final public function __construct(Soundcloud $sc, array $data = [])
     {
-        $this->sc = SoundcloudService::instance();
+        $this->sc = $sc;
+        empty($data) or $this->unserialize($data);
     }
 
     public function get($property)
     {
+        if (!isset($this->properties[$property])) {
+            throw new \Exception("Property $property non-existent.");
+        }
+
         return $this->properties[$property];
     }
+
+    public function set($property, $value)
+    {
+        return $this->properties[$property] = $value;
+    }
+
+    /**
+     * @throws \Exception
+     * @return array
+     */
+    public function serialize()
+    {
+        if (empty($this->writableProperties)) {
+            throw new \Exception("Resource have no writable properties");
+        }
+
+        $data = [];
+        $className = explode('\\', static::class);
+        $resource = strtolower($className[count($className) - 1]) ;
+        foreach($this->writableProperties as $property) {
+
+            $resultKey = $resource . '[' . strtolower($property) . ']';
+            if (!isset($this->properties[$property])) {
+                $data[$resultKey] = null;
+            }
+
+            $data[$resultKey] = $this->properties[$property];
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param string $serialized
+     * @return void
+     */
+    public function unserialize($serialized)
+    {
+        if (is_array($serialized)) {
+            $this->properties = $serialized;
+            return;
+        }
+
+        $data = json_decode($serialized, true);
+        $this->properties = $data;
+    }
+
+    abstract public function save();
+    abstract public function update();
+    abstract public function delete();
 
     public function __set($property, $value)
     {

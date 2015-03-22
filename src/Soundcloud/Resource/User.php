@@ -2,151 +2,110 @@
 
 namespace Njasm\Soundcloud\Resource;
 
+use Njasm\Soundcloud\Factory\AbstractFactory;
+
 class User extends AbstractResource
 {
-    /** @var int */
-    protected $id;
-    /** @var string */
-    protected $permalink;
-    /** @var string */
-    protected $username;
-    /** @var string */
-    protected $lastModified;
-    /** @var string */
-    protected $uri;
-    /** @var string */
-    protected $permalink_url;
-    /** @var string */
-    protected $avatar_url;
-    /** @var string */
-    protected $country;
-    /** @var string */
-    protected $first_name;
-    /** @var string */
-    protected $last_name;
-    /** @var string */
-    protected $description;
-    /** @var string */
-    protected $city;
-    /** @var string */
-    protected $discogs_name;
-    /** @var string */
-    protected $myspace_name;
-    /** @var string */
-    protected $website;
-    /** @var string */
-    protected $website_title;
-    /** @var bool */
-    protected $online;
-    /** @var int */
-    protected $track_count;
-    /** @var int */
-    protected $playlist_count;
-    /** @var string */
-    protected $plan;
-    /** @var int */
-    protected $public_favorites_count;
-    /** @var int */
-    protected $followers_count;
-    /** @var int */
-    protected $followings_count;
-    /** @var array */
-    protected $subscriptions;
 
-    public function getId()
+    protected $writableProperties = ['permalink', 'username', 'country', 'city', 'first_name', 'last_name', 'description'];
+
+    /*****************
+     * SUB RESOURCES *
+     *****************/
+
+    public function getTracks()
     {
-        return $this->id;
+        $url = $this->getUri() . '/tracks';
+        $verb = "GET";
+
     }
 
-    public function getPermaLink()
+    public function getPlaylists()
     {
-        return $this->permalink;
+
     }
 
-    public function getUsername()
+    public function  getFollowings()
     {
-        return $this->username;
+        // return UserCollection
     }
 
-    public function getLastModified()
+    public function getFollowing($id)
     {
-        return $this->lastModified;
+        if (!is_int($id)) {
+            throw \Exception("Following id is not an integer");
+        }
+
+        // return User
     }
 
-    public function getUri()
+    public function getFollowers()
     {
-        return $this->uri;
+        // return UserCollection
     }
 
-    public function getPermaLinkUrl()
+    public function getFollower($id)
     {
-        return $this->permalink_url;
+        if (!is_int($id)) {
+            throw \Exception("Follower id is not an integer");
+        }
+
+        // return User
     }
 
-    public function getAvatarUrl()
+    public function getComments()
     {
-        return $this->avatar_url;
+        // return Comments made by User
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        $uri .= '/comments';
+        $serialized = $this->sc->get($uri)->request()->bodyRaw();
+
+        return AbstractFactory::unserialize($serialized);
     }
 
-    public function getCountry()
+    public function getFavorites()
     {
-        return $this->country;
+        // return TrackCollection favorited by User
     }
 
-    public function setCountry($country)
+    public function getFavorite($id)
     {
-        $this->country = (string) $country;
+        if (!is_int($id)) {
+            throw \Exception("Favorite id is not an integer");
+        }
+
+        // return Track
     }
 
-    public function getCity()
+    public function getGroups()
     {
-        return $this->city;
+        // return GroupCollection joined by User
     }
 
-    public function setCity($city)
+    public function getWebProfiles()
     {
-        $this->city = (string) $city;
+        //
     }
 
-    public function getFirstName()
+    public function update()
     {
-        return $this->first_name;
-    }
+        $uri = $this->get('uri');
+        $uri = str_replace('https://api.soundcloud.com', '', $uri);
+        /*
+        $serialized = $this->serialize();
 
-    public function setFirstName($name)
-    {
-        $this->first_name = (string) $name;
-    }
-
-    public function getLastName()
-    {
-        return $this->last_name;
-    }
-
-    public function setLastName($lastName)
-    {
-        $this->last_name = (string) $lastName;
-    }
-
-    public function getFullName()
-    {
-        return implode(" ", array($this->first_name, $this->last_name));
-    }
-
-    public function setFullName($fullName)
-    {
-        list($first, $last) = explode(" ", (string) $fullName, 2);
-        $this->setFirstName($first);
-        $this->setLastName($last);
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    public function setDescription($description)
-    {
-        $this->description = (string) $description;
-    }
+        $allowedData["user[permalink]"] = "hybrid-species"; //$serialized["user[permalink]"];
+        $allowedData["user[username]"] = "HybridSpecies"; //$serialized["user[permalink]"];
+        $allowedData["user[first_name]"] = "Nelson"; //$serialized["user[first_name]"];
+        $allowedData["user[last_name]"] = "J Morais"; //$serialized["user[last_name]"];
+        $allowedData["user[country]"] = "Portugal"; //$serialized["user[permalink]"];
+        $allowedData["user[city]"] = "Lisboa"; //$serialized["user[permalink]"];
+        $allowedData["user[description]"] = stripos($serialized["user[description]"], '~') !== false
+            ? str_replace("~", "", $serialized["user[description]"])
+            : $serialized["user[description]"] . "~";
+        */
+        $this->sc->put($uri, $this->serialize());
+        $this->sc->request();
+   }
 }

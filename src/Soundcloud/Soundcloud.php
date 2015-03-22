@@ -24,12 +24,31 @@ class Soundcloud
     protected $factory;
     protected $responseFormat;
 
+    protected static $cID;
+    protected static $cS;
+    protected static $aC;
+
+    public static $self;
+
     public function __construct($clientID = null, $clientSecret = null, $authCallbackUri = null)
     {
+        self::$cID = $clientID; self::$cS; self::$aC = $authCallbackUri;
+
         $this->factory = new Factory();
         $this->auth = $this->make('AuthInterface', array($clientID, $clientSecret, $authCallbackUri));
+        self::$self = $this;
     }
-    
+
+
+    public static function instance()
+    {
+        if (is_null(self::$self)) {
+            return new Soundcloud(self::$cID, self::$cS, self::$aC);
+        }
+
+        return self::$self;
+    }
+
     /**
      * Get ClientID for this instance
      * 

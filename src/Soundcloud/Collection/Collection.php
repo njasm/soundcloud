@@ -15,19 +15,17 @@ class Collection implements \Iterator
     /** @var array */
     private $items = [];
 
-    public function __construct()
-    {
-
-    }
-
     public function add(AbstractResource $r)
     {
-
+        $this->items[$r->get('id')] = $r;
     }
 
     public function remove(AbstractResource $r)
     {
-
+        $id = $r->get('id');
+        if (isset($this->items[$id])) {
+            unset($this->items[$id]);
+        }
     }
 
     public function key()
@@ -53,5 +51,10 @@ class Collection implements \Iterator
     public function rewind()
     {
         reset($this->items);
+    }
+
+    public function count()
+    {
+        return count($this->items);
     }
 }

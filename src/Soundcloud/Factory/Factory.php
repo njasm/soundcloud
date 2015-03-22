@@ -14,12 +14,12 @@ class Factory implements FactoryInterface
         'UrlBuilderInterface'   => 'Njasm\\Soundcloud\\UrlBuilder\\UrlBuilder',
         'FactoryInterface'      => 'Njasm\\Soundcloud\\Factory\\Factory'
     );
-    
+
     public function register($interface, $class)
     {
         $this->validate($interface);
         $this->map[$interface] = $class;
-        
+
         return $this;
     }
 
