@@ -57,7 +57,8 @@ class SoundcloudFacade extends Soundcloud
         );
         
         $params = $this->mergeAuthParams($defaultParams, true);
-        $response = $this->post('/oauth2/token', $params)->asJson()->request()->bodyObject();
+        $this->response = $this->post('https://api.soundcloud.com/oauth2/token', $params)->send();
+        $response = $this->response->bodyObject();
         $this->setAuthData($response);
         
         return $this->response;
