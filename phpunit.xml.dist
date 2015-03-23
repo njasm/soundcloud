@@ -8,7 +8,9 @@
     convertWarningsToExceptions="true"
     processIsolation="false"
     stopOnFailure="false"
-    syntaxCheck="false">
+    syntaxCheck="false"
+    strict="true"
+    verbose="true">
     
     <testsuites>
         <testsuite name="Soundcloud API Tests">
