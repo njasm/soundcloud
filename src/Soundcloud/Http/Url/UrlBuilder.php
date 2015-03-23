@@ -15,6 +15,9 @@ namespace Njasm\Soundcloud\Http\Url;
 
 class UrlBuilder implements UrlBuilderInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function getUrl($verb, $uri, array $params = [])
     {
         $uri = self::getCleanPath($uri);

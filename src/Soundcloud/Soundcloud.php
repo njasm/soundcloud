@@ -6,7 +6,6 @@ use Njasm\Soundcloud\Auth\Auth;
 use Njasm\Soundcloud\Factory\AbstractFactory;
 use Njasm\Soundcloud\Http\Request;
 use Njasm\Soundcloud\Http\Url\UrlBuilder;
-use Njasm\Soundcloud\Factory\Factory;
 
 /**
  * SoundCloud API wrapper in PHP

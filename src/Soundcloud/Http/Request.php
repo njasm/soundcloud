@@ -2,9 +2,6 @@
 
 namespace Njasm\Soundcloud\Http;
 
-use Njasm\Soundcloud\Http\UrlBuilderInterface;
-use Njasm\Soundcloud\Request\Response;
-
 /**
  * SoundCloud API wrapper in PHP
  *

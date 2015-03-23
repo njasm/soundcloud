@@ -16,6 +16,8 @@ namespace Njasm\Soundcloud\Http\Url;
 interface UrlBuilderInterface
 {
     /**
+     * Return the Url.
+     *
      * @param $verb
      * @param $uri
      * @param array $params
