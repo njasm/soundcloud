@@ -96,12 +96,12 @@ class Soundcloud
      *
      * @param string $url
      * @param array $params
-     * @return \Njasm\Soundcloud\Soundcloud
+     * @return \Njasm\Soundcloud\Http\RequestInterface
      */
     public function get($url, array $params = [])
     {
         $verb = 'GET';
-        $params = $this->auth()->mergeParams($params);
+        $params = $this->auth->mergeParams($params);
         $url = UrlBuilder::getUrl($verb, $url, $params);
         $this->request = new Request($verb, $url, $params);
 
@@ -149,12 +149,12 @@ class Soundcloud
      */
     public function userCredentials($username, $password)
     {
-        $defaultParams = array(
+        $defaultParams = [
             'grant_type'    => 'password',
             'scope'         => 'non-expiring',
             'username'      => $username,
             'password'      => $password
-        );
+        ];
 
         $params = $this->auth->mergeParams($defaultParams, true);
         $this->request = $this->post('https://api.soundcloud.com/oauth2/token', $params);
@@ -173,13 +173,13 @@ class Soundcloud
      * @param array $params
      * @return \Njasm\Soundcloud\Http\ResponseInterface
      */
-    public function codeForToken($code, array $params = array())
+    public function codeForToken($code, array $params = [])
     {
-        $defaultParams = array(
+        $defaultParams = [
             'redirect_uri'  => $this->auth->getAuthUrlCallback(),
             'grant_type'    => 'authorization_code',
             'code'          => $code
-        );
+        ];
 
         $mergedParams = array_merge($defaultParams, $params);
         $finalParams = $this->auth->mergeParams($mergedParams, true);
@@ -199,15 +199,15 @@ class Soundcloud
      * @param array $params
      * @return \Njasm\Soundcloud\Http\ResponseInterface
      */
-    public function refreshAccessToken($refreshToken = null, array $params = array())
+    public function refreshAccessToken($refreshToken = null, array $params = [])
     {
-        $defaultParams = array(
+        $defaultParams = [
             'redirect_uri'  => $this->auth->getAuthUrlCallback(),
             'client_id'     => $this->auth->getClientID(),
             'client_secret' => $this->auth->getClientSecret(),
             'grant_type'    => 'refresh_token',
             'refresh_token' => ($refreshToken) ?: $this->auth->getRefreshToken()
-        );
+        ];
 
         $finalParams = array_merge($defaultParams, $params);
         $this->request = $this->post('https://api.soundcloud.com/oauth2/token', $finalParams);
@@ -228,7 +228,7 @@ class Soundcloud
     {
         $accessToken    = isset($response->access_token) ? $response->access_token : null;
         $scope          = isset($response->scope) ? $response->scope : null;
-        $expires        = isset($response->expires_in) ? $response->expires : null;
+        $expires        = isset($response->expires_in) ? $response->expires_in : null;
         $refreshToken   = isset($response->refresh_token) ? $response->refresh_token : null;
 
         $this->auth->setToken($accessToken);
@@ -243,20 +243,31 @@ class Soundcloud
      * @param array $params key => value pair, of params to be sent to the /connect endpoint.
      * @return string The URL
      */
-    public function getAuthUrl(array $params = array())
+    public function getAuthUrl(array $params = [])
     {
-        $defaultParams = array(
+        $defaultParams = [
             'client_id'     => $this->auth->getClientID(),
             'scope'         => 'non-expiring',
             'display'       => 'popup',
             'response_type' => 'code',
             'redirect_uri'  => $this->auth->getAuthUrlCallback(),
             'state'         => ''
-        );
+        ];
 
         $params = array_merge($defaultParams, $params);
 
         return UrlBuilder::getUrl('GET', 'https://soundcloud.com/connect', $params);
+    }
+
+    public function resolve($what)
+    {
+        $url = 'https://api.soundcloud.com/resolve';
+        $params['url'] = (string) $what;
+        $params = $this->auth->mergeParams($params);
+        $this->request = $this->get($url, $params);
+        $this->response = $this->request->send();
+
+        return AbstractFactory::unserialize($this->response->bodyRaw());
     }
 }
 
