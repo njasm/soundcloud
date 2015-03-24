@@ -266,5 +266,59 @@ class Soundcloud
 
         return AbstractFactory::unserialize($this->response->bodyRaw());
     }
+
+    /**
+     * Download a track from soundcloud.
+     *
+     * @param integer track ID.
+     * @param boolean $download if we should follow location and download the media file to an in-memory variable
+     *                          accessible on the Response::bodyRaw() method, or return the Response object with the
+     *                          location header with the direct URL.
+     * @return \Njasm\Soundcloud\Http\ResponseInterface
+     */
+    public function download($trackID, $download = false)
+    {
+        $url = '/tracks/' . intval($trackID) . '/download';
+        $this->get($url);
+
+        if ($download === true) {
+            $this->request->setOptions(array(CURLOPT_FOLLOWLOCATION => true));
+        } else {
+            $this->request->setOptions(array(CURLOPT_FOLLOWLOCATION => false));
+        }
+
+        return $this->response = $this->request->send();
+    }
+
+    /**
+     * Upload a track to soundcloud.
+     *
+     * @param string $trackPath the path to the media file to be uploaded to soundcloud.
+     * @param array $params the params/info for the track that will be uploaded like, licence, name, etc.
+     * @return \Njasm\Soundcloud\Http\ResponseInterface
+     */
+    public function upload($trackPath, array $params = array())
+    {
+        $file = $this->getCurlFile($trackPath);
+        $params = array_merge($params, array('track[asset_data]' => $file));
+        $finalParams = $this->auth->mergeParams($params);
+
+        $this->post('/tracks', $finalParams);
+
+        return $this->response = $this->request->send();
+    }
+
+    /**
+     * @param string $trackPath the full path for the media file to upload.
+     * @return string|\CURLFile object if CurlFile class available or string prepended with @ for deprecated file upload.
+     */
+    protected function getCurlFile($trackPath)
+    {
+        if (class_exists('CurlFile') === true) {
+            return new \CURLFile($trackPath);
+        }
+
+        return "@" . $trackPath;
+    }
 }
 
