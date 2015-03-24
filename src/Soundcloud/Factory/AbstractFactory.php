@@ -2,6 +2,7 @@
 
 namespace Njasm\Soundcloud\Factory;
 
+use Njasm\Soundcloud\Exception\SoundcloudResponseException;
 use Njasm\Soundcloud\Soundcloud;
 
 class AbstractFactory
@@ -9,6 +10,8 @@ class AbstractFactory
     public static function unserialize($serialized)
     {
         $data = json_decode($serialized, true);
+
+        self::guardAgainstErrors($data);
 
         if (isset($data[0]) && is_array($data[0])) {
             $collection = self::collection($data[0]['kind']);
@@ -22,6 +25,13 @@ class AbstractFactory
         }
 
         return self::resource($serialized);
+    }
+
+    protected static function guardAgainstErrors(array $data)
+    {
+        if (isset($data['errors'])) {
+            throw new SoundcloudResponseException($data);
+        }
     }
 
     public static function collection($kind)

@@ -53,7 +53,7 @@ class Soundcloud
     public function put($url, array $params = [])
     {
         $verb = 'PUT';
-        $params = $this->auth()->mergeParams($params);
+        $params = $this->auth->mergeParams($params);
         $this->request = new Request($verb, $url, $params);
 
         return $this->request;
@@ -69,7 +69,7 @@ class Soundcloud
     public function post($url, array $params = [])
     {
         $verb = 'POST';
-        $params = $this->auth()->mergeParams($params);
+        $params = $this->auth->mergeParams($params);
         $this->request = new Request($verb, $url, $params);
 
         return $this->request;
@@ -85,7 +85,7 @@ class Soundcloud
     public function delete($url, array $params = [])
     {
         $verb = 'DELETE';
-        $params = $this->auth()->mergeParams($params);
+        $params = $this->auth->mergeParams($params);
         $this->request = new Request($verb, $url, $params);
 
         return $this->request;
@@ -102,7 +102,6 @@ class Soundcloud
     {
         $verb = 'GET';
         $params = $this->auth->mergeParams($params);
-        $url = UrlBuilder::getUrl($verb, $url, $params);
         $this->request = new Request($verb, $url, $params);
 
         return $this->request;
@@ -111,10 +110,8 @@ class Soundcloud
     public function getMe()
     {
         $verb = 'GET';
+        $url = '/me';
         $params = $this->auth->mergeParams();
-        $url = 'https://api.soundcloud.com/me';
-        $url = UrlBuilder::getUrl($verb, $url, $params);
-
         $this->request = new Request($verb, $url, $params);
         $this->response = $this->request->send();
 
@@ -157,7 +154,7 @@ class Soundcloud
         ];
 
         $params = $this->auth->mergeParams($defaultParams, true);
-        $this->request = $this->post('https://api.soundcloud.com/oauth2/token', $params);
+        $this->request = $this->post('/oauth2/token', $params);
         $this->response = $this->request->send();
         $response = $this->response->bodyObject();
         $this->setAuthData($response);
@@ -183,7 +180,7 @@ class Soundcloud
 
         $mergedParams = array_merge($defaultParams, $params);
         $finalParams = $this->auth->mergeParams($mergedParams, true);
-        $this->request = $this->post('https://api.soundcloud.com/oauth2/token', $finalParams);
+        $this->request = $this->post('/oauth2/token', $finalParams);
         $this->response = $this->request->send();
         $response = $this->response->bodyObject();
         $this->setAuthData($response);
@@ -210,7 +207,7 @@ class Soundcloud
         ];
 
         $finalParams = array_merge($defaultParams, $params);
-        $this->request = $this->post('https://api.soundcloud.com/oauth2/token', $finalParams);
+        $this->request = $this->post('/oauth2/token', $finalParams);
         $this->response = $this->request->send();
         $response = $this->response->bodyObject();
         $this->setAuthData($response);
@@ -261,7 +258,7 @@ class Soundcloud
 
     public function resolve($what)
     {
-        $url = 'https://api.soundcloud.com/resolve';
+        $url = '/resolve';
         $params['url'] = (string) $what;
         $params = $this->auth->mergeParams($params);
         $this->request = $this->get($url, $params);

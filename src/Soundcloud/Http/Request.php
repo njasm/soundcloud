@@ -2,6 +2,8 @@
 
 namespace Njasm\Soundcloud\Http;
 
+use Njasm\Soundcloud\Http\Url\UrlBuilder;
+
 /**
  * SoundCloud API wrapper in PHP
  *
@@ -73,7 +75,7 @@ class Request implements RequestInterface
         curl_setopt($curlHandler, CURLOPT_HTTPHEADER, array('Accept: ' . $this->responseFormat));
         curl_setopt_array($curlHandler, $this->options);
         curl_setopt($curlHandler, CURLOPT_CUSTOMREQUEST, $verb);
-        curl_setopt($curlHandler, CURLOPT_URL, $this->url);
+        curl_setopt($curlHandler, CURLOPT_URL, UrlBuilder::getUrl($verb, $this->url, $this->params));
 
         if ($verb !== 'GET') {
             curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->params);

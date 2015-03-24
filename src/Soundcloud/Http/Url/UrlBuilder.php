@@ -15,12 +15,14 @@ namespace Njasm\Soundcloud\Http\Url;
 
 class UrlBuilder implements UrlBuilderInterface
 {
+    protected static $baseUrl = 'https://api.soundcloud.com';
+
     /**
      * {@inheritdoc}
      */
     public static function getUrl($verb, $uri, array $params = [])
     {
-        $uri = self::getCleanPath($uri);
+        $uri = self::buildBaseUrl($uri);
         $verb = strtoupper($verb);
 
         if ($verb === 'GET' && empty($params) !== true) {
@@ -41,5 +43,30 @@ class UrlBuilder implements UrlBuilderInterface
         }
 
         return $path;
+    }
+
+    protected static function buildBaseUrl($url)
+    {
+        if (strtolower(substr($url, 0, 4)) != 'http' && $url[0] != '/') {
+            $base = self::$baseUrl;
+            $uri = '/' . self::getCleanPath($url);
+            $url = $base . $uri;
+        }
+
+        if ($url[0] == '/') {
+            $url = self::$baseUrl . $url;
+        }
+
+        return $url;
+    }
+
+    public static function setBaseUrl($url)
+    {
+        self::$baseUrl = $url;
+    }
+
+    public static function getBaseUrl()
+    {
+        return self::$baseUrl;
     }
 }

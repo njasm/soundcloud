@@ -16,7 +16,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("https://api.soundcloud.com/me?client_id=ClientIDHash", UrlBuilder::getUrl($verb, $url, $params));
     }
     
-    public function testGetGetUrl()
+    public function testGetFullUrl()
     {
         // should return https://api.soundcloud.com/tracks?q=buskers&license=cc-by-sa
         $verb = 'GET';
@@ -31,5 +31,25 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
             "https://api.soundcloud.com/tracks?client_id=ClientIDHash&q=buskers&license=cc-by-sa",
             UrlBuilder::getUrl($verb, $url, $params)
         );
+    }
+
+    public function testOnlyResource()
+    {
+        $verb = 'GET';
+        $params['client_id'] = 'ClientIDHash';
+        $url = '/me';
+
+        $finalUrl = UrlBuilder::getUrl($verb, $url, $params);
+        $this->assertEquals("https://api.soundcloud.com/me?client_id=ClientIDHash", $finalUrl);
+    }
+
+    public function testBogusResource()
+    {
+        $verb = 'GET';
+        $params['client_id'] = 'ClientIDHash';
+        $url = 'me';
+
+        $finalUrl = UrlBuilder::getUrl($verb, $url, $params);
+        $this->assertEquals("https://api.soundcloud.com/me?client_id=ClientIDHash", $finalUrl);
     }
 }
