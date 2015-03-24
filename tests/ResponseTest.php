@@ -2,7 +2,7 @@
 
 namespace Njasm\Soundcloud\Tests;
 
-use Njasm\Soundcloud\Request\Response;
+use Njasm\Soundcloud\Http\Response;
 
 class ResponseTest extends \PHPUnit_Framework_TestCase
 {
@@ -82,7 +82,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testBodyRaw()
     {
-        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Http\\Response", "body");
         $property->setAccessible(true);
         $property->setValue(
             $this->responseObj,
@@ -96,7 +96,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testBodyObjectAsJson()
     {
-        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Http\\Response", "body");
         $property->setAccessible(true);
         $property->setValue(
             $this->responseObj,
@@ -111,14 +111,14 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testBodyObjectAsXML()
     {
-        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "headers");
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Http\\Response", "headers");
         $property->setAccessible(true);
         $property->setValue(
             $this->responseObj,
             array('Content-Type' => 'application/xml; charset=utf-8\r\n\r\n')
         );
 
-        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Http\\Response", "body");
         $property->setAccessible(true);
         $property->setValue($this->responseObj, '<status>302 - Found</status>');
         $xmlObj = $this->responseObj->bodyObject();
@@ -131,7 +131,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testbodyObjectException()
     {
-        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "headers");
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Http\\Response", "headers");
         $property->setAccessible(true);
         $property->setValue(
             $this->responseObj,
@@ -148,7 +148,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testBodyArrayJson()
     {
-        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Http\\Response", "body");
         $property->setAccessible(true);
         $property->setValue(
             $this->responseObj,
@@ -160,14 +160,14 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testBodyArrayXml()
     {
-        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "headers");
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Http\\Response", "headers");
         $property->setAccessible(true);
         $property->setValue(
             $this->responseObj,
             array('Content-Type' => 'application/xml; charset=utf-8\r\n\r\n')
         );
 
-        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Request\\Response", "body");
+        $property = new \ReflectionProperty("\\Njasm\\Soundcloud\\Http\\Response", "body");
         $property->setAccessible(true);
         $property->setValue($this->responseObj, '<status>302 - Found</status>');
 
