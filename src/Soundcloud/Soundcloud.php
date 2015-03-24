@@ -19,12 +19,9 @@ use Njasm\Soundcloud\Http\Url\UrlBuilder;
 
 class Soundcloud
 {
-    protected $resource;
     protected $request;
     protected $response;
     protected $auth;
-    protected $factory;
-    protected $responseFormat;
 
     protected static $self;
 
