@@ -2,19 +2,10 @@
 
 namespace Njasm\Soundcloud\Tests;
 
-use Njasm\Soundcloud\Resource\Resource;
-use Njasm\Soundcloud\Resource\ResourceInterface;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
-use Njasm\Soundcloud\Auth\Auth;
-use Njasm\Soundcloud\Auth\AuthInterface;
-use Njasm\Soundcloud\Factory\Factory;
-use Njasm\Soundcloud\Factory\FactoryInterface;
-use Njasm\Soundcloud\Request\Request;
-use Njasm\Soundcloud\Request\RequestInterface;
 use Njasm\Soundcloud\Soundcloud;
-use Njasm\Soundcloud\Request\Response;
-use Njasm\Soundcloud\Request\ResponseInterface;
+
 
 class SoundcloudTest extends \PHPUnit_Framework_TestCase
 {
