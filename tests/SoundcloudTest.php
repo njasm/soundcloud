@@ -2,8 +2,6 @@
 
 namespace Njasm\Soundcloud\Tests;
 
-use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
-use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 use Njasm\Soundcloud\Soundcloud;
 
 
