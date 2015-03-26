@@ -11,3 +11,6 @@ This is a complete rewrite of the library with the initial objectives in mind.
 
 
 If you want a working and stable version of the library check the master branch and tags.
+
+#### Requirements
+* PHP 5.4.0 or Higher with ``json`` and ``curl`` extensions.
