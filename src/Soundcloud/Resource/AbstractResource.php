@@ -47,11 +47,8 @@ abstract class AbstractResource implements \Serializable
         }
 
         $data = [];
-        $className = explode('\\', static::class);
-        $resource = strtolower($className[count($className) - 1]) ;
         foreach($this->writableProperties as $property) {
-
-            $resultKey = $resource . '[' . strtolower($property) . ']';
+            $resultKey = $this->resource . '[' . strtolower($property) . ']';
             if (!isset($this->properties[$property])) {
                 $data[$resultKey] = null;
             }

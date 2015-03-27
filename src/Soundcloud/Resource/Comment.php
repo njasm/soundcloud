@@ -4,6 +4,7 @@ namespace Njasm\Soundcloud\Resource;
 
 class Comment extends AbstractResource
 {
+    protected $resource = 'comment';
     protected $writableProperties = ['body', 'track_id', 'user_id', 'timestamp'];
 
     public function save(Track $t = null)

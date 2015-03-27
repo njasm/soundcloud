@@ -6,6 +6,7 @@ use Njasm\Soundcloud\Factory\AbstractFactory;
 
 class User extends AbstractResource
 {
+    protected $resource = 'user';
     protected $writableProperties = [
         'permalink', 'username', 'country', 'city', 'first_name', 'last_name', 'description'
     ];

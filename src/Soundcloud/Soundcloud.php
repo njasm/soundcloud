@@ -41,6 +41,22 @@ class Soundcloud
     }
 
     /**
+     * Sets up a GET Resource.
+     *
+     * @param string $url
+     * @param array $params
+     * @return \Njasm\Soundcloud\Http\RequestInterface
+     */
+    public function get($url, array $params = [])
+    {
+        $verb = 'GET';
+        $params = $this->auth->mergeParams($params);
+        $this->request = new Request($verb, $url, $params);
+
+        return $this->request;
+    }
+
+    /**
      * Sets up a PUT Resource.
      * 
      * @param string $url
@@ -89,15 +105,15 @@ class Soundcloud
     }
 
     /**
-     * Sets up a GET Resource.
+     * Sets up a OPTIONS Resource.
      *
      * @param string $url
      * @param array $params
      * @return \Njasm\Soundcloud\Http\RequestInterface
      */
-    public function get($url, array $params = [])
+    public function options($url, array $params = [])
     {
-        $verb = 'GET';
+        $verb = 'OPTIONS';
         $params = $this->auth->mergeParams($params);
         $this->request = new Request($verb, $url, $params);
 
