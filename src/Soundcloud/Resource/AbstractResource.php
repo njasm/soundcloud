@@ -21,6 +21,26 @@ abstract class AbstractResource implements \Serializable
         empty($data) or $this->unserialize($data);
     }
 
+    /**
+     * Check if Resource is new.
+     *
+     * @return bool
+     */
+    public function isNew()
+    {
+        return is_null($this->get('id'));
+    }
+
+    /**
+     * Returns Resource id.
+     *
+     * @return null|int
+     */
+    public function id()
+    {
+        return $this->get('id');
+    }
+
     public function get($property)
     {
         if (!isset($this->properties[$property])) {
