@@ -39,7 +39,7 @@ class Collection implements \Iterator
 
     public function next()
     {
-        next($this->items);
+        return next($this->items);
     }
 
     public function rewind()
