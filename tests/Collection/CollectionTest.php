@@ -64,4 +64,14 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->collection->add($this->resource);
         $this->assertFalse($this->collection->next());
     }
+
+    public function testRewind()
+    {
+        $this->testAddItem();
+        $track = new Track($this->sc);
+        $track->set('id', '12'); // change resource id.
+        $this->collection->add($track);
+        $this->collection->rewind();
+        $this->assertEquals($this->resource, $this->collection->current());
+    }
 }
