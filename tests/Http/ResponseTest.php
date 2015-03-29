@@ -1,6 +1,6 @@
 <?php
 
-namespace Njasm\Soundcloud\Tests;
+namespace Njasm\Soundcloud\Tests\Http;
 
 use Njasm\Soundcloud\Http\Response;
 

@@ -1,12 +1,8 @@
 <?php
 
-namespace Njasm\Soundcloud\Tests;
+namespace Njasm\Soundcloud\Tests\Http;
 
 use Njasm\Soundcloud\Http\Request;
-use Njasm\Soundcloud\Http\Url\UrlBuilder;
-use Njasm\Soundcloud\Resource\Resource;
-use Njasm\Soundcloud\Factory\Factory;
-use Njasm\Soundcloud\Http\Response;
 
 class RequestTest extends \PHPUnit_Framework_TestCase
 {

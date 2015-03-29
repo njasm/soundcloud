@@ -1,6 +1,6 @@
 <?php
 
-namespace Njasm\Soundcloud\Tests;
+namespace Njasm\Soundcloud\Tests\Http\Url;
 
 use Njasm\Soundcloud\Http\Url\UrlBuilder;
 
