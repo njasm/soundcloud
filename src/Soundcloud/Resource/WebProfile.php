@@ -56,8 +56,7 @@ class WebProfile extends AbstractResource
 
         $sc = Soundcloud::instance();
         $userID = $sc->getMe()->get('id');
-        $id = $this->get('id');
-        $url = '/users/' . $userID . '/web-profiles/';
+        $url = '/users/' . $userID . '/web-profiles';
         $response = $sc->post($url, $this->serialize())->send();
 
         if ($response->getHttpCode() == 200) {
@@ -117,10 +116,5 @@ class WebProfile extends AbstractResource
 
         // clear object state
         $this->properties = [];
-    }
-
-    public function __invoke()
-    {
-
     }
 }
