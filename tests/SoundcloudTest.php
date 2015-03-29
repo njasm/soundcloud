@@ -8,7 +8,8 @@ use Njasm\Soundcloud\Soundcloud;
 class SoundcloudTest extends \PHPUnit_Framework_TestCase
 {
     public $soundcloud;
-    
+    protected $requestClass = 'Njasm\Soundcloud\Http\Request';
+
     public function setUp()
     {
         $clientID = "ClientIDHash";
@@ -16,7 +17,47 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $uriCallback = "http://example.com/soundcloud";
         $this->soundcloud = new Soundcloud($clientID, $clientSecret, $uriCallback);
     }
-    
+
+    public function testGetAuthUrl()
+    {
+        $expected = 'https://soundcloud.com/connect?client_id=ClientIDHash&scope=non-expiring&display=popup&response_type=code&redirect_uri=http%3A%2F%2Fexample.com%2Fsoundcloud&state=';
+        $this->assertEquals($expected, $this->soundcloud->getAuthUrl());
+    }
+
+    public function testGet()
+    {
+        $this->assertInstanceOf($this->requestClass, $this->soundcloud->get('/me'));
+    }
+
+    public function testPut()
+    {
+        $this->assertInstanceOf($this->requestClass, $this->soundcloud->put('/me'));
+    }
+
+    public function testPost()
+    {
+        $this->assertInstanceOf($this->requestClass, $this->soundcloud->post('/me'));
+    }
+
+    public function testDelete()
+    {
+        $this->assertInstanceOf($this->requestClass, $this->soundcloud->delete('/me'));
+    }
+
+    public function testOptions()
+    {
+        $this->assertInstanceOf($this->requestClass, $this->soundcloud->options('/me'));
+    }
+
+//    public function testGetCurlFile()
+//    {
+//        if (class_exists('\CurlFile')) {
+//            $this->assertInstanceOf('\CurlFile', $this->soundcloud->getCurlFile(__FILE__));
+//        } else {
+//            $expected = '@' . __FILE__;
+//            $this->assertEquals($expected, $this->soundcloud->getCurlFile(__FILE__));
+//        }
+//    }
 //    public function testRequest()
 //    {
 //        // request Factory mock

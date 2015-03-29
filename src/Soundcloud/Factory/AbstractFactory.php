@@ -3,6 +3,7 @@
 namespace Njasm\Soundcloud\Factory;
 
 use Njasm\Soundcloud\Exception\SoundcloudResponseException;
+use Njasm\Soundcloud\Resolve\Resolve;
 use Njasm\Soundcloud\Soundcloud;
 
 class AbstractFactory
@@ -12,6 +13,10 @@ class AbstractFactory
         $data = json_decode($serialized, true);
 
         self::guardAgainstErrors($data);
+
+        if (isset($data['status'])) {
+            return self::resolve($data);
+        }
 
         if (isset($data[0]) && is_array($data[0])) {
             $collection = self::collection($data[0]['kind']);
@@ -61,5 +66,14 @@ class AbstractFactory
         $resource->unserialize($line);
 
         return $resource;
+    }
+
+    public static function resolve($data)
+    {
+        if (!is_array($data)) {
+            $data = json_decode($data, true);
+        }
+
+        return new Resolve($data['status'], $data['location']);
     }
 }

@@ -41,7 +41,7 @@ class Soundcloud
     }
 
     /**
-     * Sets up a GET Resource.
+     * Sets up a GET Request.
      *
      * @param string $url
      * @param array $params
@@ -57,7 +57,7 @@ class Soundcloud
     }
 
     /**
-     * Sets up a PUT Resource.
+     * Sets up a PUT Request.
      * 
      * @param string $url
      * @param array $params
@@ -73,7 +73,7 @@ class Soundcloud
     }
     
     /**
-     * Sets up a POST Resource.
+     * Sets up a POST Request.
      * 
      * @param string $url
      * @param array $params
@@ -89,7 +89,7 @@ class Soundcloud
     }
     
     /**
-     * Sets up a DELETE Resource.
+     * Sets up a DELETE Request.
      * 
      * @param string $url
      * @param array $params
@@ -105,7 +105,7 @@ class Soundcloud
     }
 
     /**
-     * Sets up a OPTIONS Resource.
+     * Sets up a OPTIONS Request.
      *
      * @param string $url
      * @param array $params
