@@ -2,6 +2,7 @@
 
 namespace Njasm\Soundcloud\Factory;
 
+use Njasm\Soundcloud\Collection\Collection;
 use Njasm\Soundcloud\Exception\SoundcloudResponseException;
 use Njasm\Soundcloud\Resolve\Resolve;
 use Njasm\Soundcloud\Soundcloud;
@@ -21,12 +22,7 @@ class AbstractFactory
         if (isset($data[0]) && is_array($data[0])) {
             $collection = self::collection($data[0]['kind']);
 
-            foreach($data as $line) {
-                $resource = self::resource($line);
-                $collection->add($resource);
-            }
-
-            return $collection;
+            return self::addItemsToCollection($collection, $data);
         }
 
         return self::resource($serialized);
@@ -48,6 +44,16 @@ class AbstractFactory
         }
 
         throw new \Exception("$collectionClass non-existent.");
+    }
+
+    protected static function addItemsToCollection(Collection $collection, array $data)
+    {
+        foreach($data as $line) {
+            $resource = self::resource($line);
+            $collection->add($resource);
+        }
+
+        return $collection;
     }
 
     public static function resource($line)

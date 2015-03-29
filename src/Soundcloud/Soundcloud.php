@@ -120,6 +120,11 @@ class Soundcloud
         return $this->request;
     }
 
+    /**
+     * Get's the Authenticated User Resource.
+     *
+     * @return Resolve\Resolve|Resource\AbstractResource
+     */
     public function getMe()
     {
         $verb = 'GET';
