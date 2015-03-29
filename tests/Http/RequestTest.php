@@ -20,14 +20,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey(CURLOPT_RETURNTRANSFER, $this->request->getOptions());
     }
     
-    public function testAsJson()
-    {
-        $property = new \ReflectionProperty("Njasm\\Soundcloud\\Http\\Request", "responseFormat");
-        $property->setAccessible(true);
-
-        $this->assertEquals("application/json", $property->getValue($this->request));
-    }
-    
     public function testGetOptions()
     {
         $this->assertArrayHasKey(CURLOPT_HEADER, $this->request->getOptions());
