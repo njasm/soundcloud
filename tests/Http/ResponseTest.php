@@ -39,8 +39,29 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->info = array('curlInfo' => 'array');
         $this->errno = 0;
         $this->errorString = "";
-
+        /** @var Response responseObj */
         $this->responseObj = new Response($this->response, $this->info, $this->errno, $this->errorString);
+    }
+
+    public function testGetRaw()
+    {
+        // raw curl response.
+        $this->assertEquals($this->response, $this->responseObj->getRaw());
+    }
+
+    public function testGetErrorNo()
+    {
+        $this->assertEquals($this->responseObj->getErrorNo(), 0);
+    }
+
+    public function testGetErrorString()
+    {
+        $this->assertEquals("", $this->responseObj->getErrorString());
+    }
+
+    public function testGetHttpCodeString()
+    {
+        $this->assertEquals("Found", $this->responseObj->getHttpCodeString());
     }
 
     public function testGetHttpCode()
