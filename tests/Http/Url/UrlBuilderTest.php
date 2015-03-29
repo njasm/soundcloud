@@ -33,6 +33,16 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testCleanPath()
+    {
+        $verb = 'GET';
+        $params['client_id'] = 'ClientIDHash';
+        $url = '/me/'; // notice the trailing slash
+
+        $finalUrl = UrlBuilder::getUrl($verb, $url, $params);
+        $this->assertEquals("https://api.soundcloud.com/me?client_id=ClientIDHash", $finalUrl);
+    }
+
     public function testOnlyResource()
     {
         $verb = 'GET';
@@ -51,5 +61,16 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
 
         $finalUrl = UrlBuilder::getUrl($verb, $url, $params);
         $this->assertEquals("https://api.soundcloud.com/me?client_id=ClientIDHash", $finalUrl);
+    }
+
+    public function testSetAndGetBasePath()
+    {
+        $verb = 'GET';
+        $url = "http://www.localhost";
+        $path = '/me';
+        UrlBuilder::setBaseUrl($url);
+
+        $this->assertEquals($url, UrlBuilder::getBaseUrl());
+        $this->assertEquals("http://www.localhost/me", UrlBuilder::getUrl($verb, $path));
     }
 }

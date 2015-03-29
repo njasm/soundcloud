@@ -54,7 +54,7 @@ class UrlBuilder implements UrlBuilderInterface
         }
 
         if ($url[0] == '/') {
-            $url = self::$baseUrl . $url;
+            $url = self::$baseUrl . self::getCleanPath($url);
         }
 
         return $url;
