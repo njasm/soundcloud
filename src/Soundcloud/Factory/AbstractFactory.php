@@ -19,9 +19,12 @@ class AbstractFactory
             return self::resolve($data);
         }
 
-        if (isset($data[0]) && is_array($data[0])) {
-            $collection = self::collection($data[0]['kind']);
+        if (empty($data)) {
+            return self::collection();
+        }
 
+        if (is_array($data[0])) {
+            $collection = self::collection($data[0]['kind']);
             return self::addItemsToCollection($collection, $data);
         }
 
@@ -35,7 +38,7 @@ class AbstractFactory
         }
     }
 
-    public static function collection($kind)
+    public static function collection($kind = '')
     {
         $kind = str_replace("-", "", $kind);
         $collectionClass = "\\Njasm\\Soundcloud\\Collection\\" . ucfirst($kind) . "Collection";
@@ -56,6 +59,11 @@ class AbstractFactory
         return $collection;
     }
 
+    /**
+     * @param $line
+     * @return \Njasm\Soundcloud\Resource\AbstractResource
+     * @throws \Exception
+     */
     public static function resource($line)
     {
         if (!is_array($line)) {
@@ -65,13 +73,8 @@ class AbstractFactory
         $sc = Soundcloud::instance();
         $line['kind'] = str_replace("-", "", $line['kind']);
         $resourceClass = "\\Njasm\\Soundcloud\\Resource\\" . ucfirst($line['kind']);
-        $reflectionResource = new \ReflectionClass($resourceClass);
 
-        /** @var \Njasm\Soundcloud\Resource\AbstractResource $resource */
-        $resource = $reflectionResource->newInstanceArgs(array($sc));
-        $resource->unserialize($line);
-
-        return $resource;
+        return new $resourceClass($sc, $line);
     }
 
     public static function resolve($data)

@@ -25,8 +25,8 @@ class WebProfile extends AbstractResource
      */
     public function refresh($returnNew = false)
     {
-        if (! $this->isNew()) {
-            throw new \LogicException("Resource can't be saved because it's not new.");
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
         }
 
         $sc = Soundcloud::instance();
@@ -50,8 +50,8 @@ class WebProfile extends AbstractResource
      */
     public function save()
     {
-        if (! $this->isNew()) {
-            throw new \LogicException("Resource can't be saved because it's not new.");
+        if (!$this->isNew()) {
+            throw new \LogicException("Resource is not new.");
         }
 
         $sc = Soundcloud::instance();
@@ -76,7 +76,7 @@ class WebProfile extends AbstractResource
     public function update($refreshState = true)
     {
         if ($this->isNew()) {
-            throw new \LogicException("Resource can't be updated because is new.");
+            throw new \LogicException("Resource is new.");
         }
 
         $sc = Soundcloud::instance();
@@ -101,7 +101,7 @@ class WebProfile extends AbstractResource
     public function delete()
     {
         if ($this->isNew()) {
-            throw new \LogicException("Resource can't be deleted because is new.");
+            throw new \LogicException("Resource is new.");
         }
 
         $sc = Soundcloud::instance();

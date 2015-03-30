@@ -17,6 +17,10 @@ class User extends AbstractResource
 
     public function getTracks()
     {
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
+
         $uri = $this->get('uri');
         $uri .= '/tracks';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -26,6 +30,10 @@ class User extends AbstractResource
 
     public function getPlaylists()
     {
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
+
         $uri = $this->get('uri');
         $uri .= '/playlists';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -35,7 +43,10 @@ class User extends AbstractResource
 
     public function  getFollowings()
     {
-        // return UserCollection
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
+
         $uri = $this->get('uri');
         $uri .= '/followings';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -49,6 +60,10 @@ class User extends AbstractResource
             throw \Exception("Following id is not an integer");
         }
 
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
+
         $uri = $this->get('uri');
         $uri .= '/followings/' . (string) $id;
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -59,11 +74,14 @@ class User extends AbstractResource
     /**
      * Get Followers of User.
      *
-     * @return UserCollection
+     * @return Collection
      */
     public function getFollowers()
     {
-        // return UserCollection
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
+
         $uri = $this->get('uri');
         $uri .= '/followers';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -85,6 +103,10 @@ class User extends AbstractResource
             throw \Exception("Follower id is not an integer");
         }
 
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
+
         $uri = $this->get('uri');
         $uri .= '/followers/' . (string) $id;
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -99,6 +121,11 @@ class User extends AbstractResource
      */
     public function getComments()
     {
+
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
+
         $uri = $this->get('uri');
         $uri .= '/comments';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -113,6 +140,10 @@ class User extends AbstractResource
      */
     public function getFavorites()
     {
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
+
         $uri = $this->get('uri');
         $uri .= '/favorites';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -134,6 +165,10 @@ class User extends AbstractResource
             throw \Exception("Favorite id is not an integer");
         }
 
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
+
         $uri = $this->get('uri');
         $uri .= '/favorites/' . (string) $id;
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -148,6 +183,10 @@ class User extends AbstractResource
      */
     public function getGroups()
     {
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
+
         $uri = $this->get('uri');
         $uri .= '/groups';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -162,6 +201,10 @@ class User extends AbstractResource
      */
     public function getWebProfiles()
     {
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
+
         $uri = $this->get('uri');
         $uri .= '/web-profiles';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -176,6 +219,10 @@ class User extends AbstractResource
      */
     public function refresh()
     {
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
+
         $uri = $this->get('uri');
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
 
@@ -184,25 +231,19 @@ class User extends AbstractResource
 
     public function save()
     {
+        if (!$this->isNew()) {
+            throw new \LogicException("Resource is not new.");
+        }
 
     }
 
     public function update($refreshState = true)
     {
-        $uri = $this->get('uri');
-        /*
-        $serialized = $this->serialize();
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
 
-        $allowedData["user[permalink]"] = "hybrid-species"; //$serialized["user[permalink]"];
-        $allowedData["user[username]"] = "HybridSpecies"; //$serialized["user[permalink]"];
-        $allowedData["user[first_name]"] = "Nelson"; //$serialized["user[first_name]"];
-        $allowedData["user[last_name]"] = "J Morais"; //$serialized["user[last_name]"];
-        $allowedData["user[country]"] = "Portugal"; //$serialized["user[permalink]"];
-        $allowedData["user[city]"] = "Lisboa"; //$serialized["user[permalink]"];
-        $allowedData["user[description]"] = stripos($serialized["user[description]"], '~') !== false
-            ? str_replace("~", "", $serialized["user[description]"])
-            : $serialized["user[description]"] . "~";
-        */
+        $uri = $this->get('uri');
         $this->sc->put($uri, $this->serialize());
         $response = $this->sc->send();
 
@@ -213,6 +254,8 @@ class User extends AbstractResource
 
     public function delete()
     {
-
+        if ($this->isNew()) {
+            throw new \LogicException("Resource is new.");
+        }
     }
 }

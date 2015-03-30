@@ -88,7 +88,7 @@ class Request implements RequestInterface
         $errno = curl_errno($curlHandler);
         $errorString = curl_error($curlHandler);
         curl_close($curlHandler);
-
+        echo PHP_EOL . $response . PHP_EOL;
         return new Response($response, $info, $errno, $errorString);
 
     }
