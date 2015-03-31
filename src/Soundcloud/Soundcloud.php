@@ -199,7 +199,7 @@ class Soundcloud
      * Executes the request against soundcloud api.
      * 
      * @param array $params
-     * @return Njasm\Soundcloud\Request\ResponseInterface
+     * @return \Njasm\Soundcloud\Request\ResponseInterface
      */
     public function request(array $params = array())
     {
@@ -225,18 +225,24 @@ class Soundcloud
     
     /**
      * Sets the Accept Header to application/xml.
-     * 
+     *
+     * @deprecated Soundcloud does not support XML responses anymore.
+     * @see https://github.com/njasm/soundcloud/issues/16
+     *
      * @return Soundcloud
      */
     public function asXml()
     {
-        $this->responseFormat = "xml";
+        $this->asJson();
         return $this;
     }
     
     /**
      * Sets the Accept Header to application/json.
-     * 
+     *
+     * @deprecated Soundcloud does not support XML responses anymore and calling this method will be redundant.
+     * @see https://github.com/njasm/soundcloud/issues/16
+     *
      * @return Soundcloud
      */
     public function asJson()

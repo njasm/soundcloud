@@ -169,13 +169,11 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $facade = $this->soundcloud->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
     }
     
-    public function testAsXmlAsJson()
+    public function testAsJson()
     {
         $property = $this->reflectProperty("Njasm\\SoundCloud\\Soundcloud", "responseFormat");
         $this->soundcloud->asJson();
         $this->assertEquals("json", $property->getValue($this->soundcloud));
-        $this->soundcloud->asXml();
-        $this->assertEquals("xml", $property->getValue($this->soundcloud));
     }
     
     public function testMergeAuthParams()
@@ -196,11 +194,10 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
     {
         $reqMock = $this->getMock(
             "Njasm\\Soundcloud\\Request\\Request",
-            array('asXml', 'asJson'),
+            array('asJson'),
             array(new Resource('get', '/resolve'), new UrlBuilder(new Resource('get', '/resolve')), new Factory())
         );
-        $reqMock->expects($this->once())->method('asXml');
-        $reqMock->expects($this->once())->method('asJson');
+        $reqMock->expects($this->any())->method('asJson');
         
         $method = $this->reflectMethod("Njasm\\Soundcloud\\Soundcloud", "setResponseFormat");
 

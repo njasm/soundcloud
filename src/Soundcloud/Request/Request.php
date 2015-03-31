@@ -21,6 +21,7 @@ class Request implements RequestInterface
     private $resource;
     private $urlBuilder;
     private $factory;
+    private $headers = array();
 
     private $options = array(
         CURLOPT_RETURNTRANSFER => true,
@@ -61,18 +62,24 @@ class Request implements RequestInterface
     
     /**
      * {@inheritdoc}
-     * 
+     *
+     * @deprecated Soundcloud does not support XML responses anymore.
+     * @see https://github.com/njasm/soundcloud/issues/16
+     *
      * @return Request
      */
     public function asXml()
     {
-        $this->responseFormat = 'application/xml';
+        $this->asJson();
         return $this;
     }
     
     /**
      * {@inheritdoc}
-     * 
+     *
+     * @deprecated Soundcloud does not support XML responses anymore and calling this method is redundant.
+     * @see https://github.com/njasm/soundcloud/issues/16
+     *
      * @return Request
      */    
     public function asJson()
@@ -89,17 +96,16 @@ class Request implements RequestInterface
     public function exec()
     {
         $verb = strtoupper($this->resource->getVerb());
-        
+        $this->buildDefaultHeaders();
+
         $curlHandler = curl_init();
-        curl_setopt($curlHandler, CURLOPT_HTTPHEADER, array('Accept: ' . $this->responseFormat));
+        curl_setopt($curlHandler, CURLOPT_HTTPHEADER, $this->headers);
         curl_setopt_array($curlHandler, $this->options);
         curl_setopt($curlHandler, CURLOPT_CUSTOMREQUEST, $verb);
         curl_setopt($curlHandler, CURLOPT_URL, $this->urlBuilder->getUrl());
-        
-        if ($verb !== 'GET') {
-            curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->resource->getParams());
-        }
-        
+        curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->getBodyContent());
+
+        curl_setopt($curlHandler, CURLOPT_VERBOSE, true);
         $response = curl_exec($curlHandler);
         $info = curl_getinfo($curlHandler);
         $errno = curl_errno($curlHandler);
@@ -107,5 +113,22 @@ class Request implements RequestInterface
         curl_close($curlHandler);
 
         return $this->factory->make('ResponseInterface', array($response, $info, $errno, $errorString));
+    }
+
+    protected function getBodyContent()
+    {
+        return json_encode($this->resource->getParams());
+    }
+
+    protected function buildDefaultHeaders()
+    {
+        $this->headers = array('Accept: ' . $this->responseFormat);
+        array_push($this->headers, 'Content-Type: application/json');
+
+        $data = $this->resource->getParams();
+        if (isset($data['oauth_token'])) {
+            $oauth = $data['oauth_token'];
+            array_push($this->headers, 'Authorization: OAuth ' . $oauth);
+        }
     }
 }
