@@ -5,6 +5,5 @@ composer.lock
 /vendor
 /report
 /build
-.DS_Store
 /src/.DS_Store
 .idea/
