@@ -114,16 +114,40 @@ Take in considerations that specific operations like userCredentials(), download
 automatically.
 
 ```php
-$facade = new Soundcloud($clientID, $clientSecret);
-$facade->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species'));
+$soundcloud = new Soundcloud($clientID, $clientSecret);
+$soundcloud->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species'));
 // only this invocation will send the request
-$response = $facade->request();
+$response = $soundcloud->request();
 ```
 
 ###### Get the raw response Body
 ```php
 ...
 $theBodyString = $facade->request()->bodyRaw();
+```
+
+###### Create a Playlist / Set and update with tracks
+```php
+// after having the access token
+// build the playlist data array
+$playlistData = array(
+    'playlist' => array('title' => 'Great Playlist!', 'sharing' => 'public')
+);
+$response = $soundcloud->post('/playlists', $playlistData)->request();
+
+// now add tracks, get playlist id from response
+// build tracks array
+$tracks = array(
+    'playlist' => array(
+        'tracks' => array(
+            array('id' => 29720509), // track id
+            array('id' => 26057359)  // other track id
+        )
+    )
+);
+
+// put tracks into playlist
+$response = $soundcloud->put('/playlists/' . $response->bodyObject()->id, $tracks)->request();
 ```
 
 ###### Get CURL last response object
