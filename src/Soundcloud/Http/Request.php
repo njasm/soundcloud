@@ -23,6 +23,8 @@ class Request implements RequestInterface
     private $url;
     /** @var array */
     private $params = [];
+    /** @var array */
+    private $headers = [];
 
     private $options = array(
         CURLOPT_RETURNTRANSFER => true,
@@ -70,26 +72,42 @@ class Request implements RequestInterface
     public function send()
     {
         $verb = strtoupper($this->verb);
+        $this->buildDefaultHeaders();
 
         $curlHandler = curl_init();
-        curl_setopt($curlHandler, CURLOPT_HTTPHEADER, array('Accept: ' . $this->responseFormat));
+        curl_setopt($curlHandler, CURLOPT_HTTPHEADER, $this->headers);
         curl_setopt_array($curlHandler, $this->options);
         curl_setopt($curlHandler, CURLOPT_CUSTOMREQUEST, $verb);
         curl_setopt($curlHandler, CURLOPT_URL, UrlBuilder::getUrl($verb, $this->url, $this->params));
 
-        if ($verb !== 'GET') {
-            curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->params);
+        if ($this->verb != 'GET') {
+            curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->getBodyContent());
         }
 
         curl_setopt($curlHandler, CURLOPT_VERBOSE, true);
-
         $response = curl_exec($curlHandler);
         $info = curl_getinfo($curlHandler);
         $errno = curl_errno($curlHandler);
         $errorString = curl_error($curlHandler);
         curl_close($curlHandler);
-        echo PHP_EOL . $response . PHP_EOL;
-        return new Response($response, $info, $errno, $errorString);
 
+        return new Response($response, $info, $errno, $errorString);
+    }
+
+    protected function getBodyContent()
+    {
+        return json_encode($this->params);
+    }
+
+    protected function buildDefaultHeaders()
+    {
+        $this->headers = array('Accept: ' . $this->responseFormat);
+        array_push($this->headers, 'Content-Type: ' . $this->responseFormat);
+
+        $data = $this->params;
+        if (isset($data['oauth_token'])) {
+            $oauth = $data['oauth_token'];
+            array_push($this->headers, 'Authorization: OAuth ' . $oauth);
+        }
     }
 }

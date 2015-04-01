@@ -13,14 +13,14 @@ class AbstractFactory
     {
         $data = json_decode($serialized, true);
 
+        if (empty($data)) {
+            return self::collection();
+        }
+
         self::guardAgainstErrors($data);
 
         if (isset($data['status'])) {
             return self::resolve($data);
-        }
-
-        if (empty($data)) {
-            return self::collection();
         }
 
         if (is_array($data[0])) {
