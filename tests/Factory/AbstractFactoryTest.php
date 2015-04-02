@@ -2,7 +2,7 @@
 
 namespace Njasm\Soundcloud\Tests\Auth;
 
-use Njasm\Soundcloud\Factory\AbstractFactory;
+use Njasm\Soundcloud\Factory\Factory;
 
 class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -10,7 +10,7 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\Njasm\Soundcloud\Exception\SoundcloudResponseException');
         $errors = array('errors' => array());
-        AbstractFactory::unserialize(json_encode($errors));
+        Factory::unserialize(json_encode($errors));
     }
 
     public function testGenericCollection()
@@ -18,7 +18,7 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $value = array();
         $this->assertInstanceOf(
             '\Njasm\Soundcloud\Collection\Collection',
-            AbstractFactory::unserialize(json_encode($value))
+            Factory::unserialize(json_encode($value))
         );
     }
 
@@ -26,7 +26,7 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\Exception');
         $value = array(array('kind' => 'non-existent'));
-        AbstractFactory::unserialize(json_encode($value));
+        Factory::unserialize(json_encode($value));
     }
 
     public function testResource()
@@ -34,12 +34,12 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $value = array('kind' => 'track');
         $this->assertInstanceOf(
             '\Njasm\Soundcloud\Resource\Track',
-            AbstractFactory::resource($value)
+            Factory::resource($value)
         );
 
         $this->assertInstanceOf(
             '\Njasm\Soundcloud\Resource\Track',
-            AbstractFactory::resource(json_encode($value))
+            Factory::resource(json_encode($value))
         );
     }
 }

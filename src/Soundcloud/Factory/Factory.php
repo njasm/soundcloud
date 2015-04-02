@@ -7,7 +7,7 @@ use Njasm\Soundcloud\Exception\SoundcloudResponseException;
 use Njasm\Soundcloud\Resolve\Resolve;
 use Njasm\Soundcloud\Soundcloud;
 
-class AbstractFactory
+class Factory
 {
     public static function unserialize($serialized)
     {
@@ -23,7 +23,7 @@ class AbstractFactory
             return self::resolve($data);
         }
 
-        if (is_array($data[0])) {
+        if (isset($data[0]) && is_array($data[0])) {
             $collection = self::collection($data[0]['kind']);
             return self::addItemsToCollection($collection, $data);
         }
