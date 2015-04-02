@@ -49,15 +49,19 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf($this->requestClass, $this->soundcloud->options('/me'));
     }
 
-//    public function testGetCurlFile()
-//    {
-//        if (class_exists('\CurlFile')) {
-//            $this->assertInstanceOf('\CurlFile', $this->soundcloud->getCurlFile(__FILE__));
-//        } else {
-//            $expected = '@' . __FILE__;
-//            $this->assertEquals($expected, $this->soundcloud->getCurlFile(__FILE__));
-//        }
-//    }
+    public function testGetCurlFile()
+    {
+        $method = new \ReflectionMethod($this->soundcloud, 'getCurlFile');
+        $method->setAccessible(true);
+
+        if (class_exists('\CurlFile')) {
+            $this->assertInstanceOf('\CurlFile', $method->invoke($this->soundcloud, __FILE__));
+        } else {
+            $expected = '@' . __FILE__;
+            $this->assertEquals($expected, $method->invoke($this->soundcloud, __FILE__));
+        }
+    }
+
 //    public function testRequest()
 //    {
 //        // request ApiResponseFactory mock
