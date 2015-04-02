@@ -25,4 +25,41 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey(CURLOPT_HEADER, $this->request->getOptions());
         $this->assertArrayNotHasKey(CURLOPT_COOKIE, $this->request->getOptions());
     }
+
+    public function testGetBodyContent()
+    {
+        $expected = '{"oauth_token":"1234-ABCD"}';
+        $property = new \ReflectionProperty($this->request, 'params');
+        $property->setAccessible(true);
+        $property->setValue($this->request, ['oauth_token' => '1234-ABCD']);
+
+        $method = new \ReflectionMethod($this->request, 'getBodyContent');
+        $method->setAccessible(true);
+        $returnValue = $method->invoke($this->request);
+
+        $this->assertEquals($expected, $returnValue);
+    }
+
+    public function testBuildDefaultHeaders()
+    {
+        $expected = [
+            'Accept: application/json',
+            'Content-Type: application/json',
+            'Authorization: OAuth 1234-ABCD'
+        ];
+
+        $property = new \ReflectionProperty($this->request, 'params');
+        $property->setAccessible(true);
+        $property->setValue($this->request, ['oauth_token' => '1234-ABCD']);
+
+        $method = new \ReflectionMethod($this->request, 'buildDefaultHeaders');
+        $method->setAccessible(true);
+        $method->invoke($this->request);
+
+        $headers = new \ReflectionProperty($this->request, 'headers');
+        $headers->setAccessible(true);
+        $returnvalue = $headers->getValue($this->request);
+
+        $this->assertEquals($expected, $returnvalue);
+    }
 }
