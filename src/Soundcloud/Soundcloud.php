@@ -4,6 +4,7 @@ namespace Njasm\Soundcloud;
 
 use Njasm\Soundcloud\Auth\Auth;
 use Njasm\Soundcloud\Factory\ApiResponseFactory;
+use Njasm\Soundcloud\Factory\LibraryFactory;
 use Njasm\Soundcloud\Http\Request;
 use Njasm\Soundcloud\Http\Url\UrlBuilder;
 
@@ -27,7 +28,7 @@ class Soundcloud
 
     public function __construct($clientID = null, $clientSecret = null, $authCallbackUri = null)
     {
-        $this->auth = new Auth($clientID, $clientSecret, $authCallbackUri);
+        $this->auth = LibraryFactory::build('AuthInterface', [$clientID, $clientSecret, $authCallbackUri]);
         self::$self = $this;
     }
 
@@ -51,7 +52,7 @@ class Soundcloud
     {
         $verb = 'GET';
         $params = $this->auth->mergeParams($params);
-        $this->request = new Request($verb, $url, $params);
+        $this->request = LibraryFactory::build('RequestInterface', [$verb, $url, $params]);
 
         return $this->request;
     }
@@ -67,7 +68,7 @@ class Soundcloud
     {
         $verb = 'PUT';
         $params = $this->auth->mergeParams($params);
-        $this->request = new Request($verb, $url, $params);
+        $this->request = LibraryFactory::build('RequestInterface', [$verb, $url, $params]);
 
         return $this->request;
     }
@@ -83,7 +84,7 @@ class Soundcloud
     {
         $verb = 'POST';
         $params = $this->auth->mergeParams($params);
-        $this->request = new Request($verb, $url, $params);
+        $this->request = LibraryFactory::build('RequestInterface', [$verb, $url, $params]);
 
         return $this->request;
     }
@@ -99,7 +100,7 @@ class Soundcloud
     {
         $verb = 'DELETE';
         $params = $this->auth->mergeParams($params);
-        $this->request = new Request($verb, $url, $params);
+        $this->request = LibraryFactory::build('RequestInterface', [$verb, $url, $params]);
 
         return $this->request;
     }
@@ -115,7 +116,7 @@ class Soundcloud
     {
         $verb = 'OPTIONS';
         $params = $this->auth->mergeParams($params);
-        $this->request = new Request($verb, $url, $params);
+        $this->request = LibraryFactory::build('RequestInterface', [$verb, $url, $params]);
 
         return $this->request;
     }
@@ -130,7 +131,7 @@ class Soundcloud
         $verb = 'GET';
         $url = '/me';
         $params = $this->auth->mergeParams();
-        $this->request = new Request($verb, $url, $params);
+        $this->request = LibraryFactory::build('RequestInterface', [$verb, $url, $params]);
         $this->response = $this->request->send();
 
         return ApiResponseFactory::unserialize($this->response->bodyRaw());

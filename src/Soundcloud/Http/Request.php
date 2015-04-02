@@ -2,6 +2,7 @@
 
 namespace Njasm\Soundcloud\Http;
 
+use Njasm\Soundcloud\Factory\LibraryFactory;
 use Njasm\Soundcloud\Http\Url\UrlBuilder;
 
 /**
@@ -91,7 +92,7 @@ class Request implements RequestInterface
         $errorString = curl_error($curlHandler);
         curl_close($curlHandler);
 
-        return new Response($response, $info, $errno, $errorString);
+        return LibraryFactory::build('ResponseInterface', [$response, $info, $errno, $errorString]);
     }
 
     protected function getBodyContent()
