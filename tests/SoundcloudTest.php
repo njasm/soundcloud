@@ -60,9 +60,9 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
 //    }
 //    public function testRequest()
 //    {
-//        // request Factory mock
+//        // request ApiResponseFactory mock
 //        $reqFactoryMock = $this->getMock(
-//            "Njasm\\Soundcloud\\Factory\\Factory",
+//            "Njasm\\Soundcloud\\ApiResponseFactory\\ApiResponseFactory",
 //            array('make')
 //        );
 //        $reqFactoryMock->expects($this->any())
@@ -81,9 +81,9 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
 //                )
 //            );
 //
-//        // soundcloud Factory mock
+//        // soundcloud ApiResponseFactory mock
 //        $factoryMock = $this->getMock(
-//            "Njasm\\Soundcloud\\Factory\\Factory",
+//            "Njasm\\Soundcloud\\ApiResponseFactory\\ApiResponseFactory",
 //            array('make')
 //        );
 //        $factoryMock->expects($this->any())

@@ -3,7 +3,7 @@
 namespace Njasm\Soundcloud;
 
 use Njasm\Soundcloud\Auth\Auth;
-use Njasm\Soundcloud\Factory\Factory;
+use Njasm\Soundcloud\Factory\ApiResponseFactory;
 use Njasm\Soundcloud\Http\Request;
 use Njasm\Soundcloud\Http\Url\UrlBuilder;
 
@@ -133,7 +133,7 @@ class Soundcloud
         $this->request = new Request($verb, $url, $params);
         $this->response = $this->request->send();
 
-        return Factory::unserialize($this->response->bodyRaw());
+        return ApiResponseFactory::unserialize($this->response->bodyRaw());
     }
 
     /**
@@ -282,7 +282,7 @@ class Soundcloud
         $this->request = $this->get($url, $params);
         $this->response = $this->request->send();
 
-        return Factory::unserialize($this->response->bodyRaw());
+        return ApiResponseFactory::unserialize($this->response->bodyRaw());
     }
 
     /**

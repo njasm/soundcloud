@@ -8,7 +8,7 @@
 
 namespace Njasm\Soundcloud\Resource;
 
-use Njasm\Soundcloud\Factory\Factory;
+use Njasm\Soundcloud\Factory\ApiResponseFactory;
 use Njasm\Soundcloud\Soundcloud;
 
 class WebProfile extends AbstractResource
@@ -36,7 +36,7 @@ class WebProfile extends AbstractResource
         $response = $sc->get($url)->send();
 
         if ($returnNew) {
-            return Factory::unserialize($response->bodyRaw());
+            return ApiResponseFactory::unserialize($response->bodyRaw());
         }
 
         $this->unserialize($response->bodyRaw());
@@ -63,7 +63,7 @@ class WebProfile extends AbstractResource
             return $this->unserialize($response->bodyRaw());
         }
 
-        return Factory::unserialize($response->bodyRaw());
+        return ApiResponseFactory::unserialize($response->bodyRaw());
     }
 
     /**
@@ -89,7 +89,7 @@ class WebProfile extends AbstractResource
             return $this->unserialize($response->bodyRaw());
         }
 
-        return Factory::unserialize($response->bodyRaw());
+        return ApiResponseFactory::unserialize($response->bodyRaw());
     }
 
     /**
@@ -111,7 +111,7 @@ class WebProfile extends AbstractResource
         $response = $sc->delete($url)->send();
 
         if ($response->getHttpCode() != 200) {
-            return Factory::unserialize($response->bodyRaw());
+            return ApiResponseFactory::unserialize($response->bodyRaw());
         }
 
         // clear object state

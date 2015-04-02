@@ -2,7 +2,7 @@
 
 namespace Njasm\Soundcloud\Resource;
 
-use Njasm\Soundcloud\Factory\Factory;
+use Njasm\Soundcloud\Factory\ApiResponseFactory;
 
 class User extends AbstractResource
 {
@@ -25,7 +25,7 @@ class User extends AbstractResource
         $uri .= '/tracks';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
 
-        return Factory::unserialize($serialized);
+        return ApiResponseFactory::unserialize($serialized);
     }
 
     public function getPlaylists()
@@ -38,7 +38,7 @@ class User extends AbstractResource
         $uri .= '/playlists';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
 
-        return Factory::unserialize($serialized);
+        return ApiResponseFactory::unserialize($serialized);
     }
 
     public function  getFollowings()
@@ -51,7 +51,7 @@ class User extends AbstractResource
         $uri .= '/followings';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
 
-        return Factory::unserialize($serialized);
+        return ApiResponseFactory::unserialize($serialized);
     }
 
     public function getFollowing($id)
@@ -68,7 +68,7 @@ class User extends AbstractResource
         $uri .= '/followings/' . (string) $id;
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
 
-        return Factory::unserialize($serialized);
+        return ApiResponseFactory::unserialize($serialized);
     }
 
     /**
@@ -86,7 +86,7 @@ class User extends AbstractResource
         $uri .= '/followers';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
 
-        return Factory::unserialize($serialized);
+        return ApiResponseFactory::unserialize($serialized);
     }
 
     /**
@@ -111,7 +111,7 @@ class User extends AbstractResource
         $uri .= '/followers/' . (string) $id;
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
 
-        return Factory::unserialize($serialized);
+        return ApiResponseFactory::unserialize($serialized);
     }
 
     /**
@@ -130,7 +130,7 @@ class User extends AbstractResource
         $uri .= '/comments';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
 
-        return Factory::unserialize($serialized);
+        return ApiResponseFactory::unserialize($serialized);
     }
 
     /**
@@ -148,7 +148,7 @@ class User extends AbstractResource
         $uri .= '/favorites';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
 
-        return Factory::unserialize($serialized);
+        return ApiResponseFactory::unserialize($serialized);
     }
 
     /**
@@ -173,7 +173,7 @@ class User extends AbstractResource
         $uri .= '/favorites/' . (string) $id;
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
 
-        return Factory::unserialize($serialized);
+        return ApiResponseFactory::unserialize($serialized);
     }
 
     /**
@@ -191,7 +191,7 @@ class User extends AbstractResource
         $uri .= '/groups';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
 
-        return Factory::unserialize($serialized);
+        return ApiResponseFactory::unserialize($serialized);
     }
 
     /**
@@ -209,7 +209,7 @@ class User extends AbstractResource
         $uri .= '/web-profiles';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
 
-        return Factory::unserialize($serialized);
+        return ApiResponseFactory::unserialize($serialized);
     }
 
     /**

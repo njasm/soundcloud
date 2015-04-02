@@ -7,7 +7,7 @@ use Njasm\Soundcloud\Exception\SoundcloudResponseException;
 use Njasm\Soundcloud\Resolve\Resolve;
 use Njasm\Soundcloud\Soundcloud;
 
-class Factory
+class ApiResponseFactory
 {
     public static function unserialize($serialized)
     {
