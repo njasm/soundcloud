@@ -85,13 +85,24 @@ abstract class AbstractResource implements \Serializable
      */
     public function unserialize($serialized)
     {
-        if (is_array($serialized)) {
-            $this->properties = $serialized;
-            return;
+        if (!is_array($serialized)) {
+            $serialized = json_decode($serialized, true);
         }
 
-        $data = json_decode($serialized, true);
-        $this->properties = $data;
+        $this->properties = $serialized;
+    }
+
+    /**
+     * @param boolean $requiredCondition isNew() must be equal to provided boolean
+     * @param $message
+     * @return void
+     * @throws \LogicException
+     */
+    protected function isNewLogicalException($requiredCondition, $message)
+    {
+        if ($requiredCondition == $this->isNew()) {
+            throw new \LogicException($message);
+        }
     }
 
     abstract public function save();

@@ -16,9 +16,7 @@ class Comment extends AbstractResource
      */
     public function refresh($returnNew = false)
     {
-        if (! $this->isNew()) {
-            throw new \LogicException("Resource can't be saved because it's not new.");
-        }
+        $this->isNewLogicalException(false, "Resource can't be refreshed because it's not new.");
 
         $sc = Soundcloud::instance();
         $userID = $sc->getMe()->get('id');
@@ -41,9 +39,7 @@ class Comment extends AbstractResource
      */
     public function save()
     {
-        if (! $this->isNew()) {
-            throw new \LogicException("Resource can't be saved because it's not new.");
-        }
+        $this->isNewLogicalException(true, "Resource can't be saved because it's not new.");
 
         $sc = Soundcloud::instance();
         $userID = $sc->getMe()->get('id');
