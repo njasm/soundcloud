@@ -71,6 +71,7 @@ abstract class AbstractResource implements \Serializable
             $resultKey = $this->resource . '[' . strtolower($property) . ']';
             if (!isset($this->properties[$property])) {
                 $data[$resultKey] = null;
+                continue;
             }
 
             $data[$resultKey] = $this->properties[$property];
