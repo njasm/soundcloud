@@ -15,29 +15,39 @@ namespace Njasm\Soundcloud\Factory;
 
 class LibraryFactory
 {
-    protected static $available = [
+    protected static $self = null;
+
+    protected $available = [
         'RequestInterface' => '\Njasm\Soundcloud\Http\Request',
         'ResponseInterface' => '\Njasm\Soundcloud\Http\Response',
         'UrlBuilderInterface' => '\Njasm\Soundcloud\Http\Url\UrlBuilder',
         'AuthInterface' => '\Njasm\Soundcloud\Auth\Auth',
     ];
 
+    public static function instance()
+    {
+        if (is_null(self::$self)) {
+            self::$self = new self();
+        }
+
+        return self::$self;
+    }
     /**
      * @param $interface
      * @param array $data
      * @return object
      * @throws \Exception
      */
-    public static function build($interface, array $data = [])
+    public function build($interface, array $data = [])
     {
         $interface = (string) $interface;
-        self::interfaceExists($interface);
+        $this->interfaceExists($interface);
 
-        $className = self::$available[$interface];
-        self::interfaceClassExists($className);
+        $className = $this->available[$interface];
+        $this->interfaceClassExists($className);
 
         $class = new \ReflectionClass($className);
-        self::isInstantiable($class);
+        $this->isInstantiable($class);
 
         return $class->newInstanceArgs($data);
     }
@@ -47,9 +57,9 @@ class LibraryFactory
      * @return void
      * @throws \Exception
      */
-    protected static function interfaceExists($interface)
+    protected function interfaceExists($interface)
     {
-        if (!in_array($interface, array_keys(self::$available))) {
+        if (!in_array($interface, array_keys($this->available))) {
             throw new \Exception("Interface doesn't exist.");
         }
     }
@@ -59,7 +69,7 @@ class LibraryFactory
      * @return void
      * @throws \Exception
      */
-    protected static function interfaceClassExists($className)
+    protected function interfaceClassExists($className)
     {
         if (!class_exists($className)) {
             throw new \Exception("$className Class doesn't exist.");
@@ -71,7 +81,7 @@ class LibraryFactory
      * @return void
      * @throws \Exception
      */
-    protected static function isInstantiable(\ReflectionClass $class)
+    protected function isInstantiable(\ReflectionClass $class)
     {
         if (!$class->isInstantiable()) {
             throw new \Exception("{$class->getName()} isn't instantiable.");
@@ -84,14 +94,14 @@ class LibraryFactory
      * @return void
      * @throws \Exception
      */
-    public static function set($interface, $fqcn)
+    public function set($interface, $fqcn)
     {
         $interface = (string) $interface;
         $fqcn = (string) $fqcn;
-        self::interfaceClassExists($fqcn);
+        $this->interfaceClassExists($fqcn);
         $class = new \ReflectionClass($fqcn);
-        self::isInstantiable($class);
+        $this->isInstantiable($class);
 
-        self::$available[$interface] = $fqcn;
+        $this->available[$interface] = $fqcn;
     }
 }

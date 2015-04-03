@@ -26,6 +26,8 @@ class Request implements RequestInterface
     private $params = [];
     /** @var array */
     private $headers = [];
+    /** @var LibraryFactory */
+    private $factory;
 
     private $options = array(
         CURLOPT_RETURNTRANSFER => true,
@@ -36,11 +38,12 @@ class Request implements RequestInterface
 
     private $responseFormat = 'application/json';
 
-    public function __construct($verb, $url, array $params = [])
+    public function __construct($verb, $url, array $params = [], LibraryFactory $factory = null)
     {
         $this->verb = $verb;
         $this->url = $url;
         $this->params = $params;
+        $this->factory = $factory ?: LibraryFactory::instance();
     }
 
     /**
@@ -92,7 +95,7 @@ class Request implements RequestInterface
         $errorString = curl_error($curlHandler);
         curl_close($curlHandler);
 
-        return LibraryFactory::build('ResponseInterface', [$response, $info, $errno, $errorString]);
+        return $this->factory->build('ResponseInterface', [$response, $info, $errno, $errorString]);
     }
 
     protected function getBodyContent()

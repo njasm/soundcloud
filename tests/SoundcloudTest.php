@@ -2,7 +2,8 @@
 
 namespace Njasm\Soundcloud\Tests;
 
-use Njasm\Soundcloud\Soundcloud;
+use \Njasm\Soundcloud\Factory\LibraryFactory;
+use \Njasm\Soundcloud\Soundcloud;
 
 
 class SoundcloudTest extends \PHPUnit_Framework_TestCase
@@ -131,62 +132,27 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals("ClientIDHash", $this->soundcloud->auth()->getClientID());
     }
-    
+
     public function testNulledGetAuthToken()
     {
         $this->assertNull($this->soundcloud->auth()->getToken());
     }
-    
+
     public function testNulledGetAuthScope()
     {
         $this->assertNull($this->soundcloud->auth()->getScope());
     }
-    
+
     public function testNullGetExpires()
     {
         $this->assertNull($this->soundcloud->auth()->getExpires());
     }
-    
-    /**
-     * Resources tests.
-     */
-//    public function testGetResourceCreation()
-//    {
-//        $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "resource");
-//        $this->soundcloud->get('/resolve');
-//        $this->assertTrue($property->getValue($this->soundcloud) instanceof Resource);
-//        $this->assertEquals("get", $property->getValue($this->soundcloud)->getVerb());
-//    }
-//
-//    public function testPostResourceCreation()
-//    {
-//        $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "resource");
-//        $this->soundcloud->post('/resolve');
-//        $this->assertTrue($property->getValue($this->soundcloud) instanceof Resource);
-//        $this->assertEquals("post", $property->getValue($this->soundcloud)->getVerb());
-//    }
-//
-//    public function testPutResourceCreation()
-//    {
-//        $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "resource");
-//        $this->soundcloud->put('/resolve');
-//        $this->assertTrue($property->getValue($this->soundcloud) instanceof \Njasm\Soundcloud\Resource\ResourceInterface);
-//        $this->assertEquals("put", $property->getValue($this->soundcloud)->getVerb());
-//    }
-//
-//    public function testDeleteResourceCreation()
-//    {
-//        $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "resource");
-//        $this->soundcloud->delete('/resolve');
-//        $this->assertTrue($property->getValue($this->soundcloud) instanceof Resource);
-//        $this->assertEquals("delete", $property->getValue($this->soundcloud)->getVerb());
-//    }
-    
+
     public function testGetCurlResponse()
     {
         $this->assertNull($this->soundcloud->getCurlResponse());
     }
-    
+
     /**
      * Helper method for properties reflection testing.
      */
@@ -194,15 +160,51 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
     {
         $property = new \ReflectionProperty($class, $property);
         $property->setAccessible(true);
-        
+
         return $property;
     }
-    
+
     private function reflectMethod($class, $method)
     {
         $method = new \ReflectionMethod($class, $method);
         $method->setAccessible(true);
-        
+
         return $method;
+    }
+
+    private function getResponseMock()
+    {
+        $responseMock = $this->getMock("Njasm\\Soundcloud\\Http\\Response", array('bodyObject'));
+        $responseMock->expects($this->any())
+            ->method('bodyObject')
+            ->will(
+                $this->returnCallback(
+                    function () {
+                        $stdClass = new \stdClass();
+                        $stdClass->oauth_token = "12345-ABCD";
+                        $stdClass->refresh_token = "54321-DCBA";
+                        $stdClass->scope = "non-expiring";
+                        return $stdClass;
+                    }
+                )
+            );
+
+        return $responseMock;
+    }
+
+    private function getRequestMock()
+    {
+        $requestMock = $this->getMock("Njasm\\Soundcloud\\Http\\Request", array('send'));
+        $requestMock->expects($this->any())
+            ->method('send')
+            ->will(
+                $this->returnCallback(
+                    function () {
+                        return LibraryFactory::build('ResponseInterface');
+                    }
+                )
+            );
+
+        return $requestMock;
     }
 }
