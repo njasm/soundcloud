@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Njasm\Soundcloud\Tests\Resolve;
 
 use Njasm\Soundcloud\Resolve\Resolve;

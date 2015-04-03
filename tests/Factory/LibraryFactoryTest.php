@@ -1,6 +1,6 @@
 <?php
 
-namespace Njasm\Soundcloud\Tests;
+namespace Njasm\Soundcloud\Tests\Factory;
 
 use \Njasm\Soundcloud\Factory\LibraryFactory;
 
