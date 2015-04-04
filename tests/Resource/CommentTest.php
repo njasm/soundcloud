@@ -68,8 +68,6 @@ class CommentTest extends \PHPUnit_Framework_TestCase
         $reflectedSoundcloud = $this->reflectProperty($this->sc, 'self');
         $reflectedSoundcloud->setValue($this->sc, $soundcloud);
 
-        $expected = '\Njasm\Soundcloud\Collection';
-
         $this->comment->save();
         $this->assertEquals('225628819', $this->comment->get('id'));
     }
@@ -95,8 +93,28 @@ class CommentTest extends \PHPUnit_Framework_TestCase
         $reflectedSoundcloud = $this->reflectProperty($this->sc, 'self');
         $reflectedSoundcloud->setValue($this->sc, $soundcloud);
 
-        $this->comment->save();
+        $this->comment->refresh();
         $this->assertEquals('225628819', $this->comment->get('id'));
+    }
+
+
+    public function testRefreshReturnNewObject()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_Comment.php';
+        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
+        $request = $this->getRequestMock($response);
+        $factory = $this->getFactoryMock($request, $response);
+        $reflectedFactory = $this->reflectProperty($this->sc, 'factory');
+        $reflectedFactory->setValue($this->sc, $factory);
+
+        $soundcloud = $this->getSoundcloudMock();
+        $reflectedSoundcloud = $this->reflectProperty($this->sc, 'self');
+        $reflectedSoundcloud->setValue($this->sc, $soundcloud);
+
+        $newComment = $this->comment->refresh(true);
+
+        $this->assertNull($this->comment->get('id'));
+        $this->assertEquals('225628819', $newComment->get('id'));
     }
 
     public function testDelete()
