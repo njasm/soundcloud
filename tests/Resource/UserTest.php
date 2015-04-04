@@ -73,7 +73,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->user->set('id', 1);
         $this->user->update(false);
         $this->assertEquals('1492543', $this->user->get('id'));
-
     }
 
     public function testUpdate()
@@ -120,5 +119,77 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Njasm\Soundcloud\Collection\UserCollection', $collection);
         $this->assertEquals(2, $collection->count());
+    }
+
+    public function testGetFollowing()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_User.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $user = $this->user->getFollowing('1492543');
+
+        $this->assertInstanceOf('\Njasm\Soundcloud\Resource\User', $user);
+        $this->assertEquals('1492543', $user->get('id'));
+    }
+
+    public function testGetFollowers()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_Collection_User.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $collection = $this->user->getFollowers();
+
+        $this->assertInstanceOf('\Njasm\Soundcloud\Collection\UserCollection', $collection);
+        $this->assertEquals(2, $collection->count());
+    }
+
+    public function testGetFollower()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_User.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $user = $this->user->getFollower('1492543');
+
+        $this->assertInstanceOf('\Njasm\Soundcloud\Resource\User', $user);
+        $this->assertEquals('1492543', $user->get('id'));
+    }
+
+    public function testGetComments()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_Collection_Comment.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $collection = $this->user->getComments();
+
+        $this->assertInstanceOf('\Njasm\Soundcloud\Collection\CommentCollection', $collection);
+        $this->assertTrue($collection->count() > 0);
+    }
+
+    public function testGetFavorites()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_Collection_Track.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $collection = $this->user->getFavorites();
+
+        $this->assertInstanceOf('\Njasm\Soundcloud\Collection\TrackCollection', $collection);
+        $this->assertTrue($collection->count() > 0);
+    }
+
+    public function testGetFavorite()
+    {
+//        $data = include __DIR__ . '/../Data/Serialized_User.php';
+//        $this->setSoundcloudMockObjects($data);
+//
+//        $this->user->set('id', 1);
+//        $user = $this->user->getFollower('1492543');
+//
+//        $this->assertInstanceOf('\Njasm\Soundcloud\Resource\User', $user);
+//        $this->assertEquals('1492543', $user->get('id'));
     }
 }

@@ -52,10 +52,6 @@ class User extends AbstractResource
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
-        if (!is_int($id)) {
-            throw \Exception("Following id is not an integer");
-        }
-
         $uri = $this->get('uri');
         $uri .= '/followings/' . (string) $id;
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -91,10 +87,6 @@ class User extends AbstractResource
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
-        if (!is_int($id)) {
-            throw \Exception("Follower id is not an integer");
-        }
-
         $uri = $this->get('uri');
         $uri .= '/followers/' . (string) $id;
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -127,7 +119,6 @@ class User extends AbstractResource
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
-
         $uri = $this->get('uri');
         $uri .= '/favorites';
         $serialized = $this->sc->get($uri)->send()->bodyRaw();
@@ -146,10 +137,6 @@ class User extends AbstractResource
     public function getFavorite($id)
     {
         $this->isNewLogicalException(true, "Resource is new.");
-
-        if (!is_int($id)) {
-            throw \Exception("Favorite id is not an integer");
-        }
 
         $uri = $this->get('uri');
         $uri .= '/favorites/' . (string) $id;
