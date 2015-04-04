@@ -79,13 +79,8 @@ class ApiResponseFactory
 
     public static function collection($kind = '')
     {
-        $parts = explode("-", $kind);
-        $kind = '';
-        foreach((array) $parts as $part) {
-            $kind .= ucfirst($part);
-        }
-
-        $collectionClass = "\\Njasm\\Soundcloud\\Collection\\" . ucfirst($kind) . "Collection";
+        $kind = self::getClass($kind);
+        $collectionClass = "\\Njasm\\Soundcloud\\Collection\\" . $kind . "Collection";
         if (class_exists($collectionClass)) {
             return new $collectionClass;
         }
@@ -115,8 +110,8 @@ class ApiResponseFactory
         }
 
         $sc = Soundcloud::instance();
-        $line['kind'] = str_replace("-", "", $line['kind']);
-        $resourceClass = "\\Njasm\\Soundcloud\\Resource\\" . ucfirst($line['kind']);
+        $kind = self::getClass($line['kind']);
+        $resourceClass = "\\Njasm\\Soundcloud\\Resource\\" . $kind;
 
         return new $resourceClass($sc, $line);
     }
@@ -128,5 +123,16 @@ class ApiResponseFactory
         }
 
         return new Resolve($data['status'], $data['location']);
+    }
+
+    protected static function getClass($kind)
+    {
+        $parts = explode("-", $kind);
+        $kind = '';
+        foreach((array) $parts as $part) {
+            $kind .= ucfirst($part);
+        }
+
+        return $kind;
     }
 }
