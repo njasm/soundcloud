@@ -7,6 +7,8 @@ use \Njasm\Soundcloud\Soundcloud;
 
 class CommentTest extends \PHPUnit_Framework_TestCase
 {
+    use \Njasm\Soundcloud\Tests\MocksTrait, \Njasm\Soundcloud\Tests\ReflectionsTrait;
+
     public $sc;
     public $comment;
     public $commentSerialized;
@@ -51,5 +53,44 @@ class CommentTest extends \PHPUnit_Framework_TestCase
         $this->comment->set("id", 1);
         $this->assertFalse($this->comment->isNew());
         $this->assertEquals(1, $this->comment->id());
+    }
+
+    public function testSave()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_User.php';
+        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
+        $request = $this->getRequestMock($response);
+        $factory = $this->getFactoryMock($request, $response);
+        $reflectedFactory = $this->reflectProperty($this->sc, 'factory');
+        $reflectedFactory->setValue($this->sc, $factory);
+
+        $soundcloud = $this->getSoundcloudMock();
+        $reflectedSoundcloud = $this->reflectProperty($this->sc, 'self');
+        $reflectedSoundcloud->setValue($this->sc, $soundcloud);
+
+        $expected = '\Njasm\Soundcloud\Collection';
+
+//        $this->comment->save();
+//        $this->assertEquals('Nelson', $this->comment->get('name'));
+    }
+
+    public function testExistentSave()
+    {
+        $this->comment->set('id', 1);
+        // soundcloud do not allow to delete or update a comment?
+        $this->setExpectedException('\LogicException');
+        $this->comment->save();
+    }
+
+    public function testDelete()
+    {
+        $this->setExpectedException('\Exception');
+        $this->comment->delete();
+    }
+
+    public function testUpdate()
+    {
+        $this->setExpectedException('\Exception');
+        $this->comment->update();
     }
 }

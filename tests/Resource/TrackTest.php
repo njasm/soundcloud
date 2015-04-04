@@ -41,4 +41,11 @@ class TrackTest extends \PHPUnit_Framework_TestCase
         $this->track->unserialize($data);
         $this->assertFalse($this->track->isNew());
     }
+
+    public function testSaveUpdateDelete()
+    {
+        $this->assertNull($this->track->save());
+        $this->assertNull($this->track->delete());
+        $this->assertNull($this->track->update());
+    }
 }

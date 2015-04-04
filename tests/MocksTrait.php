@@ -3,9 +3,25 @@ namespace Njasm\Soundcloud\Tests;
 
 trait MocksTrait
 {
+    public function getSoundcloudMock()
+    {
+        $soundcloudMock = $this->getMock("Njasm\\Soundcloud\\Soundcloud", ['getMe'], ["ClientID", "ClientSecret"]);
+        $soundcloudMock->expects($this->any())
+            ->method('getMe')
+            //->with($this->equalTo('id'))
+            ->will($this->returnCallback(
+                function () {
+                    $class = new \stdClass();
+                    $class->get = function () { return 1; };
+                }
+            ));
+
+        return $soundcloudMock;
+    }
+
     public function getFactoryMock($requestMock, $responseMock)
     {
-        $factoryMock = $this->getMock("Njasm\\Soundcloud\\Factory\\LibraryFactory", array('build'));
+        $factoryMock = $this->getMock("Njasm\\Soundcloud\\Factory\\LibraryFactory", ['build']);
         $factoryMock->expects($this->any())
             ->method('build')
             ->with(
@@ -45,9 +61,9 @@ trait MocksTrait
         return $responseMock;
     }
 
-    public function getRequestMock($responseMock, $method = 'GET', $url = '/me', array $params = [])
+    public function getRequestMock($responseMock, $method = 'GET', $url = 'http://127.0.0.1/me', array $params = [])
     {
-        $requestMock = $this->getMock("Njasm\\Soundcloud\\Http\\Request", array('send'), [$method, $url, $params]);
+        $requestMock = $this->getMock("Njasm\\Soundcloud\\Http\\Request", ['send'], [$method, $url, $params]);
         $requestMock->expects($this->any())
             ->method('send')
             ->will(

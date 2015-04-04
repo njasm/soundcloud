@@ -2,6 +2,9 @@
 
 namespace Njasm\Soundcloud\Resource;
 
+use Njasm\Soundcloud\Factory\ApiResponseFactory;
+use Njasm\Soundcloud\Soundcloud;
+
 class Comment extends AbstractResource
 {
     protected $resource = 'comment';
@@ -25,7 +28,7 @@ class Comment extends AbstractResource
         $response = $sc->get($url)->send();
 
         if ($returnNew) {
-            return AbstractFactory::unserialize($response->bodyRaw());
+            return ApiResponseFactory::unserialize($response->bodyRaw());
         }
 
         $this->unserialize($response->bodyRaw());
@@ -39,9 +42,9 @@ class Comment extends AbstractResource
      */
     public function save()
     {
-        $this->isNewLogicalException(true, "Resource can't be saved because it's not new.");
+        $this->isNewLogicalException(false, "Resource can't be saved because it's not new.");
 
-        $sc = Soundcloud::instance();
+        $sc = $this->sc;
         $userID = $sc->getMe()->get('id');
         $url = '/users/' . $userID . '/comments';
         $response = $sc->post($url, $this->serialize())->send();
@@ -50,7 +53,7 @@ class Comment extends AbstractResource
             return $this->unserialize($response->bodyRaw());
         }
 
-        return AbstractFactory::unserialize($response->bodyRaw());
+        return ApiResponseFactory::unserialize($response->bodyRaw());
     }
 
     public function update()

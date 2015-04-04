@@ -68,7 +68,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     public function testSend()
     {
         $url = 'http://127.0.0.1/me';
-        $verb = 'GET';
+        $verb = 'POST';
         $factory = $this->getMock(
             'Njasm\Soundcloud\Factory\LibraryFactory',
             array('build')
