@@ -103,9 +103,11 @@ class Request implements RequestInterface
         curl_setopt_array($curlHandler, $this->options);
         curl_setopt($curlHandler, CURLOPT_CUSTOMREQUEST, $verb);
         curl_setopt($curlHandler, CURLOPT_URL, $this->urlBuilder->getUrl());
-        curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->getBodyContent());
 
-        curl_setopt($curlHandler, CURLOPT_VERBOSE, true);
+        if ($verb != 'GET') {
+            curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->getBodyContent());
+        }
+
         $response = curl_exec($curlHandler);
         $info = curl_getinfo($curlHandler);
         $errno = curl_errno($curlHandler);
