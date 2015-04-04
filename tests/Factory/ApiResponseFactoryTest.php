@@ -71,4 +71,45 @@ class ApiResponseFactoryTest extends \PHPUnit_Framework_TestCase
         $returnValue = ApiResponseFactory::unserialize($data);
         $this->assertInstanceOf($expected, $returnValue);
     }
+
+    public function testDecodeJsonUnderflow()
+    {
+        // Underflow / modes mismatch
+        $this->setExpectedException('\Exception');
+        $value = '{"j": 1 ] }';
+        ApiResponseFactory::unserialize($value);
+    }
+
+    public function testDecodeJsonSyntaxError()
+    {
+        // Syntax Error
+        $this->setExpectedException('\Exception');
+        $value = "{[[1]]}";
+        ApiResponseFactory::unserialize($value);
+    }
+
+
+    public function testDecodeJsonCtrlChar()
+    {
+        // Control Char Error
+        $this->setExpectedException('\Exception');
+        $value = '{"teste' . chr(3) . '"}';
+        ApiResponseFactory::unserialize($value);
+    }
+
+    public function testDecodeJsonMaxStack()
+    {
+        // Maximum Stack depth Exceeded
+        $this->setExpectedException('\Exception');
+        $value = '';
+        for($i = 0; $i < 10000; $i++) {
+            $value .= '[';
+        }
+        $value .= '1';
+        for($i = 0; $i < 10000; $i++) {
+            $value .= ']';
+        }
+
+        ApiResponseFactory::unserialize($value);
+    }
 }

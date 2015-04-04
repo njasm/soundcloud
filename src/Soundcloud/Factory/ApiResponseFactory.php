@@ -44,7 +44,6 @@ class ApiResponseFactory
         switch (json_last_error()) {
             case JSON_ERROR_NONE:
                 return;
-                break;
             case JSON_ERROR_DEPTH:
                 $message = ' - Maximum stack depth exceeded';
                 break;
@@ -65,9 +64,7 @@ class ApiResponseFactory
                 break;
         }
 
-        if (!empty($message)) {
-            throw new \Exception("json decode error $message");
-        }
+        throw new \Exception("JSON Decode Error $message");
     }
 
     protected static function guardAgainstErrors(array $data)
