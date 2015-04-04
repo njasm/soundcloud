@@ -1,0 +1,3 @@
+<?php
+
+return '{"kind":"group","id":2142,"created_at":"2009/10/04 11:30:11 +0000","permalink":"tech-house","track_count":232381,"members_count":61523,"moderated":false,"contributors_count":36642,"name":"Tech-House","short_description":"a fusion of minimal techno and soulful house music","description":"","uri":"https://api.soundcloud.com/groups/2142","artwork_url":"https://i1.sndcdn.com/artworks-000000600000-wunvn1-large.jpg","permalink_url":"http://soundcloud.com/groups/tech-house","creator":{"id":268797,"kind":"user","permalink":"danyo","username":"Danyo","last_modified":"2014/11/30 18:50:00 +0000","uri":"https://api.soundcloud.com/users/268797","permalink_url":"http://soundcloud.com/danyo","avatar_url":"https://i1.sndcdn.com/avatars-000000667719-dwo51c-large.jpg"}}';

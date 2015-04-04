@@ -183,13 +183,37 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFavorite()
     {
-//        $data = include __DIR__ . '/../Data/Serialized_User.php';
-//        $this->setSoundcloudMockObjects($data);
-//
-//        $this->user->set('id', 1);
-//        $user = $this->user->getFollower('1492543');
-//
-//        $this->assertInstanceOf('\Njasm\Soundcloud\Resource\User', $user);
-//        $this->assertEquals('1492543', $user->get('id'));
+        $data = include __DIR__ . '/../Data/Serialized_Track.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $user = $this->user->getFavorite('32144337');
+
+        $this->assertInstanceOf('\Njasm\Soundcloud\Resource\Track', $user);
+        $this->assertEquals('32144337', $user->get('id'));
+    }
+
+    public function testGetGroups()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_Collection_Group.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $groups = $this->user->getGroups();
+
+        $this->assertInstanceOf('\Njasm\Soundcloud\Collection\GroupCollection', $groups);
+        $this->assertTrue(2 >= $groups->count());
+    }
+
+    public function testGetWebProfiles()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_Collection_WebProfile.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $groups = $this->user->getWebProfiles();
+
+        $this->assertInstanceOf('\Njasm\Soundcloud\Collection\WebProfileCollection', $groups);
+        $this->assertTrue(2 >= $groups->count());
     }
 }
