@@ -2,6 +2,7 @@
 
 namespace Njasm\Soundcloud\Tests\Resource;
 
+use Njasm\Soundcloud\Factory\ApiResponseFactory;
 use Njasm\Soundcloud\Resource\User;
 use Njasm\Soundcloud\Soundcloud;
 
@@ -64,15 +65,60 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->user->update();
     }
 
+    public function testUpdateReturnNewObject()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_User.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $this->user->update(false);
+        $this->assertEquals('1492543', $this->user->get('id'));
+
+    }
+
     public function testUpdate()
     {
         $data = include __DIR__ . '/../Data/Serialized_User.php';
         $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
-        $newUser = $this->user->update(true);
+        $newUser = $this->user->update();
         $this->assertEquals(1, $this->user->get('id'));
         $this->assertEquals('1492543', $newUser->get('id'));
+    }
 
+    public function testGetTracks()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_Collection_Track.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $collection = $this->user->getTracks();
+        $this->assertInstanceOf('\Njasm\Soundcloud\Collection\TrackCollection', $collection);
+        $this->assertEquals(10, $collection->count());
+    }
+
+    public function testGetPlaylists()
+    {
+        // playlist is empty so, a Collection object must be returned instead of a PlaylistCollection
+        $data = '{}';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $collection = $this->user->getPlaylists();
+        $this->assertInstanceOf('\Njasm\Soundcloud\Collection\Collection', $collection);
+        $this->assertEquals(0, $collection->count());
+    }
+
+    public function testGetFollowings()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_Collection_User.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $collection = $this->user->getFollowings();
+
+        $this->assertInstanceOf('\Njasm\Soundcloud\Collection\UserCollection', $collection);
+        $this->assertEquals(2, $collection->count());
     }
 }
