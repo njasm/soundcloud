@@ -35,7 +35,7 @@ class TrackTest extends \PHPUnit_Framework_TestCase
 
     public function testUnserialize()
     {
-        $data = include __DIR__ . '/../Factory/Serialized_User.php';
+        $data = include __DIR__ . '/../Data/Serialized_User.php';
 
         $this->assertTrue($this->track->isNew());
         $this->track->unserialize($data);

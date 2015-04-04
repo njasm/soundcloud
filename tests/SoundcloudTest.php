@@ -8,6 +8,7 @@ use \Njasm\Soundcloud\Soundcloud;
 
 class SoundcloudTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var Soundcloud */
     public $soundcloud;
     protected $requestClass = 'Njasm\Soundcloud\Http\Request';
 
@@ -153,9 +154,101 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->soundcloud->getCurlResponse());
     }
 
+    public function testGetMe()
+    {
+        $expected = '\Njasm\Soundcloud\Resource\User';
+        $data = include __DIR__ . '/Data/Serialized_User.php';
+        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
+        $request = $this->getRequestMock($response);
+        $factory = $this->getFactoryMock($request, $response);
+        $reflectedFactory = $this->reflectProperty($this->soundcloud, 'factory');
+        $reflectedFactory->setValue($this->soundcloud, $factory);
+
+        $returnValue = $this->soundcloud->getMe();
+        $this->assertInstanceOf($expected, $returnValue);
+    }
+
+    public function testUserCredentials()
+    {
+        $token = "12345-ABCD";
+        $data = new \stdClass();
+        $data->access_token = $token;
+        $data->refresh_token = "54321-DCBA";
+        $data->scope = "non-expiring";
+
+        $response = $this->getResponseMock('bodyObject', function() use ($data) { return $data; });
+        $request = $this->getRequestMock($response);
+        $factory = $this->getFactoryMock($request, $response);
+        $reflectedFactory = $this->reflectProperty($this->soundcloud, 'factory');
+        $reflectedFactory->setValue($this->soundcloud, $factory);
+
+        $this->soundcloud->userCredentials('User', 'Password');
+        $resultToken = $this->soundcloud->auth()->getToken();
+        $this->assertEquals($token, $resultToken);
+    }
+
     /**
      * Helper method for properties reflection testing.
      */
+
+    private function getFactoryMock($requestMock, $responseMock)
+    {
+        $factoryMock = $this->getMock("Njasm\\Soundcloud\\Factory\\LibraryFactory", array('build'));
+        $factoryMock->expects($this->any())
+            ->method('build')
+            ->with(
+                $this->logicalOr(
+                    $this->equalTo('RequestInterface'),
+                    $this->equalTo('ResponseInterface')
+                )
+            )
+            ->will(
+                $this->returnCallback(
+                    function ($arg) use ($requestMock, $responseMock) {
+                        if ($arg == 'RequestInterface') {
+                            return $requestMock;
+                        }
+
+                        return $responseMock;
+                    }
+                )
+            );
+
+        return $factoryMock;
+    }
+
+    private function getResponseMock($methodName, $returnCallback)
+    {
+        $apiResponse = include __DIR__ . '/Data/200_Response.php';
+        $responseMock = $this->getMock(
+            "Njasm\\Soundcloud\\Http\\Response",
+            array($methodName),
+            array($apiResponse, [], '', '', '')
+        );
+
+        $responseMock->expects($this->any())
+            ->method($methodName)
+            ->will($this->returnCallback($returnCallback));
+
+        return $responseMock;
+    }
+
+    private function getRequestMock($responseMock, $method = 'GET', $url = '/me', array $params = [])
+    {
+        $requestMock = $this->getMock("Njasm\\Soundcloud\\Http\\Request", array('send'), [$method, $url, $params]);
+        $requestMock->expects($this->any())
+            ->method('send')
+            ->will(
+                $this->returnCallback(
+                    function () use ($responseMock) {
+                        return $responseMock;
+                    }
+                )
+            );
+
+        return $requestMock;
+    }
+
     private function reflectProperty($class, $property)
     {
         $property = new \ReflectionProperty($class, $property);
@@ -170,41 +263,5 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
 
         return $method;
-    }
-
-    private function getResponseMock()
-    {
-        $responseMock = $this->getMock("Njasm\\Soundcloud\\Http\\Response", array('bodyObject'));
-        $responseMock->expects($this->any())
-            ->method('bodyObject')
-            ->will(
-                $this->returnCallback(
-                    function () {
-                        $stdClass = new \stdClass();
-                        $stdClass->oauth_token = "12345-ABCD";
-                        $stdClass->refresh_token = "54321-DCBA";
-                        $stdClass->scope = "non-expiring";
-                        return $stdClass;
-                    }
-                )
-            );
-
-        return $responseMock;
-    }
-
-    private function getRequestMock()
-    {
-        $requestMock = $this->getMock("Njasm\\Soundcloud\\Http\\Request", array('send'));
-        $requestMock->expects($this->any())
-            ->method('send')
-            ->will(
-                $this->returnCallback(
-                    function () {
-                        return LibraryFactory::build('ResponseInterface');
-                    }
-                )
-            );
-
-        return $requestMock;
     }
 }

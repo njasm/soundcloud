@@ -66,7 +66,7 @@ class ApiResponseFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testUnserializeResource()
     {
-        $data = include __DIR__ .'/Serialized_User.php';
+        $data = include __DIR__ . '/../Data/Serialized_User.php';
         $expected = '\Njasm\Soundcloud\Resource\User';
         $returnValue = ApiResponseFactory::unserialize($data);
         $this->assertInstanceOf($expected, $returnValue);
