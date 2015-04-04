@@ -167,4 +167,20 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $returnValue = $this->soundcloud->factory();
         $this->assertInstanceOf('\Njasm\Soundcloud\Factory\LibraryFactory', $returnValue);
     }
+
+    public function testResolve()
+    {
+        $expected = 'https://api.soundcloud.com/users/1492543?consumer_key=apigee';
+
+        $data = include __DIR__ . '/Data/Serialized_Resolve.php';
+        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
+        $request = $this->getRequestMock($response);
+        $factory = $this->getFactoryMock($request, $response);
+        $reflectedFactory = $this->reflectProperty($this->soundcloud, 'factory');
+        $reflectedFactory->setValue($this->soundcloud, $factory);
+
+        $returnValue = $this->soundcloud->resolve('http:://api.soundcloud.com/user-name');
+        $this->assertInstanceOf('\Njasm\Soundcloud\Resolve\Resolve', $returnValue);
+        $this->assertEquals($expected, $returnValue->location());
+    }
 }
