@@ -79,7 +79,12 @@ class ApiResponseFactory
 
     public static function collection($kind = '')
     {
-        $kind = str_replace("-", "", $kind);
+        $parts = explode("-", $kind);
+        $kind = '';
+        foreach((array) $parts as $part) {
+            $kind .= ucfirst($part);
+        }
+
         $collectionClass = "\\Njasm\\Soundcloud\\Collection\\" . ucfirst($kind) . "Collection";
         if (class_exists($collectionClass)) {
             return new $collectionClass;
