@@ -19,15 +19,12 @@ class WebProfile extends AbstractResource
      */
     public function refresh($returnNew = false)
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
 
-        $sc = Soundcloud::instance();
-        $userID = $sc->getMe()->get('id');
+        $userID = $this->sc->getMe()->get('id');
         $id = $this->get('id');
         $url = '/users/' . $userID . '/web-profiles/' . $id;
-        $response = $sc->get($url)->send();
+        $response = $this->sc->get($url)->send();
 
         if ($returnNew) {
             return ApiResponseFactory::unserialize($response->bodyRaw());
@@ -44,14 +41,11 @@ class WebProfile extends AbstractResource
      */
     public function save()
     {
-        if (!$this->isNew()) {
-            throw new \LogicException("Resource is not new.");
-        }
+        $this->isNewLogicalException(false, "Resource is not new.");
 
-        $sc = Soundcloud::instance();
-        $userID = $sc->getMe()->get('id');
+        $userID = $this->sc->getMe()->get('id');
         $url = '/users/' . $userID . '/web-profiles';
-        $response = $sc->post($url, $this->serialize())->send();
+        $response = $this->sc->post($url, $this->serialize())->send();
 
         if ($response->getHttpCode() == 200) {
             return $this->unserialize($response->bodyRaw());
@@ -69,15 +63,12 @@ class WebProfile extends AbstractResource
      */
     public function update($refreshState = true)
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
 
-        $sc = Soundcloud::instance();
-        $userID = $sc->getMe()->get('id');
+        $userID = $this->sc->getMe()->get('id');
         $id = $this->get('id');
         $url = '/users/' . $userID . '/web-profiles/' . $id;
-        $response = $sc->put($url, $this->serialize())->send();
+        $response = $this->sc->put($url, $this->serialize())->send();
 
         if ($response->getHttpCode() == 200 && $refreshState) {
             return $this->unserialize($response->bodyRaw());
@@ -94,15 +85,12 @@ class WebProfile extends AbstractResource
      */
     public function delete()
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
 
-        $sc = Soundcloud::instance();
-        $userID = $sc->getMe()->get('id');
+        $userID = $this->sc->getMe()->get('id');
         $id = $this->get('id');
         $url = '/users/' . $userID . '/web-profiles/' . $id;
-        $response = $sc->delete($url)->send();
+        $response = $this->sc->delete($url)->send();
 
         if ($response->getHttpCode() != 200) {
             return ApiResponseFactory::unserialize($response->bodyRaw());

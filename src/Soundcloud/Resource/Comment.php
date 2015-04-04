@@ -3,7 +3,6 @@
 namespace Njasm\Soundcloud\Resource;
 
 use Njasm\Soundcloud\Factory\ApiResponseFactory;
-use Njasm\Soundcloud\Soundcloud;
 
 class Comment extends AbstractResource
 {
