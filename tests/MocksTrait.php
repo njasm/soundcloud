@@ -3,6 +3,20 @@ namespace Njasm\Soundcloud\Tests;
 
 trait MocksTrait
 {
+    public function setSoundcloudMockObjects($responseData = '{}', $responseMethod = 'bodyRaw')
+    {
+        $response = $this->getResponseMock($responseMethod, function() use ($responseData) { return $responseData; });
+        $request = $this->getRequestMock($response);
+        $factory = $this->getFactoryMock($request, $response);
+        $reflectedFactory = $this->reflectProperty($this->sc, 'factory');
+        $reflectedFactory->setValue($this->sc, $factory);
+
+        $soundcloud = $this->getSoundcloudMock();
+        $reflectedSoundcloud = $this->reflectProperty($this->sc, 'self');
+        $reflectedSoundcloud->setValue($this->sc, $soundcloud);
+
+    }
+
     public function getSoundcloudMock()
     {
         $soundcloudMock = $this->getMock("Njasm\\Soundcloud\\Soundcloud", ['getMe'], ["ClientID", "ClientSecret"]);

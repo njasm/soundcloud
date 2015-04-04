@@ -58,15 +58,7 @@ class CommentTest extends \PHPUnit_Framework_TestCase
     public function testSave()
     {
         $data = include __DIR__ . '/../Data/Serialized_Comment.php';
-        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
-        $request = $this->getRequestMock($response);
-        $factory = $this->getFactoryMock($request, $response);
-        $reflectedFactory = $this->reflectProperty($this->sc, 'factory');
-        $reflectedFactory->setValue($this->sc, $factory);
-
-        $soundcloud = $this->getSoundcloudMock();
-        $reflectedSoundcloud = $this->reflectProperty($this->sc, 'self');
-        $reflectedSoundcloud->setValue($this->sc, $soundcloud);
+        $this->setSoundcloudMockObjects($data);
 
         $this->comment->save();
         $this->assertEquals('225628819', $this->comment->get('id'));
@@ -83,15 +75,7 @@ class CommentTest extends \PHPUnit_Framework_TestCase
     public function testRefresh()
     {
         $data = include __DIR__ . '/../Data/Serialized_Comment.php';
-        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
-        $request = $this->getRequestMock($response);
-        $factory = $this->getFactoryMock($request, $response);
-        $reflectedFactory = $this->reflectProperty($this->sc, 'factory');
-        $reflectedFactory->setValue($this->sc, $factory);
-
-        $soundcloud = $this->getSoundcloudMock();
-        $reflectedSoundcloud = $this->reflectProperty($this->sc, 'self');
-        $reflectedSoundcloud->setValue($this->sc, $soundcloud);
+        $this->setSoundcloudMockObjects($data);
 
         $this->comment->refresh();
         $this->assertEquals('225628819', $this->comment->get('id'));
@@ -101,18 +85,9 @@ class CommentTest extends \PHPUnit_Framework_TestCase
     public function testRefreshReturnNewObject()
     {
         $data = include __DIR__ . '/../Data/Serialized_Comment.php';
-        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
-        $request = $this->getRequestMock($response);
-        $factory = $this->getFactoryMock($request, $response);
-        $reflectedFactory = $this->reflectProperty($this->sc, 'factory');
-        $reflectedFactory->setValue($this->sc, $factory);
-
-        $soundcloud = $this->getSoundcloudMock();
-        $reflectedSoundcloud = $this->reflectProperty($this->sc, 'self');
-        $reflectedSoundcloud->setValue($this->sc, $soundcloud);
+        $this->setSoundcloudMockObjects($data);
 
         $newComment = $this->comment->refresh(true);
-
         $this->assertNull($this->comment->get('id'));
         $this->assertEquals('225628819', $newComment->get('id'));
     }

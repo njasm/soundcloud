@@ -215,17 +215,18 @@ class User extends AbstractResource
         throw new \Exception("Are you creating a user with another user credentials?! humm..");
     }
 
-    public function update($refreshState = true)
+    public function update($returnNew = true)
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
         $uri = $this->get('uri');
-        $this->sc->put($uri, $this->serialize());
-        $response = $this->sc->send();
+        $response = $this->sc->put($uri, $this->serialize())->send();
 
-        if ($refreshState) {
-            $this->unserialize($response->bodyRaw());
+        if ($returnNew) {
+            return ApiResponseFactory::unserialize($response->bodyRaw());
         }
+
+        $this->unserialize($response->bodyRaw());
    }
 
     public function delete()

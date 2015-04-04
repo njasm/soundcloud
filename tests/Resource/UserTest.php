@@ -23,15 +23,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testRefresh()
     {
         $data = include __DIR__ . '/../Data/Serialized_User.php';
-        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
-        $request = $this->getRequestMock($response);
-        $factory = $this->getFactoryMock($request, $response);
-        $reflectedFactory = $this->reflectProperty($this->sc, 'factory');
-        $reflectedFactory->setValue($this->sc, $factory);
-
-        $soundcloud = $this->getSoundcloudMock();
-        $reflectedSoundcloud = $this->reflectProperty($this->sc, 'self');
-        $reflectedSoundcloud->setValue($this->sc, $soundcloud);
+        $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
         $this->user->refresh();
@@ -47,15 +39,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testRefreshReturnNewObject()
     {
         $data = include __DIR__ . '/../Data/Serialized_User.php';
-        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
-        $request = $this->getRequestMock($response);
-        $factory = $this->getFactoryMock($request, $response);
-        $reflectedFactory = $this->reflectProperty($this->sc, 'factory');
-        $reflectedFactory->setValue($this->sc, $factory);
-
-        $soundcloud = $this->getSoundcloudMock();
-        $reflectedSoundcloud = $this->reflectProperty($this->sc, 'self');
-        $reflectedSoundcloud->setValue($this->sc, $soundcloud);
+        $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
         $newUser = $this->user->refresh(true);
@@ -71,6 +55,24 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testDelete()
     {
         $this->setExpectedException('\Exception');
+        $this->user->delete();
+    }
+
+    public function testUpdateException()
+    {
+        $this->setExpectedException('\Exception');
         $this->user->update();
+    }
+
+    public function testUpdate()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_User.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->user->set('id', 1);
+        $newUser = $this->user->update(true);
+        $this->assertEquals(1, $this->user->get('id'));
+        $this->assertEquals('1492543', $newUser->get('id'));
+
     }
 }
