@@ -80,4 +80,14 @@ class WebProfileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->profile->get('id'));
         $this->assertEquals('39407071', $newWebProfile->get('id'));
     }
+
+    public function testDelete()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_WebProfile.php';
+        $this->setSoundcloudMockObjects($data);
+
+        $this->profile->set('id', 1);
+        $newWebProfile = $this->profile->delete();
+        $this->assertNull($this->profile->get('id'));
+    }
 }

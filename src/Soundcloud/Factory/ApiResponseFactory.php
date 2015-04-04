@@ -21,7 +21,19 @@ class ApiResponseFactory
         self::guardAgainstErrors($data);
 
         if (isset($data['status'])) {
-            return self::resolve($data);
+            // not all status responses are a resolver,
+            // delete requests normally output a status => 200 OK response.
+            $code = substr($data['status'], 0, 2);
+            switch ($code) {
+                case "20":
+                    return true;
+                case "40":
+                case "50":
+                    throw new SoundcloudResponseException($data);
+                case "30":
+                default:
+                    return self::resolve($data);
+            }
         }
 
         if (isset($data[0]) && is_array($data[0])) {
