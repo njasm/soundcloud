@@ -17,9 +17,7 @@ class User extends AbstractResource
 
     public function getTracks()
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
 
         $uri = $this->get('uri');
         $uri .= '/tracks';
@@ -30,9 +28,7 @@ class User extends AbstractResource
 
     public function getPlaylists()
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
 
         $uri = $this->get('uri');
         $uri .= '/playlists';
@@ -43,9 +39,7 @@ class User extends AbstractResource
 
     public function  getFollowings()
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
 
         $uri = $this->get('uri');
         $uri .= '/followings';
@@ -56,12 +50,10 @@ class User extends AbstractResource
 
     public function getFollowing($id)
     {
+        $this->isNewLogicalException(true, "Resource is new.");
+
         if (!is_int($id)) {
             throw \Exception("Following id is not an integer");
-        }
-
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
         }
 
         $uri = $this->get('uri');
@@ -78,9 +70,7 @@ class User extends AbstractResource
      */
     public function getFollowers()
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
 
         $uri = $this->get('uri');
         $uri .= '/followers';
@@ -99,12 +89,10 @@ class User extends AbstractResource
      */
     public function getFollower($id)
     {
+        $this->isNewLogicalException(true, "Resource is new.");
+
         if (!is_int($id)) {
             throw \Exception("Follower id is not an integer");
-        }
-
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
         }
 
         $uri = $this->get('uri');
@@ -121,10 +109,7 @@ class User extends AbstractResource
      */
     public function getComments()
     {
-
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
 
         $uri = $this->get('uri');
         $uri .= '/comments';
@@ -140,9 +125,8 @@ class User extends AbstractResource
      */
     public function getFavorites()
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
+
 
         $uri = $this->get('uri');
         $uri .= '/favorites';
@@ -161,12 +145,10 @@ class User extends AbstractResource
      */
     public function getFavorite($id)
     {
+        $this->isNewLogicalException(true, "Resource is new.");
+
         if (!is_int($id)) {
             throw \Exception("Favorite id is not an integer");
-        }
-
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
         }
 
         $uri = $this->get('uri');
@@ -183,9 +165,7 @@ class User extends AbstractResource
      */
     public function getGroups()
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
 
         $uri = $this->get('uri');
         $uri .= '/groups';
@@ -201,9 +181,7 @@ class User extends AbstractResource
      */
     public function getWebProfiles()
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
 
         $uri = $this->get('uri');
         $uri .= '/web-profiles';
@@ -215,33 +193,31 @@ class User extends AbstractResource
     /**
      * Refresh Object State, by requesting Soundcloud.
      *
-     * @return AbstractResource
+     * @param bool $returnNew
+     * @return AbstractResource|void
      */
-    public function refresh()
+    public function refresh($returnNew = false)
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
 
         $uri = $this->get('uri');
-        $serialized = $this->sc->get($uri)->send()->bodyRaw();
+        $response = $this->sc->get($uri)->send();
 
-        return $this->unserialize($serialized);
+        if ($returnNew) {
+            return ApiResponseFactory::unserialize($response->bodyRaw());
+        }
+
+        $this->unserialize($response->bodyRaw());
     }
 
     public function save()
     {
-        if (!$this->isNew()) {
-            throw new \LogicException("Resource is not new.");
-        }
-
+        throw new \Exception("Are you creating a user with another user credentials?! humm..");
     }
 
     public function update($refreshState = true)
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        $this->isNewLogicalException(true, "Resource is new.");
 
         $uri = $this->get('uri');
         $this->sc->put($uri, $this->serialize());
@@ -254,8 +230,6 @@ class User extends AbstractResource
 
     public function delete()
     {
-        if ($this->isNew()) {
-            throw new \LogicException("Resource is new.");
-        }
+        throw new \Exception("Does Soundcloud allow you to delete the user via api?");
     }
 }
