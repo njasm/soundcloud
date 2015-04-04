@@ -21,11 +21,10 @@ class Comment extends AbstractResource
     {
         $this->isNewLogicalException(false, "Resource can't be refreshed because it's not new.");
 
-        $sc = Soundcloud::instance();
-        $userID = $sc->getMe()->get('id');
+        $userID = $this->sc->getMe()->get('id');
         $id = $this->get('id');
         $url = '/users/' . $userID . '/comments/' . $id;
-        $response = $sc->get($url)->send();
+        $response = $this->sc->get($url)->send();
 
         if ($returnNew) {
             return ApiResponseFactory::unserialize($response->bodyRaw());
@@ -44,10 +43,9 @@ class Comment extends AbstractResource
     {
         $this->isNewLogicalException(false, "Resource can't be saved because it's not new.");
 
-        $sc = $this->sc;
-        $userID = $sc->getMe()->get('id');
+        $userID = $this->sc->getMe()->get('id');
         $url = '/users/' . $userID . '/comments';
-        $response = $sc->post($url, $this->serialize())->send();
+        $response = $this->sc->post($url, $this->serialize())->send();
 
         if ($response->getHttpCode() == 200) {
             return $this->unserialize($response->bodyRaw());

@@ -57,7 +57,7 @@ class CommentTest extends \PHPUnit_Framework_TestCase
 
     public function testSave()
     {
-        $data = include __DIR__ . '/../Data/Serialized_User.php';
+        $data = include __DIR__ . '/../Data/Serialized_Comment.php';
         $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
         $request = $this->getRequestMock($response);
         $factory = $this->getFactoryMock($request, $response);
@@ -70,8 +70,8 @@ class CommentTest extends \PHPUnit_Framework_TestCase
 
         $expected = '\Njasm\Soundcloud\Collection';
 
-//        $this->comment->save();
-//        $this->assertEquals('Nelson', $this->comment->get('name'));
+        $this->comment->save();
+        $this->assertEquals('225628819', $this->comment->get('id'));
     }
 
     public function testExistentSave()
@@ -80,6 +80,23 @@ class CommentTest extends \PHPUnit_Framework_TestCase
         // soundcloud do not allow to delete or update a comment?
         $this->setExpectedException('\LogicException');
         $this->comment->save();
+    }
+
+    public function testRefresh()
+    {
+        $data = include __DIR__ . '/../Data/Serialized_Comment.php';
+        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
+        $request = $this->getRequestMock($response);
+        $factory = $this->getFactoryMock($request, $response);
+        $reflectedFactory = $this->reflectProperty($this->sc, 'factory');
+        $reflectedFactory->setValue($this->sc, $factory);
+
+        $soundcloud = $this->getSoundcloudMock();
+        $reflectedSoundcloud = $this->reflectProperty($this->sc, 'self');
+        $reflectedSoundcloud->setValue($this->sc, $soundcloud);
+
+        $this->comment->save();
+        $this->assertEquals('225628819', $this->comment->get('id'));
     }
 
     public function testDelete()
