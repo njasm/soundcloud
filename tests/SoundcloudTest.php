@@ -183,4 +183,30 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Njasm\Soundcloud\Resolve\Resolve', $returnValue);
         $this->assertEquals($expected, $returnValue->location());
     }
+
+    public function testDownload()
+    {
+        $data = 'BIG_TRACK_DATA';
+        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
+        $request = $this->getRequestMock($response);
+        $factory = $this->getFactoryMock($request, $response);
+        $reflectedFactory = $this->reflectProperty($this->soundcloud, 'factory');
+        $reflectedFactory->setValue($this->soundcloud, $factory);
+
+        $returnValue = $this->soundcloud->download(123)->bodyRaw();
+        $this->assertEquals("BIG_TRACK_DATA", $returnValue);
+    }
+
+    public function testUpload()
+    {
+        $data = 'SUCCESS_UPLOAD';
+        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
+        $request = $this->getRequestMock($response);
+        $factory = $this->getFactoryMock($request, $response);
+        $reflectedFactory = $this->reflectProperty($this->soundcloud, 'factory');
+        $reflectedFactory->setValue($this->soundcloud, $factory);
+
+        $returnValue = $this->soundcloud->upload(__DIR__ . '/../bootstrap.php')->bodyRaw();
+        $this->assertEquals("SUCCESS_UPLOAD", $returnValue);
+    }
 }
