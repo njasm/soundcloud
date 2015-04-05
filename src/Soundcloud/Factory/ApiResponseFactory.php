@@ -52,7 +52,6 @@ class ApiResponseFactory
      */
     protected static function decodeIsValid()
     {
-        $message = '';
         switch (json_last_error()) {
             case JSON_ERROR_NONE:
                 return;
