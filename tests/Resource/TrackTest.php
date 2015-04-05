@@ -7,6 +7,8 @@ use Njasm\Soundcloud\Soundcloud;
 
 class TrackTest extends \PHPUnit_Framework_TestCase
 {
+    use \Njasm\Soundcloud\Tests\MocksTrait, \Njasm\Soundcloud\Tests\ReflectionsTrait;
+
     /** @var Track */
     protected $track;
 
@@ -40,6 +42,26 @@ class TrackTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->track->isNew());
         $this->track->unserialize($data);
         $this->assertFalse($this->track->isNew());
+    }
+
+    public function testDownloadNewResource()
+    {
+        $this->setExpectedException('\LogicException');
+        $this->track->download();
+    }
+
+    public function testDownload()
+    {
+        $data = 'BIG_TRACK_DATA';
+        $response = $this->getResponseMock('bodyRaw', function() use ($data) { return $data; });
+        $request = $this->getRequestMock($response);
+        $factory = $this->getFactoryMock($request, $response);
+        $reflectedFactory = $this->reflectProperty(Soundcloud::instance(), 'factory');
+        $reflectedFactory->setValue(Soundcloud::instance(), $factory);
+
+        $this->track->set('id', 1);
+        $response = $this->track->download();
+        $this->assertEquals("BIG_TRACK_DATA", $response->bodyRaw());
     }
 
     public function testSaveUpdateDelete()
