@@ -17,6 +17,10 @@ use Njasm\Soundcloud\Factory\Factory;
 
 class Soundcloud
 {
+    const VERSION = '2.2.0';
+    const LIB_NAME = 'Njasm-Soundcloud';
+    const LIB_URL = 'https://github.com/njasm/soundcloud';
+
     protected $resource;
     protected $request;
     protected $response;

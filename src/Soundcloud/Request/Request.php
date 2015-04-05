@@ -5,6 +5,7 @@ namespace Njasm\Soundcloud\Request;
 use Njasm\Soundcloud\Resource\ResourceInterface;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 use Njasm\Soundcloud\Factory\FactoryInterface;
+use Njasm\Soundcloud\Soundcloud;
 
 /**
  * SoundCloud API wrapper in PHP
@@ -99,8 +100,9 @@ class Request implements RequestInterface
         $this->buildDefaultHeaders();
 
         $curlHandler = curl_init();
-        curl_setopt($curlHandler, CURLOPT_HTTPHEADER, $this->headers);
         curl_setopt_array($curlHandler, $this->options);
+        curl_setopt($curlHandler, CURLOPT_HTTPHEADER, $this->headers);
+        curl_setopt($curlHandler, CURLOPT_USERAGENT, $this->getUserAgent());
         curl_setopt($curlHandler, CURLOPT_CUSTOMREQUEST, $verb);
         curl_setopt($curlHandler, CURLOPT_URL, $this->urlBuilder->getUrl());
 
@@ -132,5 +134,18 @@ class Request implements RequestInterface
             $oauth = $data['oauth_token'];
             array_push($this->headers, 'Authorization: OAuth ' . $oauth);
         }
+    }
+
+    /**
+     * @return string the User-Agent string
+     */
+    public function getUserAgent()
+    {
+        // Mozilla/5.0 (compatible; "; Njasm-Soundcloud/2.2.0; +https://www.github.com/njasm/soundcloud)
+        $userAgent = "Mozilla/5.0 (compatible; ";
+        $userAgent .= Soundcloud::LIB_NAME . '/' . Soundcloud::LIB_NAME . '; +' . Soundcloud::LIB_URL;
+        $userAgent .= ')';
+
+        return $userAgent;
     }
 }
