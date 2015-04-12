@@ -90,7 +90,6 @@ class Request implements RequestInterface
             curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->getBodyContent());
         }
 
-        curl_setopt($curlHandler, CURLOPT_VERBOSE, true);
         $response = curl_exec($curlHandler);
         $info = curl_getinfo($curlHandler);
         $errno = curl_errno($curlHandler);
@@ -119,7 +118,7 @@ class Request implements RequestInterface
     {
         // Mozilla/5.0 (compatible; "; Njasm-Soundcloud/2.2.0; +https://www.github.com/njasm/soundcloud)
         $userAgent = "Mozilla/5.0 (compatible; ";
-        $userAgent .= Soundcloud::LIB_NAME . '/' . Soundcloud::LIB_NAME . '; +' . Soundcloud::LIB_URL;
+        $userAgent .= Soundcloud::NAME . '/' . Soundcloud::VERSION . '; +' . Soundcloud::HOME_URL;
         $userAgent .= ')';
 
         return $userAgent;

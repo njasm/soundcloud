@@ -18,9 +18,9 @@ use Njasm\Soundcloud\Http\Url\UrlBuilder;
 
 class Soundcloud
 {
-    const VERSION = '2.2.0';
-    const LIB_NAME = 'Njasm-Soundcloud';
-    const LIB_URL = 'https://github.com/njasm/soundcloud';
+    const VERSION = '3.0.0-dev';
+    const NAME = 'Njasm-Soundcloud';
+    const HOME_URL = 'https://github.com/njasm/soundcloud';
 
     /** @var Http\Request */
     protected $request;
