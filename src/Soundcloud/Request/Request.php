@@ -141,9 +141,9 @@ class Request implements RequestInterface
      */
     public function getUserAgent()
     {
-        // Mozilla/5.0 (compatible; "; Njasm-Soundcloud/2.2.0; +https://www.github.com/njasm/soundcloud)
+        // Mozilla/5.0 (compatible; Njasm-Soundcloud/2.2.0; +https://www.github.com/njasm/soundcloud)
         $userAgent = "Mozilla/5.0 (compatible; ";
-        $userAgent .= Soundcloud::LIB_NAME . '/' . Soundcloud::LIB_NAME . '; +' . Soundcloud::LIB_URL;
+        $userAgent .= Soundcloud::LIB_NAME . '/' . Soundcloud::VERSION . '; +' . Soundcloud::LIB_URL;
         $userAgent .= ')';
 
         return $userAgent;
