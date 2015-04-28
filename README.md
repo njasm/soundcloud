@@ -85,6 +85,10 @@ $array = $response->bodyArray();
 ```
 
 ###### Accept response as json or xml
+
+Note: Soundcloud.com stopped sending responses in xml format, the methods are kept in the 2.x.x versions, but calling
+them will have no effect on the request, all requests will have an accept header of application/json.
+
 ```php
 ...
 $response  = $facade->get('/tracks')->asJson()->request();
