@@ -165,7 +165,7 @@ class SoundcloudFacade extends Soundcloud
     {
         // loop to keep BC. params array can be
         // array('track[title]' => 'track name', ...) or
-        // array('title' => 'track, name', 'downloadable' => true, ...)
+        // array('title' => 'track name', 'downloadable' => true, ...)
         foreach($params as $key => $value) {
             if (stripos($key, 'track[') !== false) {
                 continue;
@@ -179,7 +179,7 @@ class SoundcloudFacade extends Soundcloud
         $finalParams = $this->mergeAuthParams($params);
         
         return $this->post('/tracks')->setParams($finalParams)
-            ->request([CURLOPT_HTTPHEADER => ['Content-Type: multipart/form-data']]);
+            ->request(array(CURLOPT_HTTPHEADER => array('Content-Type: multipart/form-data')));
     }
     
     /**
