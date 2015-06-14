@@ -115,7 +115,7 @@ class SoundcloudFacade extends Soundcloud
     /**
      * Sets OAuth data received from Soundcloud into Auth object.
      * 
-     * @param stdClass $response
+     * @param \stdClass $response
      * @return void
      */
     protected function setAuthData($response)
@@ -163,16 +163,28 @@ class SoundcloudFacade extends Soundcloud
      */
     public function upload($trackPath, array $params = array())
     {
+        // loop to keep BC. params array can be
+        // array('track[title]' => 'track name', ...) or
+        // array('title' => 'track, name', 'downloadable' => true, ...)
+        foreach($params as $key => $value) {
+            if (stripos($key, 'track[') !== false) {
+                continue;
+            }
+            $params['track[' . $key . ']'] = $value;
+            unset($params[$key]);
+        }
+
         $file = $this->getCurlFile($trackPath);
         $params = array_merge($params, array('track[asset_data]' => $file));
         $finalParams = $this->mergeAuthParams($params);
         
-        return $this->post('/tracks')->setParams($finalParams)->request();
+        return $this->post('/tracks')->setParams($finalParams)
+            ->request([CURLOPT_HTTPHEADER => ['Content-Type: multipart/form-data']]);
     }
     
     /**
      * @param string $trackPath the full path for the media file to upload.
-     * @return mixed \CURLFile object if CurlFile class available or string prepended with @ for deprecated file upload.
+     * @return string|\CURLFile object if CurlFile class available or string prepended with @ for deprecated file upload.
      */
     private function getCurlFile($trackPath)
     {

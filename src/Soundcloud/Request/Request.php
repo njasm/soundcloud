@@ -22,9 +22,9 @@ class Request implements RequestInterface
     private $resource;
     private $urlBuilder;
     private $factory;
-    private $headers = array();
 
     private $options = array(
+        CURLOPT_HTTPHEADER => array(),
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_SSL_VERIFYPEER => false,
         CURLOPT_TIMEOUT => 90,
@@ -47,7 +47,12 @@ class Request implements RequestInterface
      */
     public function setOptions(array $options)
     {
-        $this->options = $options + $this->options; 
+        if (!empty($options)) {
+            foreach($options as $index => $value) {
+                $this->options[$index] = $value;
+            }
+        }
+
         return $this;
     }
     
@@ -101,7 +106,6 @@ class Request implements RequestInterface
 
         $curlHandler = curl_init();
         curl_setopt_array($curlHandler, $this->options);
-        curl_setopt($curlHandler, CURLOPT_HTTPHEADER, $this->headers);
         curl_setopt($curlHandler, CURLOPT_USERAGENT, $this->getUserAgent());
         curl_setopt($curlHandler, CURLOPT_CUSTOMREQUEST, $verb);
         curl_setopt($curlHandler, CURLOPT_URL, $this->urlBuilder->getUrl());
@@ -116,24 +120,43 @@ class Request implements RequestInterface
         $errorString = curl_error($curlHandler);
         curl_close($curlHandler);
 
+        $this->options[CURLOPT_HTTPHEADER] = array();
+
         return $this->factory->make('ResponseInterface', array($response, $info, $errno, $errorString));
     }
 
     protected function getBodyContent()
     {
-        return json_encode($this->resource->getParams());
+        if (in_array('Content-Type: application/json', $this->options[CURLOPT_HTTPHEADER])) {
+            return json_encode($this->resource->getParams());
+        }
+
+        return $this->resource->getParams();
     }
 
     protected function buildDefaultHeaders()
     {
-        $this->headers = array('Accept: ' . $this->responseFormat);
-        array_push($this->headers, 'Content-Type: application/json');
+        $headers = array('Accept: ' . $this->responseFormat);
 
         $data = $this->resource->getParams();
         if (isset($data['oauth_token'])) {
             $oauth = $data['oauth_token'];
-            array_push($this->headers, 'Authorization: OAuth ' . $oauth);
+            array_push($headers, 'Authorization: OAuth ' . $oauth);
         }
+
+        // set default content-type if non-existent
+        $found = false;
+        $func = function ($value) use (&$found) {
+            if (stripos($value, 'content-type') !== false) {
+                $found = true;
+            }
+        };
+        array_map($func, $this->options[CURLOPT_HTTPHEADER]);
+        if (!$found) {
+            array_push($this->options[CURLOPT_HTTPHEADER], "Content-Type: application/json");
+        }
+        //merge headers
+        $this->options[CURLOPT_HTTPHEADER] = array_merge($this->options[CURLOPT_HTTPHEADER], $headers);
     }
 
     /**
