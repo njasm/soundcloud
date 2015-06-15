@@ -257,7 +257,8 @@ class Soundcloud
     
     /**
      * Set response format for Request.
-     * 
+     *
+     * @param \Njasm\Soundcloud\Request\RequestInterface
      * @return void
      */
     protected function setResponseFormat(RequestInterface $request)

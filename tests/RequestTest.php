@@ -75,7 +75,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
     public function testUserAgentString()
     {
-        $expected = 'Mozilla/5.0 (compatible; Njasm-Soundcloud/2.2.1; +https://www.github.com/njasm/soundcloud)';
+        $expected = 'Mozilla/5.0 (compatible; Njasm-Soundcloud/2.2.2; +https://www.github.com/njasm/soundcloud)';
         $returned = $this->request->getUserAgent();
 
         $this->assertEquals($expected, $returned);
