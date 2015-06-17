@@ -64,7 +64,7 @@ class Request implements RequestInterface
      *
      * @return array
      */
-    public function getOptions()
+    public function options()
     {
         return $this->options;
     }
@@ -82,12 +82,12 @@ class Request implements RequestInterface
         $curlHandler = curl_init();
         curl_setopt_array($curlHandler, $this->options);
         curl_setopt($curlHandler, CURLOPT_HTTPHEADER, $this->headers);
-        curl_setopt($curlHandler, CURLOPT_USERAGENT, $this->getUserAgent());
+        curl_setopt($curlHandler, CURLOPT_USERAGENT, $this->userAgent());
         curl_setopt($curlHandler, CURLOPT_CUSTOMREQUEST, $verb);
-        curl_setopt($curlHandler, CURLOPT_URL, UrlBuilder::getUrl($verb, $this->url, $this->params));
+        curl_setopt($curlHandler, CURLOPT_URL, UrlBuilder::url($verb, $this->url, $this->params));
 
         if ($this->verb != 'GET') {
-            curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->getBodyContent());
+            curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->bodyContent());
         }
 
         $response = curl_exec($curlHandler);
@@ -114,7 +114,7 @@ class Request implements RequestInterface
     /**
      * @return string the User-Agent string
      */
-    public function getUserAgent()
+    public function userAgent()
     {
         // Mozilla/5.0 (compatible; "; Njasm-Soundcloud/2.2.0; +https://www.github.com/njasm/soundcloud)
         $userAgent = "Mozilla/5.0 (compatible; ";
@@ -124,7 +124,7 @@ class Request implements RequestInterface
         return $userAgent;
     }
 
-    protected function getBodyContent()
+    protected function bodyContent()
     {
         return json_encode($this->params);
     }

@@ -92,7 +92,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
-        $collection = $this->user->getTracks();
+        $collection = $this->user->tracks();
         $this->assertInstanceOf('\Njasm\Soundcloud\Collection\TrackCollection', $collection);
         $this->assertEquals(10, $collection->count());
     }
@@ -104,7 +104,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
-        $collection = $this->user->getPlaylists();
+        $collection = $this->user->playlists();
         $this->assertInstanceOf('\Njasm\Soundcloud\Collection\Collection', $collection);
         $this->assertEquals(0, $collection->count());
     }
@@ -115,7 +115,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
-        $collection = $this->user->getFollowings();
+        $collection = $this->user->followings();
 
         $this->assertInstanceOf('\Njasm\Soundcloud\Collection\UserCollection', $collection);
         $this->assertEquals(2, $collection->count());
@@ -127,7 +127,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
-        $user = $this->user->getFollowing('1492543');
+        $user = $this->user->following('1492543');
 
         $this->assertInstanceOf('\Njasm\Soundcloud\Resource\User', $user);
         $this->assertEquals('1492543', $user->get('id'));
@@ -139,7 +139,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
-        $collection = $this->user->getFollowers();
+        $collection = $this->user->followers();
 
         $this->assertInstanceOf('\Njasm\Soundcloud\Collection\UserCollection', $collection);
         $this->assertEquals(2, $collection->count());
@@ -151,7 +151,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
-        $user = $this->user->getFollower('1492543');
+        $user = $this->user->follower('1492543');
 
         $this->assertInstanceOf('\Njasm\Soundcloud\Resource\User', $user);
         $this->assertEquals('1492543', $user->get('id'));
@@ -163,7 +163,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
-        $collection = $this->user->getComments();
+        $collection = $this->user->comments();
 
         $this->assertInstanceOf('\Njasm\Soundcloud\Collection\CommentCollection', $collection);
         $this->assertTrue($collection->count() > 0);
@@ -175,7 +175,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
-        $collection = $this->user->getFavorites();
+        $collection = $this->user->favorites();
 
         $this->assertInstanceOf('\Njasm\Soundcloud\Collection\TrackCollection', $collection);
         $this->assertTrue($collection->count() > 0);
@@ -187,7 +187,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
-        $user = $this->user->getFavorite('32144337');
+        $user = $this->user->favorite('32144337');
 
         $this->assertInstanceOf('\Njasm\Soundcloud\Resource\Track', $user);
         $this->assertEquals('32144337', $user->get('id'));
@@ -199,7 +199,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
-        $groups = $this->user->getGroups();
+        $groups = $this->user->groups();
 
         $this->assertInstanceOf('\Njasm\Soundcloud\Collection\GroupCollection', $groups);
         $this->assertTrue(2 >= $groups->count());
@@ -211,7 +211,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->setSoundcloudMockObjects($data);
 
         $this->user->set('id', 1);
-        $groups = $this->user->getWebProfiles();
+        $groups = $this->user->webProfiles();
 
         $this->assertInstanceOf('\Njasm\Soundcloud\Collection\WebProfileCollection', $groups);
         $this->assertTrue(2 >= $groups->count());

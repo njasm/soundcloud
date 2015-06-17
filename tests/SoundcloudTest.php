@@ -25,7 +25,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
     public function testGetAuthUrl()
     {
         $expected = 'https://soundcloud.com/connect?client_id=ClientIDHash&scope=non-expiring&display=popup&response_type=code&redirect_uri=http%3A%2F%2Fexample.com%2Fsoundcloud&state=';
-        $this->assertEquals($expected, $this->soundcloud->getAuthUrl());
+        $this->assertEquals($expected, $this->soundcloud->authUrl());
     }
 
     public function testGet()
@@ -55,7 +55,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
 
     public function testGetCurlFile()
     {
-        $method = new \ReflectionMethod($this->soundcloud, 'getCurlFile');
+        $method = new \ReflectionMethod($this->soundcloud, 'curlFile');
         $method->setAccessible(true);
 
         if (class_exists('\CurlFile')) {
@@ -68,27 +68,27 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAuthClientID()
     {
-        $this->assertEquals("ClientIDHash", $this->soundcloud->auth()->getClientID());
+        $this->assertEquals("ClientIDHash", $this->soundcloud->auth()->clientID());
     }
 
     public function testNulledGetAuthToken()
     {
-        $this->assertNull($this->soundcloud->auth()->getToken());
+        $this->assertNull($this->soundcloud->auth()->token());
     }
 
     public function testNulledGetAuthScope()
     {
-        $this->assertNull($this->soundcloud->auth()->getScope());
+        $this->assertNull($this->soundcloud->auth()->scope());
     }
 
     public function testNullGetExpires()
     {
-        $this->assertNull($this->soundcloud->auth()->getExpires());
+        $this->assertNull($this->soundcloud->auth()->expires());
     }
 
     public function testGetCurlResponse()
     {
-        $this->assertNull($this->soundcloud->getCurlResponse());
+        $this->assertNull($this->soundcloud->lastResponse());
     }
 
     public function testGetMe()
@@ -101,7 +101,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $reflectedFactory = $this->reflectProperty($this->soundcloud, 'factory');
         $reflectedFactory->setValue($this->soundcloud, $factory);
 
-        $returnValue = $this->soundcloud->getMe();
+        $returnValue = $this->soundcloud->me();
         $this->assertInstanceOf($expected, $returnValue);
     }
 
@@ -120,7 +120,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $reflectedFactory->setValue($this->soundcloud, $factory);
 
         $this->soundcloud->userCredentials('User', 'Password');
-        $resultToken = $this->soundcloud->auth()->getToken();
+        $resultToken = $this->soundcloud->auth()->token();
         $this->assertEquals($token, $resultToken);
     }
 
@@ -139,7 +139,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $reflectedFactory->setValue($this->soundcloud, $factory);
 
         $this->soundcloud->refreshAccessToken();
-        $resultToken = $this->soundcloud->auth()->getToken();
+        $resultToken = $this->soundcloud->auth()->token();
         $this->assertEquals($token, $resultToken);
     }
 
@@ -158,7 +158,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
         $reflectedFactory->setValue($this->soundcloud, $factory);
 
         $this->soundcloud->codeForToken('code');
-        $resultToken = $this->soundcloud->auth()->getToken();
+        $resultToken = $this->soundcloud->auth()->token();
         $this->assertEquals($token, $resultToken);
     }
 

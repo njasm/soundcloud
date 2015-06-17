@@ -58,7 +58,7 @@ class Response implements ResponseInterface
         }
     }
 
-    public function getHeaders()
+    public function headers()
     {
         return $this->headers;
     }
@@ -68,7 +68,7 @@ class Response implements ResponseInterface
         return (array_key_exists($header, $this->headers));
     }
 
-    public function getHeader($header)
+    public function header($header)
     {
         return ($this->hasHeader($header)) ? $this->headers[$header] : null;
     }
@@ -80,7 +80,7 @@ class Response implements ResponseInterface
 
     public function bodyObject()
     {
-        $contentType = $this->getHeader('Content-Type');
+        $contentType = $this->header('Content-Type');
         if (stripos($contentType, 'application/json') !== false) {
             return json_decode($this->body);
         }
@@ -99,37 +99,37 @@ class Response implements ResponseInterface
         return json_decode(json_encode($object), true);
     }
 
-    public function getHttpVersion()
+    public function httpVersion()
     {
         return $this->httpVersion;
     }
 
-    public function getHttpCode()
+    public function httpCode()
     {
         return $this->httpCode;
     }
 
-    public function getInfo()
+    public function info()
     {
         return $this->info;
     }
 
-    public function getErrorNo()
+    public function errorNo()
     {
         return $this->errno;
     }
 
-    public function getErrorString()
+    public function errorString()
     {
         return $this->errorString;
     }
 
-    public function getRaw()
+    public function raw()
     {
         return $this->response;
     }
 
-    public function getHttpCodeString()
+    public function httpCodeString()
     {
         return $this->httpCodeString;
     }

@@ -87,7 +87,7 @@ class ApiResponseFactory
 
     public static function collection($kind = '')
     {
-        $kind = self::getClass($kind);
+        $kind = self::className($kind);
         $collectionClass = "\\Njasm\\Soundcloud\\Collection\\" . $kind . "Collection";
         if (class_exists($collectionClass)) {
             return new $collectionClass;
@@ -118,7 +118,7 @@ class ApiResponseFactory
         }
 
         $sc = Soundcloud::instance();
-        $kind = self::getClass($line['kind']);
+        $kind = self::className($line['kind']);
         $resourceClass = "\\Njasm\\Soundcloud\\Resource\\" . $kind;
 
         return new $resourceClass($sc, $line);
@@ -133,7 +133,7 @@ class ApiResponseFactory
         return new Resolve($data['status'], $data['location']);
     }
 
-    protected static function getClass($kind)
+    protected static function className($kind)
     {
         $parts = explode("-", $kind);
         $kind = '';

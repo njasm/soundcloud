@@ -16,14 +16,14 @@ class Auth implements AuthInterface
 {
     private $clientID;
     private $clientSecret;
-    private $authUrlCallback;
+    private $callback;
     
     private $accessToken;
     private $expires;
     private $scope;
     private $refreshToken;
     
-    public function __construct($clientID = null, $clientSecret = null, $authUrlCallback = null)
+    public function __construct($clientID = null, $clientSecret = null, $callback = null)
     {
         if ($this->isValidClientID($clientID) === false) {
             throw new \InvalidArgumentException("No ClientID Provided.");            
@@ -31,7 +31,7 @@ class Auth implements AuthInterface
         
         $this->clientID = $clientID;
         $this->clientSecret = $clientSecret;
-        $this->authUrlCallback = $authUrlCallback;
+        $this->callback = $callback;
     }
     
     /**
@@ -43,19 +43,19 @@ class Auth implements AuthInterface
         return is_string($clientID) === true && empty($clientID) === false;
     }
     
-    public function getClientID()
+    public function clientID()
     {
         return $this->clientID;
     }
     
-    public function getClientSecret()
+    public function clientSecret()
     {
         return $this->clientSecret;
     }
     
-    public function getAuthUrlCallback()
+    public function urlCallback()
     {
-        return $this->authUrlCallback;
+        return $this->callback;
     }
     
     public function setToken($token)
@@ -63,7 +63,7 @@ class Auth implements AuthInterface
         $this->accessToken = $token;
     }
     
-    public function getToken()
+    public function token()
     {
         return $this->accessToken;
     }
@@ -78,7 +78,7 @@ class Auth implements AuthInterface
         $this->scope = $scope;
     }
     
-    public function getScope()
+    public function scope()
     {
         return $this->scope;
     }
@@ -88,7 +88,7 @@ class Auth implements AuthInterface
         $this->expires = $expires;
     }
     
-    public function getExpires()
+    public function expires()
     {
         return $this->expires;
     }
@@ -98,7 +98,7 @@ class Auth implements AuthInterface
         $this->refreshToken = $refreshToken;
     }
     
-    public function getRefreshToken()
+    public function refreshToken()
     {
         return $this->refreshToken;
     }

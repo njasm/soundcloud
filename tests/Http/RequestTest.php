@@ -20,14 +20,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     public function testSetOptions()
     {
         $this->request->setOptions(array(CURLOPT_VERBOSE => true));
-        $this->assertArrayHasKey(CURLOPT_VERBOSE, $this->request->getOptions());
-        $this->assertArrayHasKey(CURLOPT_RETURNTRANSFER, $this->request->getOptions());
+        $this->assertArrayHasKey(CURLOPT_VERBOSE, $this->request->options());
+        $this->assertArrayHasKey(CURLOPT_RETURNTRANSFER, $this->request->options());
     }
     
     public function testGetOptions()
     {
-        $this->assertArrayHasKey(CURLOPT_HEADER, $this->request->getOptions());
-        $this->assertArrayNotHasKey(CURLOPT_COOKIE, $this->request->getOptions());
+        $this->assertArrayHasKey(CURLOPT_HEADER, $this->request->options());
+        $this->assertArrayNotHasKey(CURLOPT_COOKIE, $this->request->options());
     }
 
     public function testGetBodyContent()
@@ -37,7 +37,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $property->setAccessible(true);
         $property->setValue($this->request, ['oauth_token' => '1234-ABCD']);
 
-        $method = new \ReflectionMethod($this->request, 'getBodyContent');
+        $method = new \ReflectionMethod($this->request, 'bodyContent');
         $method->setAccessible(true);
         $returnValue = $method->invoke($this->request);
 

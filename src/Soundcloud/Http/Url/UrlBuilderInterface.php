@@ -23,5 +23,5 @@ interface UrlBuilderInterface
      * @param array $params
      * @return string the url
      */
-    public static function getUrl($verb, $uri, array $params = []);
+    public static function url($verb, $uri, array $params = []);
 }

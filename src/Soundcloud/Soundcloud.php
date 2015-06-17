@@ -134,7 +134,7 @@ class Soundcloud
      *
      * @return Resolve\Resolve|Resource\AbstractResource
      */
-    public function getMe()
+    public function me()
     {
         $verb = 'GET';
         $url = '/me';
@@ -168,7 +168,7 @@ class Soundcloud
      * 
      * @return mixed The Response Object, null if no request was yet made
      */
-    public function getCurlResponse()
+    public function lastResponse()
     {
         return (isset($this->response)) ? $this->response : null;
     }
@@ -200,7 +200,7 @@ class Soundcloud
 
     /**
      * Second step in user authorization.
-     * Exchange code for token
+     * Exchange code for a token
      *
      * @param string $code the code received to exchange for token
      * @param array $params
@@ -209,7 +209,7 @@ class Soundcloud
     public function codeForToken($code, array $params = [])
     {
         $defaultParams = [
-            'redirect_uri'  => $this->auth->getAuthUrlCallback(),
+            'redirect_uri'  => $this->auth->urlCallback(),
             'grant_type'    => 'authorization_code',
             'code'          => $code
         ];
@@ -235,11 +235,11 @@ class Soundcloud
     public function refreshAccessToken($refreshToken = null, array $params = [])
     {
         $defaultParams = [
-            'redirect_uri'  => $this->auth->getAuthUrlCallback(),
-            'client_id'     => $this->auth->getClientID(),
-            'client_secret' => $this->auth->getClientSecret(),
+            'redirect_uri'  => $this->auth->urlCallback(),
+            'client_id'     => $this->auth->clientID(),
+            'client_secret' => $this->auth->clientSecret(),
             'grant_type'    => 'refresh_token',
-            'refresh_token' => ($refreshToken) ?: $this->auth->getRefreshToken()
+            'refresh_token' => ($refreshToken) ?: $this->auth->refreshToken()
         ];
 
         $finalParams = array_merge($defaultParams, $params);
@@ -276,20 +276,20 @@ class Soundcloud
      * @param array $params key => value pair, of params to be sent to the /connect endpoint.
      * @return string The URL
      */
-    public function getAuthUrl(array $params = [])
+    public function authUrl(array $params = [])
     {
         $defaultParams = [
-            'client_id'     => $this->auth->getClientID(),
+            'client_id'     => $this->auth->clientID(),
             'scope'         => 'non-expiring',
             'display'       => 'popup',
             'response_type' => 'code',
-            'redirect_uri'  => $this->auth->getAuthUrlCallback(),
+            'redirect_uri'  => $this->auth->urlCallback(),
             'state'         => ''
         ];
 
         $params = array_merge($defaultParams, $params);
 
-        return UrlBuilder::getUrl('GET', 'https://soundcloud.com/connect', $params);
+        return UrlBuilder::url('GET', 'https://soundcloud.com/connect', $params);
     }
 
     /**
@@ -342,7 +342,7 @@ class Soundcloud
      */
     public function upload($trackPath, array $params = array())
     {
-        $file = $this->getCurlFile($trackPath);
+        $file = $this->curlFile($trackPath);
         $params = array_merge($params, array('track[asset_data]' => $file));
         $finalParams = $this->auth->mergeParams($params);
 
@@ -355,7 +355,7 @@ class Soundcloud
      * @param string $trackPath the full path for the media file to upload.
      * @return string|\CURLFile object if CurlFile class available or string prepended with @ for deprecated file upload.
      */
-    protected function getCurlFile($trackPath)
+    protected function curlFile($trackPath)
     {
         if (class_exists('CurlFile') === true) {
             return new \CURLFile($trackPath);

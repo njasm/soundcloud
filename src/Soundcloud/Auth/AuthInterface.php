@@ -7,17 +7,17 @@ interface AuthInterface
     /**
      * @return string Soundcloud Client id.
      */
-    public function getClientID();
+    public function clientID();
     
     /**
      * @return string|null Client Secret string if set, else null is returned.
      */
-    public function getClientSecret();
+    public function clientSecret();
     
     /**
      * @return string|null Access token, null if not set.
      */
-    public function getToken();
+    public function token();
     
     /**
      * @return bool true if access token is set, false otherwise.
@@ -39,7 +39,7 @@ interface AuthInterface
     /**
      * @return string|null Authorization Scope.
      */
-    public function getScope();
+    public function scope();
     
     /**
      * @param int $expire Expire time.
@@ -50,7 +50,7 @@ interface AuthInterface
     /**
      * @return int|null Expire time, null if not set.
      */
-    public function getExpires();
+    public function expires();
     
     /**
      * @param string $token Refresh Token.
@@ -61,5 +61,5 @@ interface AuthInterface
     /**
      * @return string|null The refresh token, null if not set.
      */
-    public function getRefreshToken();
+    public function refreshToken();
 }

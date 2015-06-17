@@ -20,7 +20,7 @@ class UrlBuilder implements UrlBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public static function getUrl($verb, $uri, array $params = [])
+    public static function url($verb, $uri, array $params = [])
     {
         $uri = self::buildBaseUrl($uri);
         $verb = strtoupper($verb);
@@ -36,7 +36,7 @@ class UrlBuilder implements UrlBuilderInterface
      * @param string $path
      * @return string
      */
-    private static function getCleanPath($path)
+    private static function cleanPath($path)
     {
         if (substr($path, strlen($path) - 1) === "/") {
             $path = substr($path, 0, strlen($path) - 1);
@@ -49,12 +49,12 @@ class UrlBuilder implements UrlBuilderInterface
     {
         if (strtolower(substr($url, 0, 4)) != 'http' && $url[0] != '/') {
             $base = self::$baseUrl;
-            $uri = '/' . self::getCleanPath($url);
+            $uri = '/' . self::cleanPath($url);
             $url = $base . $uri;
         }
 
         if ($url[0] == '/') {
-            $url = self::$baseUrl . self::getCleanPath($url);
+            $url = self::$baseUrl . self::cleanPath($url);
         }
 
         return $url;
@@ -65,7 +65,7 @@ class UrlBuilder implements UrlBuilderInterface
         self::$baseUrl = $url;
     }
 
-    public static function getBaseUrl()
+    public static function baseUrl()
     {
         return self::$baseUrl;
     }

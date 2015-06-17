@@ -46,53 +46,53 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     public function testGetRaw()
     {
         // raw curl response.
-        $this->assertEquals($this->response, $this->responseObj->getRaw());
+        $this->assertEquals($this->response, $this->responseObj->raw());
     }
 
     public function testGetErrorNo()
     {
-        $this->assertEquals($this->responseObj->getErrorNo(), 0);
+        $this->assertEquals($this->responseObj->errorNo(), 0);
     }
 
     public function testGetErrorString()
     {
-        $this->assertEquals("", $this->responseObj->getErrorString());
+        $this->assertEquals("", $this->responseObj->errorString());
     }
 
     public function testGetHttpCodeString()
     {
-        $this->assertEquals("Found", $this->responseObj->getHttpCodeString());
+        $this->assertEquals("Found", $this->responseObj->httpCodeString());
     }
 
     public function testGetHttpCode()
     {
-        $this->assertEquals("302", $this->responseObj->getHttpCode());
+        $this->assertEquals("302", $this->responseObj->httpCode());
     }
 
     public function testGetHttpVersion()
     {
-        $this->assertEquals("HTTP/1.1", $this->responseObj->getHttpVersion());
+        $this->assertEquals("HTTP/1.1", $this->responseObj->httpVersion());
     }
 
     public function testGetInfo()
     {
-        $this->assertArrayHasKey("curlInfo", $this->responseObj->getInfo());
+        $this->assertArrayHasKey("curlInfo", $this->responseObj->info());
     }
 
     public function testGetHeaders()
     {
-        $this->assertArrayHasKey("X-Varnish", $this->responseObj->getHeaders());
+        $this->assertArrayHasKey("X-Varnish", $this->responseObj->headers());
     }
 
     public function testGetHeader()
     {
-        $value = $this->responseObj->getHeader("X-Varnish");
+        $value = $this->responseObj->header("X-Varnish");
         $this->assertEquals("1958699183", $value);
     }
 
     public function testNullGetHeader()
     {
-        $this->assertNull($this->responseObj->getHeader("Non-Existent-Head-Param"));
+        $this->assertNull($this->responseObj->header("Non-Existent-Head-Param"));
     }
 
     public function testHasHeader()
@@ -125,7 +125,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertTrue(
-            true && stripos($this->responseObj->getHeader('Content-Type'), 'application/json') !== false
+            true && stripos($this->responseObj->header('Content-Type'), 'application/json') !== false
         );
         $this->assertInstanceOf('\stdClass', $this->responseObj->bodyObject());
     }
@@ -145,7 +145,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $xmlObj = $this->responseObj->bodyObject();
 
         $this->assertTrue(
-            true && stripos($this->responseObj->getHeader('Content-Type'), 'application/xml') !== false
+            true && stripos($this->responseObj->header('Content-Type'), 'application/xml') !== false
         );
         $this->assertInstanceOf('\SimpleXMLElement', $xmlObj);
     }

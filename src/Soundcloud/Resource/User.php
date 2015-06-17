@@ -15,7 +15,7 @@ class User extends AbstractResource
      * SUB RESOURCES *
      *****************/
 
-    public function getTracks()
+    public function tracks()
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
@@ -26,7 +26,7 @@ class User extends AbstractResource
         return ApiResponseFactory::unserialize($serialized);
     }
 
-    public function getPlaylists()
+    public function playlists()
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
@@ -37,7 +37,7 @@ class User extends AbstractResource
         return ApiResponseFactory::unserialize($serialized);
     }
 
-    public function  getFollowings()
+    public function followings()
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
@@ -48,7 +48,7 @@ class User extends AbstractResource
         return ApiResponseFactory::unserialize($serialized);
     }
 
-    public function getFollowing($id)
+    public function following($id)
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
@@ -64,7 +64,7 @@ class User extends AbstractResource
      *
      * @return Collection
      */
-    public function getFollowers()
+    public function followers()
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
@@ -83,7 +83,7 @@ class User extends AbstractResource
      *
      * @return AbstractResource
      */
-    public function getFollower($id)
+    public function follower($id)
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
@@ -99,7 +99,7 @@ class User extends AbstractResource
      *
      * @return CommentCollection
      */
-    public function getComments()
+    public function comments()
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
@@ -115,7 +115,7 @@ class User extends AbstractResource
      *
      * @return TrackCollection
      */
-    public function getFavorites()
+    public function favorites()
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
@@ -134,7 +134,7 @@ class User extends AbstractResource
      *
      * @return AbstractResource
      */
-    public function getFavorite($id)
+    public function favorite($id)
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
@@ -150,7 +150,7 @@ class User extends AbstractResource
      *
      * @return AbstractResource
      */
-    public function getGroups()
+    public function groups()
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
@@ -166,7 +166,7 @@ class User extends AbstractResource
      *
      * @return AbstractResource
      */
-    public function getWebProfiles()
+    public function webProfiles()
     {
         $this->isNewLogicalException(true, "Resource is new.");
 

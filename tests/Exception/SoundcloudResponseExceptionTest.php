@@ -30,7 +30,7 @@ class SoundcloudResponseExceptionTest extends \PHPUnit_Framework_TestCase
             ["error_message" => "Message Two"]
         ];
 
-        $this->assertEquals($expected, $this->exception->getErrorsAsArray());
+        $this->assertEquals($expected, $this->exception->errorsAsArray());
     }
 
     public function testGetErrorsAsString()
@@ -38,6 +38,6 @@ class SoundcloudResponseExceptionTest extends \PHPUnit_Framework_TestCase
         $expected = "Message One.Message Two";
         $delimiter = ".";
 
-        $this->assertEquals($expected, $this->exception->getErrorsAsString($delimiter));
+        $this->assertEquals($expected, $this->exception->errorsAsString($delimiter));
     }
 }

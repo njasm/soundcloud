@@ -24,12 +24,12 @@ class SoundcloudResponseException extends \Exception
         parent::__construct($message, $code, $previous);
     }
 
-    public function getErrorsAsArray()
+    public function errorsAsArray()
     {
         return $this->errors['errors'];
     }
 
-    public function getErrorsAsString($delimiter = ", ")
+    public function errorsAsString($delimiter = ", ")
     {
         $return = [];
         foreach($this->errors['errors'] as $value) {

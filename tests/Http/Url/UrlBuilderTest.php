@@ -13,7 +13,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
         $url = 'https://api.soundcloud.com/me';
         $params['client_id'] = 'ClientIDHash';
 
-        $this->assertEquals("https://api.soundcloud.com/me?client_id=ClientIDHash", UrlBuilder::getUrl($verb, $url, $params));
+        $this->assertEquals("https://api.soundcloud.com/me?client_id=ClientIDHash", UrlBuilder::url($verb, $url, $params));
     }
     
     public function testGetFullUrl()
@@ -29,7 +29,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             "https://api.soundcloud.com/tracks?client_id=ClientIDHash&q=buskers&license=cc-by-sa",
-            UrlBuilder::getUrl($verb, $url, $params)
+            UrlBuilder::url($verb, $url, $params)
         );
     }
 
@@ -39,7 +39,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
         $params['client_id'] = 'ClientIDHash';
         $url = '/me/'; // notice the trailing slash
 
-        $finalUrl = UrlBuilder::getUrl($verb, $url, $params);
+        $finalUrl = UrlBuilder::url($verb, $url, $params);
         $this->assertEquals("https://api.soundcloud.com/me?client_id=ClientIDHash", $finalUrl);
     }
 
@@ -49,7 +49,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
         $params['client_id'] = 'ClientIDHash';
         $url = '/me';
 
-        $finalUrl = UrlBuilder::getUrl($verb, $url, $params);
+        $finalUrl = UrlBuilder::url($verb, $url, $params);
         $this->assertEquals("https://api.soundcloud.com/me?client_id=ClientIDHash", $finalUrl);
     }
 
@@ -59,7 +59,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
         $params['client_id'] = 'ClientIDHash';
         $url = 'me';
 
-        $finalUrl = UrlBuilder::getUrl($verb, $url, $params);
+        $finalUrl = UrlBuilder::url($verb, $url, $params);
         $this->assertEquals("https://api.soundcloud.com/me?client_id=ClientIDHash", $finalUrl);
     }
 
@@ -70,7 +70,7 @@ class UrlBuilderTest extends \PHPUnit_Framework_TestCase
         $path = '/me';
         UrlBuilder::setBaseUrl($url);
 
-        $this->assertEquals($url, UrlBuilder::getBaseUrl());
-        $this->assertEquals("http://www.localhost/me", UrlBuilder::getUrl($verb, $path));
+        $this->assertEquals($url, UrlBuilder::baseUrl());
+        $this->assertEquals("http://www.localhost/me", UrlBuilder::url($verb, $path));
     }
 }

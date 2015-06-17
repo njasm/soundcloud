@@ -27,7 +27,7 @@ interface RequestInterface
      *
      * @return array curl options
      */
-    public function getOptions();
+    public function options();
 
     /**
      * Execute a curl request

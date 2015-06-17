@@ -20,7 +20,7 @@ class Comment extends AbstractResource
     {
         $this->isNewLogicalException(false, "Resource can't be refreshed because it's not new.");
 
-        $userID = $this->sc->getMe()->get('id');
+        $userID = $this->sc->me()->get('id');
         $id = $this->get('id');
         $url = '/users/' . $userID . '/comments/' . $id;
         $response = $this->sc->get($url)->send();
@@ -42,11 +42,11 @@ class Comment extends AbstractResource
     {
         $this->isNewLogicalException(false, "Resource can't be saved because it's not new.");
 
-        $userID = $this->sc->getMe()->get('id');
+        $userID = $this->sc->me()->get('id');
         $url = '/users/' . $userID . '/comments';
         $response = $this->sc->post($url, $this->serialize())->send();
 
-        if ($response->getHttpCode() == 200) {
+        if ($response->httpCode() == 200) {
             return $this->unserialize($response->bodyRaw());
         }
 

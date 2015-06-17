@@ -19,47 +19,47 @@ class AuthTest extends \PHPUnit_Framework_TestCase
     public function testSetAndGetClientID()
     {
         $auth = new Auth("ClientIDHash");
-        $this->assertEquals("ClientIDHash", $auth->getClientID());
+        $this->assertEquals("ClientIDHash", $auth->clientID());
     }
 
     public function testSetAndGetClientSecret()
     {
         $auth = new Auth("ClientIDHash", "ClientSecretHash");
-        $this->assertEquals("ClientSecretHash", $auth->getClientSecret());
+        $this->assertEquals("ClientSecretHash", $auth->clientSecret());
     }
 
     public function testSetAndGetAuthUrlCallback()
     {
         $auth = new Auth("ClientIDHash", null, "http://api.soundcloud.com");
-        $this->assertEquals("http://api.soundcloud.com", $auth->getAuthUrlCallback());
+        $this->assertEquals("http://api.soundcloud.com", $auth->urlCallback());
     }
         
     public function testSetAndGetToken()
     {
         $auth = new Auth("ClientIDHash");
         $auth->setToken("Big_Secret_Token");
-        $this->assertEquals("Big_Secret_Token", $auth->getToken());
+        $this->assertEquals("Big_Secret_Token", $auth->token());
     }
     
     public function testSetAndExpires()
     {
         $auth = new Auth("ClientIDHash");
         $auth->setExpires("1234567");
-        $this->assertEquals("1234567", $auth->getExpires());
+        $this->assertEquals("1234567", $auth->expires());
     }
     
     public function testSetAndScope()
     {
         $auth = new Auth("ClientIDHash");
         $auth->setScope("*");
-        $this->assertEquals("*", $auth->getScope());
+        $this->assertEquals("*", $auth->scope());
     }
     
     public function testSetAndGetRefreshToken()
     {
         $auth = new Auth("ClientIDHash");
         $auth->setRefreshToken("1-3456-asfaSy5hhjsWE");
-        $this->assertEquals("1-3456-asfaSy5hhjsWE", $auth->getRefreshToken());
+        $this->assertEquals("1-3456-asfaSy5hhjsWE", $auth->refreshToken());
     }
     
     public function testHasTokenFalse()

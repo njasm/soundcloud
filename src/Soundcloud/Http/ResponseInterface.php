@@ -20,7 +20,7 @@ interface ResponseInterface
      *
      * @return Array the headers as key => value pairs.
      */
-    public function getHeaders();
+    public function headers();
 
     /**
      * Return header
@@ -28,7 +28,7 @@ interface ResponseInterface
      * @param  string      $header the asked header
      * @return string|null the header string, if set, null otherwise
      */
-    public function getHeader($header);
+    public function header($header);
 
     /**
      * Check if header exists/is set.

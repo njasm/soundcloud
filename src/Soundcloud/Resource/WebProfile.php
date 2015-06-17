@@ -21,7 +21,7 @@ class WebProfile extends AbstractResource
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
-        $userID = $this->sc->getMe()->get('id');
+        $userID = $this->sc->me()->get('id');
         $id = $this->get('id');
         $url = '/users/' . $userID . '/web-profiles/' . $id;
         $response = $this->sc->get($url)->send();
@@ -43,11 +43,11 @@ class WebProfile extends AbstractResource
     {
         $this->isNewLogicalException(false, "Resource is not new.");
 
-        $userID = $this->sc->getMe()->get('id');
+        $userID = $this->sc->me()->get('id');
         $url = '/users/' . $userID . '/web-profiles';
         $response = $this->sc->post($url, $this->serialize())->send();
 
-        if ($response->getHttpCode() == 200) {
+        if ($response->httpCode() == 200) {
             return $this->unserialize($response->bodyRaw());
         }
 
@@ -65,12 +65,12 @@ class WebProfile extends AbstractResource
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
-        $userID = $this->sc->getMe()->get('id');
+        $userID = $this->sc->me()->get('id');
         $id = $this->get('id');
         $url = '/users/' . $userID . '/web-profiles/' . $id;
         $response = $this->sc->put($url, $this->serialize())->send();
 
-        if ($response->getHttpCode() == 200 && $refreshState) {
+        if ($response->httpCode() == 200 && $refreshState) {
             return $this->unserialize($response->bodyRaw());
         }
 
@@ -87,12 +87,12 @@ class WebProfile extends AbstractResource
     {
         $this->isNewLogicalException(true, "Resource is new.");
 
-        $userID = $this->sc->getMe()->get('id');
+        $userID = $this->sc->me()->get('id');
         $id = $this->get('id');
         $url = '/users/' . $userID . '/web-profiles/' . $id;
         $response = $this->sc->delete($url)->send();
 
-        if ($response->getHttpCode() != 200) {
+        if ($response->httpCode() != 200) {
             return ApiResponseFactory::unserialize($response->bodyRaw());
         }
 
