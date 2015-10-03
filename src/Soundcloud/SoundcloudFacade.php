@@ -57,9 +57,13 @@ class SoundcloudFacade extends Soundcloud
         );
         
         $params = $this->mergeAuthParams($defaultParams, true);
-        $response = $this->post('/oauth2/token', $params)->asJson()->request()->bodyObject();
+        $response = $this->post('/oauth2/token', $params)->asJson()
+            ->request(array(
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTPHEADER => array('Content-Type: application/x-www-form-urlencoded')
+            ))->bodyObject();
         $this->setAuthData($response);
-        
+
         return $this->response;
     }
     
@@ -81,7 +85,11 @@ class SoundcloudFacade extends Soundcloud
         
         $mergedParams = array_merge($defaultParams, $params);
         $finalParams = $this->mergeAuthParams($mergedParams, true);
-        $response = $this->post('/oauth2/token', $finalParams)->asJson()->request()->bodyObject();
+        $response = $this->post('/oauth2/token', $finalParams)->asJson()
+            ->request(array(
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTPHEADER => array('Content-Type: application/x-www-form-urlencoded')
+            ))->bodyObject();
         $this->setAuthData($response);
         
         return $this->response;
@@ -106,7 +114,11 @@ class SoundcloudFacade extends Soundcloud
         );
         
         $finalParams = array_merge($defaultParams, $params);
-        $response = $this->post('oauth2/token', $finalParams)->asJson()->request()->bodyObject();
+        $response = $this->post('oauth2/token', $finalParams)->asJson()
+            ->request(array(
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTPHEADER => array('Content-Type: application/x-www-form-urlencoded')
+            ))->bodyObject();
         $this->setAuthData($response);
         
         return $this->response;

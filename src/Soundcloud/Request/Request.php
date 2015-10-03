@@ -131,6 +131,10 @@ class Request implements RequestInterface
             return json_encode($this->resource->getParams());
         }
 
+        if (in_array('Content-Type: application/x-www-form-urlencoded', $this->options[CURLOPT_HTTPHEADER])) {
+            return http_build_query($this->resource->getParams());
+        }
+
         return $this->resource->getParams();
     }
 
