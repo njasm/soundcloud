@@ -114,7 +114,7 @@ class SoundcloudFacade extends Soundcloud
         );
         
         $finalParams = array_merge($defaultParams, $params);
-        $response = $this->post('oauth2/token', $finalParams)->asJson()
+        $response = $this->post('/oauth2/token', $finalParams)->asJson()
             ->request(array(
                 CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_HTTPHEADER => array('Content-Type: application/x-www-form-urlencoded')
