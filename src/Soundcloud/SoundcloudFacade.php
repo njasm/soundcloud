@@ -134,7 +134,7 @@ class SoundcloudFacade extends Soundcloud
     {
         $accessToken    = isset($response->access_token) ? $response->access_token : null;
         $scope          = isset($response->scope) ? $response->scope : null;
-        $expires        = isset($response->expires_in) ? $response->expires : null;
+        $expires        = isset($response->expires_in) ? $response->expires_in : null;
         $refreshToken   = isset($response->refresh_token) ? $response->refresh_token : null;
 
         $this->auth->setToken($accessToken);
