@@ -150,12 +150,15 @@ class Request implements RequestInterface
 
         // set default content-type if non-existent
         $found = false;
-        $func = function ($value) use (&$found) {
-            if (stripos($value, 'content-type') !== false) {
-                $found = true;
-            }
-        };
-        array_map($func, $this->options[CURLOPT_HTTPHEADER]);
+        array_map(
+            function ($value) use (&$found) {
+                if (stripos($value, 'content-type') !== false) {
+                    $found = true;
+                }
+            },
+            $this->options[CURLOPT_HTTPHEADER]
+        );
+
         if (!$found) {
             array_push($this->options[CURLOPT_HTTPHEADER], "Content-Type: application/json");
         }
