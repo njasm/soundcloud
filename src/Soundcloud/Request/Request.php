@@ -105,7 +105,11 @@ class Request implements RequestInterface
         $this->buildDefaultHeaders();
 
         $curlHandler = curl_init();
-        curl_setopt_array($curlHandler, $this->options);
+        //curl_setopt_array($curlHandler, $this->options);
+        //testing
+        foreach($this->options as $index => $value) {
+            curl_setopt($curlHandler, $index, $value);
+        }
         curl_setopt($curlHandler, CURLOPT_USERAGENT, $this->getUserAgent());
         curl_setopt($curlHandler, CURLOPT_CUSTOMREQUEST, $verb);
         curl_setopt($curlHandler, CURLOPT_URL, $this->urlBuilder->getUrl());
