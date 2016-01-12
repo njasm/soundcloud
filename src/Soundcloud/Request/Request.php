@@ -105,11 +105,15 @@ class Request implements RequestInterface
         $this->buildDefaultHeaders();
 
         $curlHandler = curl_init();
+
         //curl_setopt_array($curlHandler, $this->options);
-        //testing
+        // workaround for issue njasm/soundcloud#28 on github.
+        // for some reason curl_setopt_array does not wanna work well with 7.0 on some PHP builds.
+        // needs further investigation.
         foreach($this->options as $index => $value) {
             curl_setopt($curlHandler, $index, $value);
         }
+
         curl_setopt($curlHandler, CURLOPT_USERAGENT, $this->getUserAgent());
         curl_setopt($curlHandler, CURLOPT_CUSTOMREQUEST, $verb);
         curl_setopt($curlHandler, CURLOPT_URL, $this->urlBuilder->getUrl());

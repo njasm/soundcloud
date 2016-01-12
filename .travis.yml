@@ -10,12 +10,12 @@ php:
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: hhvm
-    - php: 7
+  #allow_failures:
+    - php: 5.3
+    - php: 5.4
     
 before_script:
-  - echo $TRAVIS_PHP_VERSION
+  #- echo $TRAVIS_PHP_VERSION
   #- dpkg -l | grep 'php5\|curl' && php --version
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
