@@ -10,7 +10,7 @@ php:
 
 matrix:
   fast_finish: true
-  #allow_failures:
+  allow_failures:
     - php: 5.3
     - php: 5.4
     
