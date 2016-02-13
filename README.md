@@ -13,7 +13,10 @@
 
 ### Requirements
 
- - PHP 5.3 or higher.
+PHP 5.3 or higher.
+
+Notice: We'll be dropping official support for ``PHP versions 5.3, 5.4 and 5.5`` after the 30th of June 2016.
+The package may still work with those versions of PHP after the above date, but it will not be guaranteed.
 
 #### Installation
 
