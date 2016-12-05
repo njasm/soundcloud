@@ -179,6 +179,22 @@ file_put_contents("great_track.mp3", $response->bodyRaw());
 ###### File Upload
 ```php
 $trackPath = '/home/njasm/great.mp3';
-$params = array('track[name]' => 'Cool remix');
-$response = $facade->upload($trackPath, $params);
+$trackData = array(
+    'title' => 'Cool track title',
+    'downloadable' => true,
+    'artwork_data' => new \CURLFile('artwork.jpg'),
+    // .... more metadata maybe?
+);
+
+$response = $facade->upload($trackPath, $trackData);
+
+// or old-school trackdata array declaration also work, example.
+$trackData = array(
+    'track[title]' => 'Cool track title',
+    'track[downloadable]' => true,
+    'track[artwork_data]' => new \CURLFile('artwork.jpg'),
+    // .... more metadata maybe?
+);
+
+$response = $facade->upload($trackPath, $trackData);
 ```
