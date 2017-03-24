@@ -13,10 +13,10 @@
 
 ### Requirements
 
-PHP 5.3 or higher.
+PHP 5.6 or higher.
 
-Notice: We'll be dropping official support for ``PHP versions 5.3, 5.4 and 5.5`` after the 30th of June 2016.
-The package may still work with those versions of PHP after the above date, but it will not be guaranteed.
+Notice: We dropped official support for ``PHP versions 5.3, 5.4 and 5.5`` after the 30th of June 2016.
+The package may still work with those versions of PHP after the above date, but it is not be guaranteed.
 
 #### Installation
 
@@ -55,11 +55,11 @@ $url = $facade->getAuthUrl();
 
 // or inject your specific request params
 $url = $facade->getAuthUrl(
-    array(
+    [
         'response_type' => 'code',
         'scope' => '*',
         'state' => 'my_app_state_code'
-    )
+    ]
 );
 ```
 
@@ -102,16 +102,16 @@ $response = $facade->get('/tracks')->asXml()->request();
 ###### Add params to resource.
 ```php
 // argument array style
-$facade->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species'));
+$facade->get('/resolve', ['url' => 'http://www.soundcloud.com/hybrid-species']);
 
 // chaining-methods
 $response = $facade
     ->get('/resolve')
-    ->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
+    ->setParams(['url' => 'http://www.soundcloud.com/hybrid-species']);
 
 // or not
 $facade->get('/resolve');
-$facade->setParams(array('url' => 'http://www.soundcloud.com/hybrid-species'));
+$facade->setParams(['url' => 'http://www.soundcloud.com/hybrid-species']);
 ```
 
 ###### Send request
@@ -122,7 +122,7 @@ automatically.
 
 ```php
 $soundcloud = new Soundcloud($clientID, $clientSecret);
-$soundcloud->get('/resolve', array('url' => 'http://www.soundcloud.com/hybrid-species'));
+$soundcloud->get('/resolve', ['url' => 'http://www.soundcloud.com/hybrid-species']);
 // only this invocation will send the request
 $response = $soundcloud->request();
 ```
@@ -137,21 +137,19 @@ $theBodyString = $facade->request()->bodyRaw();
 ```php
 // after having the access token
 // build the playlist data array
-$playlistData = array(
-    'playlist' => array('title' => 'Great Playlist!', 'sharing' => 'public')
-);
+$playlistData = ['playlist' => ['title' => 'Great Playlist!', 'sharing' => 'public']];
 $response = $soundcloud->post('/playlists', $playlistData)->request();
 
 // now add tracks, get playlist id from response
 // build tracks array
-$tracks = array(
-    'playlist' => array(
-        'tracks' => array(
-            array('id' => 29720509), // track id
-            array('id' => 26057359)  // other track id
-        )
-    )
-);
+$tracks = [
+    'playlist' => [
+        'tracks' => [
+            ['id' => 29720509], // track id
+            ['id' => 26057359]  // other track id
+        ]
+    ]
+];
 
 // put tracks into playlist
 $response = $soundcloud->put('/playlists/' . $response->bodyObject()->id, $tracks)->request();
@@ -179,22 +177,22 @@ file_put_contents("great_track.mp3", $response->bodyRaw());
 ###### File Upload
 ```php
 $trackPath = '/home/njasm/great.mp3';
-$trackData = array(
+$trackData = [
     'title' => 'Cool track title',
     'downloadable' => true,
     'artwork_data' => new \CURLFile('artwork.jpg'),
     // .... more metadata maybe?
-);
+];
 
 $response = $facade->upload($trackPath, $trackData);
 
 // or old-school trackdata array declaration also work, example.
-$trackData = array(
+$trackData = [
     'track[title]' => 'Cool track title',
     'track[downloadable]' => true,
     'track[artwork_data]' => new \CURLFile('artwork.jpg'),
     // .... more metadata maybe?
-);
+];
 
 $response = $facade->upload($trackPath, $trackData);
 ```
