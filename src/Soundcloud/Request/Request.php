@@ -27,22 +27,22 @@ class Request implements RequestInterface
         CURLOPT_HTTPHEADER => array(),
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_TIMEOUT => 90,
+        CURLOPT_TIMEOUT => 600,
         CURLOPT_HEADER => true
     );
 
     private $responseFormat = 'application/json';
-    
+
     public function __construct(ResourceInterface $resource, UrlBuilderInterface $urlBuilder, FactoryInterface $factory)
     {
         $this->resource = $resource;
         $this->urlBuilder = $urlBuilder;
         $this->factory = $factory;
     }
-    
+
     /**
      * {@inheritdoc}
-     * 
+     *
      * @return Request
      */
     public function setOptions(array $options)
@@ -55,17 +55,17 @@ class Request implements RequestInterface
 
         return $this;
     }
-    
+
     /**
      * {@inheritdoc}
-     * 
+     *
      * @return array
      */
     public function getOptions()
     {
         return $this->options;
     }
-    
+
     /**
      * {@inheritdoc}
      *
@@ -79,7 +79,7 @@ class Request implements RequestInterface
         $this->asJson();
         return $this;
     }
-    
+
     /**
      * {@inheritdoc}
      *
@@ -87,16 +87,16 @@ class Request implements RequestInterface
      * @see https://github.com/njasm/soundcloud/issues/16
      *
      * @return Request
-     */    
+     */
     public function asJson()
     {
         $this->responseFormat = 'application/json';
         return $this;
     }
-    
+
     /**
      * {@inheritdoc}
-     * 
+     *
      * @return ResponseInterface
      */
     public function exec()
