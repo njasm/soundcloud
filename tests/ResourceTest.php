@@ -15,19 +15,18 @@ class ResourceTest extends TestCase
     
     public function testException()
     {
-        $this->setExpectedException(
-            '\RuntimeException',
-            "Path cannot be other then a string type and should start with a '/' (Slash)."
-        );
+
+        $this->expectException('\RuntimeException');
+        $this->expectExceptionMessage("Path cannot be other then a string type and should start with a '/' (Slash).");
+
         $this->factory->make('ResourceInterface', array('get'));
     }
     
     public function testResourceOfTypeNotAvailableException()
     {
-        $this->setExpectedException(
-            '\OutOfBoundsException',
-            "Resource of type: head, not available!"
-        );
+        $this->expectException('\OutOfBoundsException');
+        $this->expectExceptionMessage("Resource of type: head, not available!");
+
         $this->factory->make('ResourceInterface', array('head'));
     }
     

@@ -155,8 +155,8 @@ class SoundcloudTest extends TestCase
 
     public function testNoResourceException()
     {
-        $this->setExpectedException(
-            '\RuntimeException',
+        $this->expectException('\RuntimeException');
+        $this->expectExceptionMessage(
             "No Resource found. you must call a http verb method before Njasm\Soundcloud\Soundcloud::setParams"
         );
         
@@ -199,6 +199,8 @@ class SoundcloudTest extends TestCase
         $method->invoke($this->soundcloud, $reqMock);
         $this->soundcloud->asJson();
         $method->invoke($this->soundcloud, $reqMock);
+
+        $this->assertTrue(true);
     }
     
     public function testGetCurlResponse()

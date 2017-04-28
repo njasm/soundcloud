@@ -119,10 +119,8 @@ class ResponseTest extends TestCase
             array('Content-Type' => 'wrong/content; charset=utf-8\r\n\r\n')
         );
 
-        $this->setExpectedException(
-            '\OutOfBoundsException',
-            "Last Request Content-Type isn't application/json."
-        );
+        $this->expectException('\OutOfBoundsException');
+        $this->expectExceptionMessage("Last Request Content-Type isn't application/json.");
 
         $this->responseObj->bodyObject();
     }
