@@ -3,15 +3,15 @@
 namespace Njasm\Soundcloud\Tests;
 
 use Njasm\Soundcloud\Auth\Auth;
+use PHPUnit\Framework\TestCase;
 
-class AuthTest extends \PHPUnit_Framework_TestCase
+class AuthTest extends TestCase
 {
     public function testException()
     {
-        $this->setExpectedException(
-            '\InvalidArgumentException',
-            "No ClientID Provided."
-        );
+        $this->expectException('\InvalidArgumentException');
+        $this->expectExceptionMessage("No ClientID Provided.");
+
         $auth = new Auth();
     }
     

@@ -6,8 +6,9 @@ use Njasm\Soundcloud\Resource\Resource;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Request\Request;
 use Njasm\Soundcloud\Request\Response;
+use PHPUnit\Framework\TestCase;
 
-class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
+class SoundcloudFacadeTest extends TestCase
 {
     protected $soundcloud;
     
@@ -34,7 +35,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
     public function testCodeForToken()
     {
         // request Factory mock
-        $reqFactoryMock = $this->getMock(
+        $reqFactoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
@@ -55,7 +56,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
             );
             
         // soundcloud Factory mock
-        $factoryMock = $this->getMock(
+        $factoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
@@ -98,7 +99,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
     public function testRefreshAccessToken()
     {
         // request Factory mock
-        $reqFactoryMock = $this->getMock(
+        $reqFactoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
@@ -119,7 +120,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
             );
             
         // soundcloud Factory mock
-        $factoryMock = $this->getMock(
+        $factoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
@@ -162,7 +163,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
     public function testUserCredentialsFlow()
     {
         // request Factory mock
-        $reqFactoryMock = $this->getMock(
+        $reqFactoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
@@ -183,7 +184,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
             );
             
         // soundcloud Factory mock
-        $factoryMock = $this->getMock(
+        $factoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
@@ -225,7 +226,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
     public function testDownload()
     {
         // request Factory mock
-        $reqFactoryMock = $this->getMock(
+        $reqFactoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
@@ -246,7 +247,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
             );
             
         // soundcloud Factory mock
-        $factoryMock = $this->getMock(
+        $factoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
@@ -291,7 +292,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
     public function testUpload()
     {
         // request Factory mock
-        $reqFactoryMock = $this->getMock(
+        $reqFactoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
@@ -312,7 +313,7 @@ class SoundcloudFacadeTest extends \PHPUnit_Framework_TestCase
             );
             
         // soundcloud Factory mock
-        $factoryMock = $this->getMock(
+        $factoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );

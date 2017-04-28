@@ -3,20 +3,14 @@
 namespace Njasm\Soundcloud\Tests;
 
 use Njasm\Soundcloud\Resource\Resource;
-use Njasm\Soundcloud\Resource\ResourceInterface;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
-use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
-use Njasm\Soundcloud\Auth\Auth;
-use Njasm\Soundcloud\Auth\AuthInterface;
 use Njasm\Soundcloud\Factory\Factory;
-use Njasm\Soundcloud\Factory\FactoryInterface;
 use Njasm\Soundcloud\Request\Request;
-use Njasm\Soundcloud\Request\RequestInterface;
 use Njasm\Soundcloud\Soundcloud;
 use Njasm\Soundcloud\Request\Response;
-use Njasm\Soundcloud\Request\ResponseInterface;
+use PHPUnit\Framework\TestCase;
 
-class SoundcloudTest extends \PHPUnit_Framework_TestCase
+class SoundcloudTest extends TestCase
 {
     public $soundcloud;
     
@@ -31,7 +25,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
     public function testRequest()
     {
         // request Factory mock
-        $reqFactoryMock = $this->getMock(
+        $reqFactoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
@@ -52,7 +46,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
             );
             
         // soundcloud Factory mock
-        $factoryMock = $this->getMock(
+        $factoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );
@@ -192,7 +186,7 @@ class SoundcloudTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetResponseFormat()
     {
-        $reqMock = $this->getMock(
+        $reqMock = $this->createMock(
             "Njasm\\Soundcloud\\Request\\Request",
             array('asJson'),
             array(new Resource('get', '/resolve'), new UrlBuilder(new Resource('get', '/resolve')), new Factory())

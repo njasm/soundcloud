@@ -3,8 +3,9 @@
 namespace Njasm\Soundcloud\Tests;
 
 use Njasm\Soundcloud\Request\Response;
+use PHPUnit\Framework\TestCase;
 
-class ResponseTest extends \PHPUnit_Framework_TestCase
+class ResponseTest extends TestCase
 {
     public $response;
     public $info;

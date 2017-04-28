@@ -15,9 +15,6 @@
 
 PHP 5.6 or higher.
 
-Notice: We dropped official support for ``PHP versions 5.3, 5.4 and 5.5`` after the 30th of June 2016.
-The package may still work with those versions of PHP after the above date, but it is not be guaranteed.
-
 #### Installation
 
 Recommended installation is through composer. 

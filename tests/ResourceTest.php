@@ -2,7 +2,9 @@
 
 namespace Njasm\Soundcloud\Tests;
 
-class ResourceTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ResourceTest extends TestCase
 {
     private $factory;
     

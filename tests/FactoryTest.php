@@ -3,8 +3,9 @@
 namespace Njasm\Soundcloud\Tests;
 
 use Njasm\Soundcloud\Factory\Factory;
+use PHPUnit\Framework\TestCase;
 
-class FactoryTest extends \PHPUnit_Framework_TestCase
+class FactoryTest extends TestCase
 {
     public $factory;
     
@@ -15,19 +16,17 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     
     public function testException()
     {
-        $this->setExpectedException(
-            '\InvalidArgumentException',
-            "Invalid interface requested"
-        );
+        $this->expectException('\InvalidArgumentException');
+        $this->expectExceptionMessage("Invalid interface requested");
+
         $this->factory->make('');
     }
     
     public function testNonExistentInterfaceException()
     {
-        $this->setExpectedException(
-            '\InvalidArgumentException',
-            "You should register Non-Existent in the Factory first."
-        );
+        $this->expectException('\InvalidArgumentException');
+        $this->expectExceptionMessage("You should register Non-Existent in the Factory first.");
+
         $this->factory->make('Non-Existent');
     }
     

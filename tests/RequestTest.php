@@ -7,8 +7,9 @@ use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Resource\Resource;
 use Njasm\Soundcloud\Factory\Factory;
 use Njasm\Soundcloud\Request\Response;
+use PHPUnit\Framework\TestCase;
 
-class RequestTest extends \PHPUnit_Framework_TestCase
+class RequestTest extends TestCase
 {
     public $resource;
     public $urlBuilder;
@@ -48,7 +49,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $resource = new Resource('post', '/me', array('name' => 'John Doe'));
         $urlBuilder = new UrlBuilder($resource, '127', '0.0.1', 'http://');
         // request Factory mock
-        $reqFactoryMock = $this->getMock(
+        $reqFactoryMock = $this->createMock(
             "Njasm\\Soundcloud\\Factory\\Factory",
             array('make')
         );

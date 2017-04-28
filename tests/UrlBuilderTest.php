@@ -5,8 +5,9 @@ namespace Njasm\Soundcloud\Tests;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Resource\Resource;
 use Njasm\Soundcloud\Auth\Auth;
+use PHPUnit\Framework\TestCase;
 
-class UrlBuilderTest extends \PHPUnit_Framework_TestCase
+class UrlBuilderTest extends TestCase
 {
     public function testGetUrlWithoutParams()
     {
