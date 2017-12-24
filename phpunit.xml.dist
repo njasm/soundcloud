@@ -15,5 +15,12 @@
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites> 
-
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+            <exclude>
+                <file>autoload.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>
