@@ -25,10 +25,7 @@ class SoundcloudTest extends TestCase
     public function testRequest()
     {
         // request Factory mock
-        $reqFactoryMock = $this->createMock(
-            "Njasm\\Soundcloud\\Factory\\Factory",
-            array('make')
-        );
+        $reqFactoryMock = $this->createMock("Njasm\\Soundcloud\\Factory\\Factory");
         $reqFactoryMock->expects($this->any())
             ->method('make')
             ->with($this->equalTo('ResponseInterface'))
