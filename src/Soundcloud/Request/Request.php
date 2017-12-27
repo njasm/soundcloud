@@ -20,6 +20,11 @@ use Psr\Container\ContainerInterface;
 
 class Request implements RequestInterface
 {
+    public const VERB_GET = 'get';
+    public const VERB_PUT = 'put';
+    public const VERB_POST = 'post';
+    public const VERB_DELETE = 'delete';
+
     private $resource;
     private $urlBuilder;
     private $container;

@@ -35,7 +35,7 @@ class Soundcloud
     protected $request;
     protected $response;
     protected $auth;
-    protected $factory;
+
     protected $responseFormat;
 
     /** @var Container */
@@ -44,19 +44,6 @@ class Soundcloud
     public function __construct($clientID = null, $clientSecret = null, $authCallbackUri = null)
     {
         $this->container = new Container();
-        $this->initialize();
-        //$this->factory = new Factory();
-        $this->auth = $this->make(AuthInterface::class, array($clientID, $clientSecret, $authCallbackUri));
-    }
-
-    protected function initialize()
-    {
-        $a = ['AuthInterface'         => 'Njasm\\Soundcloud\\Auth\\Auth',
-        'RequestInterface'      => 'Njasm\\Soundcloud\\Request\\Request',
-        'ResponseInterface'     => 'Njasm\\Soundcloud\\Request\\Response',
-        'ResourceInterface'     => 'Njasm\\Soundcloud\\Resource\\Resource',
-        'UrlBuilderInterface'   => 'Njasm\\Soundcloud\\UrlBuilder\\UrlBuilder',
-        'FactoryInterface'      => 'Njasm\\Soundcloud\\Factory\\Factory'];
 
         $this->container->bind(AuthInterface::class, Auth::class);
         $this->container->bind(RequestInterface::class, Request::class);
@@ -64,6 +51,7 @@ class Soundcloud
         $this->container->bind(ResourceInterface::class, Resource::class);
         $this->container->bind(UrlBuilderInterface::class, UrlBuilder::class);
 
+        $this->auth = $this->make(AuthInterface::class, array($clientID, $clientSecret, $authCallbackUri));
     }
 
     /**
@@ -157,7 +145,7 @@ class Soundcloud
     public function get($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = $this->make(ResourceInterface::class, [RequestInterface::VERB_GET, $path, $params]);
+        $this->resource = $this->make(ResourceInterface::class, [Request::VERB_GET, $path, $params]);
         return $this;
     }
 
@@ -171,7 +159,7 @@ class Soundcloud
     public function put($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = $this->make(ResourceInterface::class, [RequestInterface::VERB_PUT, $path, $params]);
+        $this->resource = $this->make(ResourceInterface::class, [Request::VERB_PUT, $path, $params]);
         return $this;
     }
     
@@ -185,7 +173,7 @@ class Soundcloud
     public function post($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = $this->make(ResourceInterface::class, [RequestInterface::VERB_POST, $path, $params]);
+        $this->resource = $this->make(ResourceInterface::class, [Request::VERB_POST, $path, $params]);
         return $this;
     }
     
@@ -200,7 +188,7 @@ class Soundcloud
     {
         $params = $this->mergeAuthParams($params);
         $this->resource = $this->make(
-            ResourceInterface::class, [RequestInterface::VERB_DELETE, $path, $params]
+            ResourceInterface::class, [Request::VERB_DELETE, $path, $params]
         );
         return $this;
     }
@@ -213,7 +201,6 @@ class Soundcloud
     protected function make($interface, array $params = array())
     {
         return $this->container->get($interface, $params);
-        //return $this->factory->make($interface, $params);
     }
     
     /**
