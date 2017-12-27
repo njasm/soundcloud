@@ -2,7 +2,9 @@
 
 namespace Njasm\Soundcloud;
 
+use Njasm\Soundcloud\Resource\ResourceInterface;
 use Njasm\Soundcloud\Soundcloud;
+use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 
 /**
  * SoundCloud API wrapper in PHP
@@ -34,8 +36,8 @@ class SoundcloudFacade extends Soundcloud
         );
         
         $params = array_merge($defaultParams, $params);
-        $resource = $this->make('ResourceInterface', array('get', '/connect', $params));
-        $url = $this->make('UrlBuilderInterface', array($resource, 'www'));
+        $resource = $this->make(ResourceInterface::class, array('get', '/connect', $params));
+        $url = $this->make(UrlBuilderInterface::class, array($resource, 'www'));
         
         return $url->getUrl();
     }

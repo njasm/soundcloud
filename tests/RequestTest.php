@@ -2,24 +2,33 @@
 
 namespace Njasm\Soundcloud\Tests;
 
+use Njasm\Container\Container;
 use Njasm\Soundcloud\Request\Request;
+use Njasm\Soundcloud\Request\RequestInterface;
+use Njasm\Soundcloud\Request\ResponseInterface;
+use Njasm\Soundcloud\Resource\ResourceInterface;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Resource\Resource;
 use Njasm\Soundcloud\Factory\Factory;
 use Njasm\Soundcloud\Request\Response;
+use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 class RequestTest extends TestCase
 {
+    /** @var ResourceInterface */
     public $resource;
+    /** @var UrlBuilderInterface */
     public $urlBuilder;
+    /** @var RequestInterface */
     public $request;
     
     public function setUp()
     {
         $this->resource = new Resource('get', '/resolve');
         $this->urlBuilder = new UrlBuilder($this->resource);
-        $this->request = new Request($this->resource, $this->urlBuilder, new Factory());
+        $this->request = new Request($this->resource, $this->urlBuilder, new Container());
     }
     
     public function testSetOptions()
@@ -46,29 +55,22 @@ class RequestTest extends TestCase
     
     public function testRequest()
     {
-        $resource = new Resource('post', '/me', array('name' => 'John Doe'));
-        $urlBuilder = new UrlBuilder($resource, '127', '0.0.1', 'http://');
-        // request Factory mock
-        $reqFactoryMock = $this->createMock(
-            "Njasm\\Soundcloud\\Factory\\Factory",
-            array('make')
+        $container = new Container();
+
+        $resource = new Resource('get', '/index.php');
+        $url = new UrlBuilder($resource, "127", "0.0.1", "http://");
+        $request = new Request($resource, $url, $container);
+        $response = new Response(
+            "HTTP/1.1 302 Found\nurl: http://127.0.0.1/index.php\r\n\r\nDummy Response Body",
+            ['url' => 'http://127.0.0.1/index.php'],0,"No Error"
         );
-        $reqFactoryMock->expects($this->any())
-            ->method('make')
-            ->with($this->equalTo('ResponseInterface'))
-            ->will(
-                $this->returnCallback(
-                    function ($arg) {
-                        return new Response(
-                            "HTTP/1.1 302 Found\nurl: http://127.0.0.1/index.php\r\n\r\n{\"status\": \"ok\"}",
-                            array('url' => 'http://127.0.0.1/index.php'),
-                            0,
-                            "No Error"
-                        );
-                    }
-                )
-            );
-        $request = new Request($resource, $urlBuilder, $reqFactoryMock);
+
+        $container->singleton(ContainerInterface::class, $container);
+        $container->singleton(UrlBuilderInterface::class, $url);
+        $container->singleton(ResponseInterface::class, $response);
+        $container->singleton(RequestInterface::class, $request);
+
+        $request = new Request($resource, $url, $container);
         $response = $request->exec();
         
         $this->assertInstanceOf('Njasm\\Soundcloud\\Request\\ResponseInterface', $response);

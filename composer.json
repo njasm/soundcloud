@@ -22,6 +22,7 @@
     },
     "require": {
         "php": ">=5.6.0",
+        "njasm/container": "^1.0",
         "ext-json": "*",
         "ext-curl": "*"
     },

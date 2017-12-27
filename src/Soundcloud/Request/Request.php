@@ -6,6 +6,7 @@ use Njasm\Soundcloud\Resource\ResourceInterface;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 use Njasm\Soundcloud\Factory\FactoryInterface;
 use Njasm\Soundcloud\Soundcloud;
+use Psr\Container\ContainerInterface;
 
 /**
  * SoundCloud API wrapper in PHP
@@ -21,23 +22,24 @@ class Request implements RequestInterface
 {
     private $resource;
     private $urlBuilder;
-    private $factory;
+    private $container;
 
-    private $options = array(
-        CURLOPT_HTTPHEADER => array(),
+    private $options = [
+        CURLOPT_HTTPHEADER => [],
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_SSL_VERIFYPEER => false,
         CURLOPT_TIMEOUT => 600,
         CURLOPT_HEADER => true
-    );
+    ];
 
     private $responseFormat = 'application/json';
 
-    public function __construct(ResourceInterface $resource, UrlBuilderInterface $urlBuilder, FactoryInterface $factory)
-    {
+    public function __construct(
+        ResourceInterface $resource, UrlBuilderInterface $urlBuilder, ContainerInterface $container
+    ) {
         $this->resource = $resource;
         $this->urlBuilder = $urlBuilder;
-        $this->factory = $factory;
+        $this->container = $container;
     }
 
     /**
@@ -128,9 +130,9 @@ class Request implements RequestInterface
         $errorString = curl_error($curlHandler);
         curl_close($curlHandler);
 
-        $this->options[CURLOPT_HTTPHEADER] = array();
+        $this->options[CURLOPT_HTTPHEADER] = [];
 
-        return $this->factory->make('ResponseInterface', array($response, $info, $errno, $errorString));
+        return $this->container->get(ResponseInterface::class, [$response, $info, $errno, $errorString]);
     }
 
     protected function getBodyContent()

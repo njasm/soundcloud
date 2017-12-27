@@ -2,16 +2,22 @@
 
 namespace Njasm\Soundcloud\Tests;
 
+use Njasm\Container\Container;
+use Njasm\Soundcloud\Request\RequestInterface;
+use Njasm\Soundcloud\Request\ResponseInterface;
 use Njasm\Soundcloud\Resource\Resource;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Factory\Factory;
 use Njasm\Soundcloud\Request\Request;
 use Njasm\Soundcloud\Soundcloud;
 use Njasm\Soundcloud\Request\Response;
+use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 class SoundcloudTest extends TestCase
 {
+    /** @var Soundcloud */
     public $soundcloud;
     
     public function setUp()
@@ -24,61 +30,32 @@ class SoundcloudTest extends TestCase
     
     public function testRequest()
     {
-        // request Factory mock
-        $reqFactoryMock = $this->createMock("Njasm\\Soundcloud\\Factory\\Factory");
-        $reqFactoryMock->expects($this->any())
-            ->method('make')
-            ->with($this->equalTo('ResponseInterface'))
-            ->will(
-                $this->returnCallback(
-                    function ($arg) {
-                        return new Response(
-                            "HTTP/1.1 302 Found\nurl: http://127.0.0.1/index.php\r\n\r\nDummy Response Body",
-                            array('url' => 'http://127.0.0.1/index.php'),
-                            0,
-                            "No Error"
-                        );
-                    }
-                )
-            );
-            
-        // soundcloud Factory mock
-        $factoryMock = $this->createMock(
-            "Njasm\\Soundcloud\\Factory\\Factory",
-            array('make')
+        $container = new Container();
+
+        $resource = new Resource('get', '/index.php');
+        $url = new UrlBuilder($resource, "127", "0.0.1", "http://");
+        $request = new Request($resource, $url, $container);
+        $response = new Response(
+            "HTTP/1.1 302 Found\nurl: http://127.0.0.1/index.php\r\n\r\nDummy Response Body",
+            ['url' => 'http://127.0.0.1/index.php'],0,"No Error"
         );
-        $factoryMock->expects($this->any())
-            ->method('make')
-            ->with(
-                $this->logicalOr(
-                    $this->equalTo('UrlBuilderInterface'),
-                    $this->equalTo('RequestInterface')
-                )
-            )->will(
-                $this->returnCallback(
-                    function ($arg) use (&$reqFactoryMock) {
-                        if ($arg == 'UrlBuilderInterface') {
-                            return new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://");
-                        } elseif ($arg == 'RequestInterface') {
-                            return new Request(
-                                new Resource('get', '/index.php'),
-                                new UrlBuilder(new Resource('get', '/index.php'), "127", "0.0.1", "http://"),
-                                $reqFactoryMock
-                            );
-                        }
-                    }
-                )
-            );
-                
-        $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "factory");
+
+        $container->singleton(ContainerInterface::class, $container);
+        $container->singleton(UrlBuilderInterface::class, $url);
+        $container->singleton(ResponseInterface::class, $response);
+        $container->singleton(RequestInterface::class, $request);
+
+        $this->soundcloud->get('/test');
+
+        $property = $this->reflectProperty("Njasm\\Soundcloud\\Soundcloud", "container");
         $property->setAccessible(true);
-        $property->setValue($this->soundcloud, $factoryMock);
+        $property->setValue($this->soundcloud, $container);
         $response = $this->soundcloud->request();
 
         $this->assertInstanceOf('Njasm\Soundcloud\Request\ResponseInterface', $response);
         $this->assertEquals("Dummy Response Body", $response->bodyRaw());
         // coverage, already tested inside Request class
-        $this->soundcloud->request(array(CURLOPT_RETURNTRANSFER => true));
+        $this->soundcloud->request([CURLOPT_RETURNTRANSFER => true]);
     }
 
     /**

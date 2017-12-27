@@ -14,6 +14,11 @@ namespace Njasm\Soundcloud\Request;
 
 interface RequestInterface
 {
+    public const VERB_GET = 'get';
+    public const VERB_PUT = 'put';
+    public const VERB_POST = 'post';
+    public const VERB_DELETE = 'delete';
+
     /**
      * Set curl options
      */

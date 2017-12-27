@@ -2,8 +2,18 @@
 
 namespace Njasm\Soundcloud;
 
+use Njasm\Soundcloud\Auth\Auth;
+use Njasm\Soundcloud\Auth\AuthInterface;
+use Njasm\Soundcloud\Request\Request;
 use Njasm\Soundcloud\Request\RequestInterface;
 use Njasm\Soundcloud\Factory\Factory;
+use Njasm\Container\Container;
+use Njasm\Soundcloud\Request\Response;
+use Njasm\Soundcloud\Request\ResponseInterface;
+use Njasm\Soundcloud\Resource\Resource;
+use Njasm\Soundcloud\Resource\ResourceInterface;
+use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
+use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 
 /**
  * SoundCloud API wrapper in PHP
@@ -28,12 +38,34 @@ class Soundcloud
     protected $factory;
     protected $responseFormat;
 
+    /** @var Container */
+    protected $container;
+
     public function __construct($clientID = null, $clientSecret = null, $authCallbackUri = null)
     {
-        $this->factory = new Factory();
-        $this->auth = $this->make('AuthInterface', array($clientID, $clientSecret, $authCallbackUri));
+        $this->container = new Container();
+        $this->initialize();
+        //$this->factory = new Factory();
+        $this->auth = $this->make(AuthInterface::class, array($clientID, $clientSecret, $authCallbackUri));
     }
-    
+
+    protected function initialize()
+    {
+        $a = ['AuthInterface'         => 'Njasm\\Soundcloud\\Auth\\Auth',
+        'RequestInterface'      => 'Njasm\\Soundcloud\\Request\\Request',
+        'ResponseInterface'     => 'Njasm\\Soundcloud\\Request\\Response',
+        'ResourceInterface'     => 'Njasm\\Soundcloud\\Resource\\Resource',
+        'UrlBuilderInterface'   => 'Njasm\\Soundcloud\\UrlBuilder\\UrlBuilder',
+        'FactoryInterface'      => 'Njasm\\Soundcloud\\Factory\\Factory'];
+
+        $this->container->bind(AuthInterface::class, Auth::class);
+        $this->container->bind(RequestInterface::class, Request::class);
+        $this->container->bind(ResponseInterface::class, Response::class);
+        $this->container->bind(ResourceInterface::class, Resource::class);
+        $this->container->bind(UrlBuilderInterface::class, UrlBuilder::class);
+
+    }
+
     /**
      * Get ClientID for this instance
      * 
@@ -125,7 +157,7 @@ class Soundcloud
     public function get($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = $this->make('ResourceInterface', array('get', $path, $params));
+        $this->resource = $this->make(ResourceInterface::class, [RequestInterface::VERB_GET, $path, $params]);
         return $this;
     }
 
@@ -139,7 +171,7 @@ class Soundcloud
     public function put($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = $this->make('ResourceInterface', array('put', $path, $params));
+        $this->resource = $this->make(ResourceInterface::class, [RequestInterface::VERB_PUT, $path, $params]);
         return $this;
     }
     
@@ -153,7 +185,7 @@ class Soundcloud
     public function post($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = $this->make('ResourceInterface', array('post', $path, $params));
+        $this->resource = $this->make(ResourceInterface::class, [RequestInterface::VERB_POST, $path, $params]);
         return $this;
     }
     
@@ -167,7 +199,9 @@ class Soundcloud
     public function delete($path, array $params = array())
     {
         $params = $this->mergeAuthParams($params);
-        $this->resource = $this->make('ResourceInterface', array('delete', $path, $params));
+        $this->resource = $this->make(
+            ResourceInterface::class, [RequestInterface::VERB_DELETE, $path, $params]
+        );
         return $this;
     }
     
@@ -178,7 +212,8 @@ class Soundcloud
      */
     protected function make($interface, array $params = array())
     {
-        return $this->factory->make($interface, $params);
+        return $this->container->get($interface, $params);
+        //return $this->factory->make($interface, $params);
     }
     
     /**
@@ -207,8 +242,8 @@ class Soundcloud
      */
     public function request(array $params = array())
     {
-        $urlBuilder = $this->make('UrlBuilderInterface', array($this->resource));
-        $this->request = $this->make('RequestInterface', array($this->resource, $urlBuilder, $this->factory));
+        $urlBuilder = $this->make(UrlBuilderInterface::class, [$this->resource]);
+        $this->request = $this->make(RequestInterface::class, [$this->resource, $urlBuilder, $this->container]);
         $this->request->setOptions($params);
         $this->setResponseFormat($this->request);
         
