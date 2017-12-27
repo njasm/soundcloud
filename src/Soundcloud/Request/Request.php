@@ -20,10 +20,10 @@ use Psr\Container\ContainerInterface;
 
 class Request implements RequestInterface
 {
-    public const VERB_GET = 'get';
-    public const VERB_PUT = 'put';
-    public const VERB_POST = 'post';
-    public const VERB_DELETE = 'delete';
+    const VERB_GET = 'get';
+    const VERB_PUT = 'put';
+    const VERB_POST = 'post';
+    const VERB_DELETE = 'delete';
 
     private $resource;
     private $urlBuilder;
