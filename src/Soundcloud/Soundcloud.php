@@ -6,7 +6,7 @@ use Njasm\Soundcloud\Auth\Auth;
 use Njasm\Soundcloud\Auth\AuthInterface;
 use Njasm\Soundcloud\Request\Request;
 use Njasm\Soundcloud\Request\RequestInterface;
-use Njasm\Soundcloud\Factory\Factory;
+
 use Njasm\Container\Container;
 use Njasm\Soundcloud\Request\Response;
 use Njasm\Soundcloud\Request\ResponseInterface;

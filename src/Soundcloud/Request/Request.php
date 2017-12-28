@@ -4,7 +4,7 @@ namespace Njasm\Soundcloud\Request;
 
 use Njasm\Soundcloud\Resource\ResourceInterface;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
-use Njasm\Soundcloud\Factory\FactoryInterface;
+
 use Njasm\Soundcloud\Soundcloud;
 use Psr\Container\ContainerInterface;
 

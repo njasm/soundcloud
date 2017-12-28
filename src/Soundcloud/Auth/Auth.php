@@ -2,7 +2,7 @@
 
 namespace Njasm\Soundcloud\Auth;
 
-use Njasm\Soundcloud\Auth\AuthInterface;
+
 
 /**
  * SoundCloud API wrapper in PHP

@@ -9,7 +9,7 @@ use Njasm\Soundcloud\Request\ResponseInterface;
 use Njasm\Soundcloud\Resource\ResourceInterface;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilder;
 use Njasm\Soundcloud\Resource\Resource;
-use Njasm\Soundcloud\Factory\Factory;
+
 use Njasm\Soundcloud\Request\Response;
 use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 use PHPUnit\Framework\TestCase;

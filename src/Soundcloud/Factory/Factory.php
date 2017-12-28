@@ -2,7 +2,7 @@
 
 namespace Njasm\Soundcloud\Factory;
 
-use Njasm\Soundcloud\Factory\FactoryInterface;
+
 
 class Factory implements FactoryInterface
 {

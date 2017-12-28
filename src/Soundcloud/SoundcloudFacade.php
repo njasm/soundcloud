@@ -3,7 +3,7 @@
 namespace Njasm\Soundcloud;
 
 use Njasm\Soundcloud\Resource\ResourceInterface;
-use Njasm\Soundcloud\Soundcloud;
+
 use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 
 /**
