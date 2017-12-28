@@ -27,17 +27,20 @@ use Njasm\Soundcloud\UrlBuilder\UrlBuilderInterface;
 
 class Soundcloud
 {
-    const VERSION = '2.2.3';
+    const VERSION = '2.2.6-dev';
     const LIB_NAME = 'Njasm-Soundcloud';
     const LIB_URL = 'https://www.github.com/njasm/soundcloud';
 
+    /** @var ResourceInterface */
     protected $resource;
+    /** @var RequestInterface */
     protected $request;
+    /** @var ResponseInterface */
     protected $response;
+    /** @var AuthInterface */
     protected $auth;
-
+    /** @var string */
     protected $responseFormat;
-
     /** @var Container */
     protected $container;
 
@@ -51,7 +54,7 @@ class Soundcloud
         $this->container->bind(ResourceInterface::class, Resource::class);
         $this->container->bind(UrlBuilderInterface::class, UrlBuilder::class);
 
-        $this->auth = $this->make(AuthInterface::class, array($clientID, $clientSecret, $authCallbackUri));
+        $this->auth = $this->make(AuthInterface::class, [$clientID, $clientSecret, $authCallbackUri]);
     }
 
     /**
