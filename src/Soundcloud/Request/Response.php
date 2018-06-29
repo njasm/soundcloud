@@ -50,7 +50,9 @@ class Response implements ResponseInterface
         $headers = explode("\n", $headers);
         $httHead = array_shift($headers);
         list($this->httpVersion, $this->httpCode, $this->httpCodeString) = explode(" ", $httHead, 3);
-        
+
+        $this->httpCode = intval($this->httpCode);
+
         foreach ($headers as $header) {  
             list($key, $value) = explode(": ", $header, 2);
             $this->headers[trim($key)] = trim($value);
