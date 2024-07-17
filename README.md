@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/njasm/soundcloud.svg?branch=master)](https://travis-ci.org/njasm/soundcloud) [![Code Coverage](https://scrutinizer-ci.com/g/njasm/soundcloud/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/njasm/soundcloud/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/njasm/soundcloud/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/njasm/soundcloud/?branch=master)
+[![Build Status](https://github.com/njasm/soundcloud/actions/workflows/CI.yaml/badge.svg?branch=master)](https://github.com/njasm/soundcloud) [![Code Coverage](https://scrutinizer-ci.com/g/njasm/soundcloud/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/njasm/soundcloud/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/njasm/soundcloud/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/njasm/soundcloud/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/njasm/soundcloud/v/stable.png)](https://packagist.org/packages/njasm/soundcloud) [![Total Downloads](https://poser.pugx.org/njasm/soundcloud/downloads.png)](https://packagist.org/packages/njasm/soundcloud) [![License](https://poser.pugx.org/njasm/soundcloud/license.png)](https://packagist.org/packages/njasm/soundcloud) 
 
 ## Soundcloud.com API Wrapper in PHP
@@ -19,7 +19,7 @@ PHP 5.6 or higher.
 Recommended installation is through composer. 
 Include ``njasm\soundcloud`` in your project, by adding it to your ``composer.json`` file.
 
-```javascript
+```json
 {
     "require": {
         "njasm/soundcloud": "dev-master"

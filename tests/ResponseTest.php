@@ -14,7 +14,7 @@ class ResponseTest extends TestCase
 
     public $responseObj;
 
-    public function setUp()
+    public function setUp(): void
     {
         //example curl response
         $this->response = "HTTP/1.1 302 Found
@@ -134,7 +134,7 @@ class ResponseTest extends TestCase
             '{"status": "302 - Found","location": "https://api.soundcloud.com/users/1492543?consumer_key=apigee"}'
         );
 
-        $this->assertInternalType('array', $this->responseObj->bodyArray());
+        $this->assertIsArray($this->responseObj->bodyArray());
     }
 
     public function testBodyArrayXml()
@@ -150,6 +150,6 @@ class ResponseTest extends TestCase
         $property->setAccessible(true);
         $property->setValue($this->responseObj, '{"status": "302 - Found","location": "https://api.soundcloud.com/users/1492543?consumer_key=apigee"}');
 
-        $this->assertInternalType('array', $this->responseObj->bodyArray());
+        $this->assertIsArray($this->responseObj->bodyArray());
     }
 }
