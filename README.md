@@ -19,7 +19,7 @@ PHP 5.6 or higher.
 Recommended installation is through composer. 
 Include ``njasm\soundcloud`` in your project, by adding it to your ``composer.json`` file.
 
-```javascript
+```json
 {
     "require": {
         "njasm/soundcloud": "dev-master"
