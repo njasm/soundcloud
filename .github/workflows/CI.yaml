@@ -8,15 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        experimental:
-          - false
         php-version:
           - '8.1'
           - '8.2'
           - '8.3'
-        include:
-          - php-version: 'nightly'
-            experimental: true
     name: PHP ${{ matrix.php-version }}
     steps:
       - name: Checkout
@@ -40,17 +35,8 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Delete composer lock file
-        id: composer-lock
-        if: ${{ matrix.php-version == 'nightly' }}
-        run: |
-          rm composer.lock
-          echo "flags=--ignore-platform-reqs" >> $GITHUB_OUTPUT
-
       - name: Install dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader ${{ steps.composer-lock.outputs.flags }}
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
 
-      - name: "Run PHPUnit tests (Experimental: ${{ matrix.experimental }})"
-        env:
-          FAILURE_ACTION: "${{ matrix.experimental == true }}"
-        run: vendor/bin/phpunit --display-incomplete --display-skipped --display-deprecations --display-errors --display-notices --display-warnings || $FAILURE_ACTION
+      - name: "Run PHPUnit tests"
+        run: vendor/bin/phpunit --display-incomplete --display-skipped --display-deprecations --display-errors --display-notices --display-warnings
