@@ -14,7 +14,7 @@ class ResponseTest extends TestCase
 
     public $responseObj;
 
-    public function setUp()
+    public function setUp(): void
     {
         //example curl response
         $this->response = "HTTP/1.1 302 Found

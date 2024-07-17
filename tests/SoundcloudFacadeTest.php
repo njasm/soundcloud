@@ -19,7 +19,7 @@ class SoundcloudFacadeTest extends TestCase
     /** @var SoundcloudFacade */
     protected $soundcloud;
     
-    public function setUp()
+    public function setUp(): void
     {
         $this->soundcloud = new \Njasm\Soundcloud\SoundcloudFacade(
             "ClientIDHash", "TheSecretHash", "http://example.com/soundcloud"

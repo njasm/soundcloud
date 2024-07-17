@@ -20,7 +20,7 @@ class SoundcloudTest extends TestCase
     /** @var Soundcloud */
     public $soundcloud;
     
-    public function setUp()
+    public function setUp(): void
     {
         $clientID = "ClientIDHash";
         $clientSecret = "ClientSecretHash";

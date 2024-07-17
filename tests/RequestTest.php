@@ -24,7 +24,7 @@ class RequestTest extends TestCase
     /** @var RequestInterface */
     public $request;
     
-    public function setUp()
+    public function setUp(): void
     {
         $this->resource = new Resource('get', '/resolve');
         $this->urlBuilder = new UrlBuilder($this->resource);
