@@ -134,7 +134,7 @@ class ResponseTest extends TestCase
             '{"status": "302 - Found","location": "https://api.soundcloud.com/users/1492543?consumer_key=apigee"}'
         );
 
-        $this->assertInternalType('array', $this->responseObj->bodyArray());
+        $this->assertIsArray($this->responseObj->bodyObject());
     }
 
     public function testBodyArrayXml()
@@ -150,6 +150,6 @@ class ResponseTest extends TestCase
         $property->setAccessible(true);
         $property->setValue($this->responseObj, '{"status": "302 - Found","location": "https://api.soundcloud.com/users/1492543?consumer_key=apigee"}');
 
-        $this->assertInternalType('array', $this->responseObj->bodyArray());
+        $this->assertIsArray($this->responseObj->bodyObject());
     }
 }
