@@ -2,6 +2,7 @@
 [![Latest Stable Version](https://poser.pugx.org/njasm/soundcloud/v/stable.png)](https://packagist.org/packages/njasm/soundcloud) [![Total Downloads](https://poser.pugx.org/njasm/soundcloud/downloads.png)](https://packagist.org/packages/njasm/soundcloud) [![License](https://poser.pugx.org/njasm/soundcloud/license.png)](https://packagist.org/packages/njasm/soundcloud) 
 
 ## Soundcloud.com API Wrapper in PHP
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/njasm/soundcloud?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 #### Implemented features 
 
